@@ -40,49 +40,32 @@ require('packer').startup(function(use)
     use 'hrsh7th/cmp-nvim-lsp'
 
     -- TODO: telescope
-    use {
-        'nvim-telescope/telescope.nvim',
-        requires = { {'nvim-lua/plenary.nvim'} }
-    }
+    use { 'nvim-telescope/telescope.nvim', requires = { {'nvim-lua/plenary.nvim'} } }
     -- "gc" to comment visual regions/lines
-    
+
     -- comment
     use 'numToStr/Comment.nvim'
 
     -- status line
-    use {
-        'nvim-lualine/lualine.nvim',
-        requires = { 'kyazdani42/nvim-web-devicons', opt = true }
-    }
+    use { 'nvim-lualine/lualine.nvim', requires = { 'kyazdani42/nvim-web-devicons', opt = true } }
 
     -- themes
     use 'ellisonleao/gruvbox.nvim'
     use 'rockerBOO/boo-colorscheme-nvim'
     use 'tanvirtin/monokai.nvim'
-    use 'nvim-treesitter/nvim-treesitter'
 
     -- fast moving
     use 'phaazon/hop.nvim'
 
-    -- git signs
-    use {
-      'lewis6991/gitsigns.nvim',
-      requires = {
-        'nvim-lua/plenary.nvim'
-      }
-    }
+    -- git
+    use { 'lewis6991/gitsigns.nvim', requires = { 'nvim-lua/plenary.nvim' } }
+    use { 'TimUntersberger/neogit', requires = 'nvim-lua/plenary.nvim' }
+    use { 'tpope/vim-fugitive' }
 
     -- tree
-    use {
-        'kyazdani42/nvim-tree.lua',
-        requires = {
-            'kyazdani42/nvim-web-devicons', -- optional, for file icon
-        }
-    }
+    use { 'kyazdani42/nvim-tree.lua', requires = { 'kyazdani42/nvim-web-devicons' } }
 
-    use {
-        "chentau/marks.nvim"
-    }
+    use { "chentau/marks.nvim" }
 
 
 end)
@@ -119,24 +102,27 @@ opt.undofile = true -- Save undo history
 opt.confirm = true -- prompt to save before destructive actions
 
 -- Binary
-opt.wildignore = {
-    '*.aux,*.out,*.toc',
-    '*.o,*.obj,*.dll,*.jar,*.pyc,__pycache__,*.rbc,*.class',
-    -- media
-    '*.ai,*.bmp,*.gif,*.ico,*.jpg,*.jpeg,*.png,*.psd,*.webp',
-    '*.avi,*.m4a,*.mp3,*.oga,*.ogg,*.wav,*.webm',
-    '*.eot,*.otf,*.ttf,*.woff',
-    '*.doc,*.pdf',
-    -- archives
-    '*.zip,*.tar.gz,*.tar.bz2,*.rar,*.tar.xz',
-    -- temp/system
-    '*.*~,*~ ',
-    '*.swp,.lock,.DS_Store,._*,tags.lock',
-    -- version control
-    '.git,.svn',
-    -- exe
+ignore_files = {
+    '*.aux', '*.out', '*.toc', '*.o', '*.obj', '*.dll', '*.jar',
+    '*.pyc', '__pycache__', '*.rbc', '*.class',
+
+    '*.ai', '*.bmp', '*.gif', '*.ico', '*.jpg', '*.jpeg', '*.png',
+    '*.psd', '*.webp', '*.avi', '*.m4a', '*.mp3', '*.oga', '*.ogg',
+    '*.wav', '*.webm', '*.eot', '*.otf', '*.ttf', '*.woff', '*.doc',
+    '*.pdf',
+
+    '*.zip', '*.tar.gz', '*.tar.bz2', '*.rar', '*.tar.xz',
+
+    '*.*~', '*~ ', '*.swp', '.lock', '.DS_Store', 'tags.lock',
+
+    '.git',
+    '.idea',
+    'venv',
+    '.svn',
+
     '*.exe'
 }
+opt.wildignore = ignore_files
 
 -- folding
 opt.foldmethod = "marker"
@@ -412,7 +398,7 @@ require'nvim-tree'.setup {
     filters = {
         dotfiles = false,
         custom = {},
-        exclude = {},
+        exclude = ignore_files,
     },
     git = {
         enable = true,
@@ -542,13 +528,90 @@ require'marks'.setup {
 --{{{2 Plugins/telescope
 require('telescope').setup{
     defaults = {
-        file_ignore_patterns = {
-            "node_modules", ".git", "venv", ".idea", "__pycache__"
-        }
+        file_ignore_patterns = ignore_files
     }
 }
 opts = {noremap = true, silent = true}
 vim.api.nvim_set_keymap("n", "<leader><leader>b", "<cmd>Telescope buffers<cr>", opts)
 vim.api.nvim_set_keymap("n", "<leader><leader>f", "<cmd>Telescope find_files<cr>", opts)
 --}}}2
+
+--{{{2 Plugins/neogit
+local neogit = require("neogit")
+
+neogit.setup {
+  disable_signs = false,
+  disable_hint = false,
+  disable_context_highlighting = false,
+  disable_commit_confirmation = false,
+  -- Neogit refreshes its internal state after specific events, which can be expensive depending on the repository size. 
+  -- Disabling `auto_refresh` will make it so you have to manually refresh the status after you open it.
+  auto_refresh = true,
+  disable_builtin_notifications = false,
+  use_magit_keybindings = false,
+  commit_popup = {
+      kind = "split",
+  },
+  -- Change the default way of opening neogit
+  kind = "tab",
+  -- customize displayed signs
+  signs = {
+    -- { CLOSED, OPENED }
+    section = { ">", "v" },
+    item = { ">", "v" },
+    hunk = { "", "" },
+  },
+  integrations = {
+    -- Neogit only provides inline diffs. If you want a more traditional way to look at diffs, you can use `sindrets/diffview.nvim`.
+    -- The diffview integration enables the diff popup, which is a wrapper around `sindrets/diffview.nvim`.
+    --
+    -- Requires you to have `sindrets/diffview.nvim` installed.
+    -- use { 
+    --   'TimUntersberger/neogit', 
+    --   requires = { 
+    --     'nvim-lua/plenary.nvim',
+    --     'sindrets/diffview.nvim' 
+    --   }
+    -- }
+    --
+    diffview = false  
+  },
+  -- Setting any section to `false` will make the section not render at all
+  sections = {
+    untracked = {
+      folded = false
+    },
+    unstaged = {
+      folded = false
+    },
+    staged = {
+      folded = false
+    },
+    stashes = {
+      folded = true
+    },
+    unpulled = {
+      folded = true
+    },
+    unmerged = {
+      folded = false
+    },
+    recent = {
+      folded = true
+    },
+  },
+  -- override/add mappings
+  mappings = {
+    -- modify status buffer mappings
+    status = {
+      -- Adds a mapping with "B" as key that does the "BranchPopup" command
+      ["B"] = "BranchPopup",
+      -- Removes the default mapping of "s"
+      ["s"] = "",
+    }
+  }
+}
+set_keymap("n", "<leader>G", ":Neogit<CR>")
+--}}}2
+
 --}}}
