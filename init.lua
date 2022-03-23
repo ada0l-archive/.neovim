@@ -119,24 +119,25 @@ opt.undofile = true -- Save undo history
 opt.confirm = true -- prompt to save before destructive actions
 
 -- Binary
-opt.wildignore = {
-    '*.aux,*.out,*.toc',
-    '*.o,*.obj,*.dll,*.jar,*.pyc,__pycache__,*.rbc,*.class',
+ignore_files = {
+    '*.aux', '*.out', '*.toc', '*.o', '*.obj', '*.dll', '*.jar',
+    '*.pyc', '__pycache__', '*.rbc', '*.class',
     -- media
-    '*.ai,*.bmp,*.gif,*.ico,*.jpg,*.jpeg,*.png,*.psd,*.webp',
-    '*.avi,*.m4a,*.mp3,*.oga,*.ogg,*.wav,*.webm',
-    '*.eot,*.otf,*.ttf,*.woff',
-    '*.doc,*.pdf',
+    '*.ai', '*.bmp', '*.gif', '*.ico', '*.jpg', '*.jpeg', '*.png',
+    '*.psd', '*.webp', '*.avi', '*.m4a', '*.mp3', '*.oga', '*.ogg',
+    '*.wav', '*.webm', '*.eot', '*.otf', '*.ttf', '*.woff', '*.doc',
+    '*.pdf',
     -- archives
-    '*.zip,*.tar.gz,*.tar.bz2,*.rar,*.tar.xz',
+    '*.zip', '*.tar.gz', '*.tar.bz2', '*.rar', '*.tar.xz',
     -- temp/system
-    '*.*~,*~ ',
-    '*.swp,.lock,.DS_Store,._*,tags.lock',
+    '*.*~', '*~ ', '*.swp', '.lock', '.DS_Store', '._*', 'tags.lock',
     -- version control
-    '.git,.svn',
+    '.git',
+    '.svn',
     -- exe
     '*.exe'
 }
+opt.wildignore = ignore_files
 
 -- folding
 opt.foldmethod = "marker"
@@ -412,7 +413,7 @@ require'nvim-tree'.setup {
     filters = {
         dotfiles = false,
         custom = {},
-        exclude = {},
+        exclude = ignore_files,
     },
     git = {
         enable = true,
@@ -542,9 +543,7 @@ require'marks'.setup {
 --{{{2 Plugins/telescope
 require('telescope').setup{
     defaults = {
-        file_ignore_patterns = {
-            "node_modules", ".git", "venv", ".idea", "__pycache__"
-        }
+        file_ignore_patterns = ignore_files
     }
 }
 opts = {noremap = true, silent = true}
