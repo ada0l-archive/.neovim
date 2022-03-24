@@ -398,8 +398,7 @@ require'nvim-tree'.setup {
     },
     filters = {
         dotfiles = false,
-        custom = {},
-        exclude = ignore_files,
+        custom = ignore_files,
     },
     git = {
         enable = true,
