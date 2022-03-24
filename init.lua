@@ -112,7 +112,6 @@ ignore_files = {
     '*.pdf',
 
     '*.zip', '*.tar.gz', '*.tar.bz2', '*.rar', '*.tar.xz',
-
     '*.*~', '*~ ', '*.swp', '.lock', '.DS_Store', 'tags.lock',
 
     '.git',
@@ -120,6 +119,8 @@ ignore_files = {
     'venv',
     '.svn',
 
+    '.git',
+    '.svn',
     '*.exe'
 }
 opt.wildignore = ignore_files
