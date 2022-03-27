@@ -58,7 +58,8 @@ require('packer').startup(function(use)
     use 'phaazon/hop.nvim'
 
     -- git
-    use { 'lewis6991/gitsigns.nvim', requires = { 'nvim-lua/plenary.nvim' } }
+    use { 'airblade/vim-gitgutter' }
+    --use { 'lewis6991/gitsigns.nvim', requires = { 'nvim-lua/plenary.nvim' } }
     use { 'TimUntersberger/neogit', requires = 'nvim-lua/plenary.nvim' }
     use { 'tpope/vim-fugitive' }
 
@@ -66,6 +67,7 @@ require('packer').startup(function(use)
     use { 'kyazdani42/nvim-tree.lua', requires = { 'kyazdani42/nvim-web-devicons' } }
 
     use { "chentau/marks.nvim" }
+    use { "iamcco/markdown-preview.nvim", run = "cd app && yarn install" }
 
 
 end)
@@ -111,6 +113,8 @@ ignore_files = {
     '*.wav', '*.webm', '*.eot', '*.otf', '*.ttf', '*.woff', '*.doc',
     '*.pdf',
 
+    'obj', 'bin',
+
     '*.zip', '*.tar.gz', '*.tar.bz2', '*.rar', '*.tar.xz',
     '*.*~', '*~ ', '*.swp', '.lock', '.DS_Store', 'tags.lock',
 
@@ -135,7 +139,8 @@ set keymap=russian-jcukenwin
 set iminsert=0
 
 " spell
-"set spell spelllang=en_us,ru
+set spell spelllang=en_us,ru
+inoremap <c-l> <c-^>
 ]]
 
 -- auto reloading file
@@ -227,16 +232,18 @@ require('lualine').setup {
     options = {
         icons_enabled = true,
         theme = 'auto',
-        component_separators = { left = '', right = ''},
-        section_separators = { left = '', right = ''},
-        disabled_filetypes = {},
+        --component_separators = { left = '', right = ''},
+        --section_separators = { left = '', right = ''},
+        component_separators = { left = ' ', right = ' '},
+        section_separators = { left = ' ', right = ' '},
+        disabled_filetypes = { "NvimTree" },
         always_divide_middle = true,
         globalstatus = false,
     },
     sections = {
         lualine_a = {'mode'},
-        lualine_b = {'branch', 'diff', 'diagnostics'},
-        lualine_c = {'filename'},
+        lualine_b = {'branch', 'diff' },
+        lualine_c = {'filename', 'diagnostics'},
         lualine_x = {'encoding', 'fileformat', 'filetype'},
         lualine_y = {'progress'},
         lualine_z = {'location'}
@@ -331,7 +338,7 @@ vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>k', '<cmd>lua vim.lsp.buf.signa
 vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
 vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
 vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>=', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
 
 local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
 
@@ -339,6 +346,9 @@ require('lspconfig')['pyright'].setup {
     capabilities = capabilities
 }
 require('lspconfig')['clangd'].setup {
+    capabilities = capabilities,
+}
+require('lspconfig')['csharp_ls'].setup {
     capabilities = capabilities,
 }
 --}}}2
@@ -441,48 +451,19 @@ require'nvim-tree'.setup {
 set_keymap("n", "<leader>n", ":NvimTreeToggle<CR>")
 --}}}2
 
---{{{2 Plugins/gitsigns
-require('gitsigns').setup {
-  signs = {
-    add          = {hl = 'GitSignsAdd'   , text = '│', numhl='GitSignsAddNr'   , linehl='GitSignsAddLn'},
-    change       = {hl = 'GitSignsChange', text = '│', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
-    delete       = {hl = 'GitSignsDelete', text = '_', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
-    topdelete    = {hl = 'GitSignsDelete', text = '‾', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
-    changedelete = {hl = 'GitSignsChange', text = '~', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
-  },
-  signcolumn = true,  -- Toggle with `:Gitsigns toggle_signs`
-  numhl      = false, -- Toggle with `:Gitsigns toggle_numhl`
-  linehl     = false, -- Toggle with `:Gitsigns toggle_linehl`
-  word_diff  = false, -- Toggle with `:Gitsigns toggle_word_diff`
-  watch_gitdir = {
-    interval = 1000,
-    follow_files = true
-  },
-  attach_to_untracked = true,
-  current_line_blame = false, -- Toggle with `:Gitsigns toggle_current_line_blame`
-  current_line_blame_opts = {
-    virt_text = true,
-    virt_text_pos = 'eol', -- 'eol' | 'overlay' | 'right_align'
-    delay = 1000,
-    ignore_whitespace = false,
-  },
-  current_line_blame_formatter = '<author>, <author_time:%Y-%m-%d> - <summary>',
-  sign_priority = 6,
-  update_debounce = 100,
-  status_formatter = nil, -- Use default
-  max_file_length = 40000,
-  preview_config = {
-    -- Options passed to nvim_open_win
-    border = 'single',
-    style = 'minimal',
-    relative = 'cursor',
-    row = 0,
-    col = 1
-  },
-  yadm = {
-    enable = false
-  },
-}
+--{{{2 Plugins/vim-gitgutter
+cmd[[
+let g:gitgutter_sign_added = '+'
+let g:gitgutter_sign_modified = '>'
+let g:gitgutter_sign_removed = '-'
+let g:gitgutter_sign_removed_first_line = '^'
+let g:gitgutter_sign_modified_removed = '<'
+
+nnoremap <leader>ggs <Plug>(GitGutterStageHunk)
+nnoremap <leader>ggu <Plug>(GitGutterUndoHunk)
+nnoremap <leader>ggn <Plug>(GitGutterNextHunk)
+nnoremap <leader>ggp <Plug>(GitGutterPrevHunk)
+]]
 --}}}2
 
 --{{{2 Plugins/Comment.nvim
@@ -492,7 +473,7 @@ require('Comment').setup()
 --}}}2
 
 --{{{2 Plugins/marks.nvim
-require'marks'.setup {
+--require'marks'.setup {
   -- whether to map keybinds or not. default true
   --default_mappings = true,
   -- which builtin marks to show. default {}
@@ -522,7 +503,7 @@ require'marks'.setup {
     --virt_text = "hello world"
   --},
   --mappings = {}
-}
+--}
 --}}}2
 
 --{{{2 Plugins/telescope
