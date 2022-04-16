@@ -9,7 +9,6 @@ local exec = vim.api.nvim_exec  -- execute Vimscript
 local g = vim.g                 -- global variables
 local opt = vim.opt             -- global/buffer/windows-scoped options
 --}}}
-
 --{{{ Packer
 local install_path = vim.fn.stdpath 'data' .. '/site/pack/packer/start/packer.nvim'
 
@@ -24,7 +23,6 @@ autocmd BufWritePost init.lua PackerCompile
 augroup end
 ]]
 --}}}
-
 --{{{ Plugins
 require('packer').startup(function(use)
 
@@ -43,6 +41,14 @@ require('packer').startup(function(use)
     use { 'nvim-telescope/telescope.nvim', requires = { {'nvim-lua/plenary.nvim'} } }
     -- "gc" to comment visual regions/lines
 
+    --
+    use {
+        'nvim-treesitter/nvim-treesitter',
+        run = ':TSUpdate'
+    }
+
+    use 'startup-nvim/startup.nvim'
+
     -- comment
     use 'numToStr/Comment.nvim'
 
@@ -53,6 +59,8 @@ require('packer').startup(function(use)
     use 'ellisonleao/gruvbox.nvim'
     use 'rockerBOO/boo-colorscheme-nvim'
     use 'tanvirtin/monokai.nvim'
+    use 'shaunsingh/nord.nvim'
+    use 'marko-cerovac/material.nvim'
 
     -- fast moving
     use 'phaazon/hop.nvim'
@@ -64,15 +72,21 @@ require('packer').startup(function(use)
     use { 'tpope/vim-fugitive' }
 
     -- tree
-    use { 'kyazdani42/nvim-tree.lua', requires = { 'kyazdani42/nvim-web-devicons' } }
+    use {
+        'kyazdani42/nvim-tree.lua',
+        tag='1.6.0',
+        requires = { 'kyazdani42/nvim-web-devicons' }
+    }
 
     use { "chentau/marks.nvim" }
     use { "iamcco/markdown-preview.nvim", run = "cd app && yarn install" }
 
+    -- python
+    use { "Vimjas/vim-python-pep8-indent" }
+
 
 end)
 --}}}
-
 --{{{ General
 -- Encoding
 opt.encoding = "utf-8"
@@ -125,7 +139,8 @@ ignore_files = {
 
     '.git',
     '.svn',
-    '*.exe'
+    '*.exe',
+    'node_modules/*'
 }
 opt.wildignore = ignore_files
 
@@ -146,10 +161,8 @@ inoremap <c-l> <c-^>
 -- auto reloading file
 opt.autoread = true
 --}}}
-
 --{{{ Auto commands
 --}}}
-
 --{{{ Visual
 opt.so=999
 cmd[[ syntax on ]]
@@ -159,9 +172,12 @@ opt.relativenumber = true
 opt.wrap = false
 opt.signcolumn = "yes:1"
 cmd[[ set colorcolumn=70 ]]
+cmd[[ au FileType startup setlocal colorcolumn=0 ]]
 opt.termguicolors = true
 vim.o.background = "dark"
-cmd([[colorscheme gruvbox]])
+vim.g.material_style = "darker"
+cmd([[colorscheme material]])
+cmd([[set guicursor=]])
 
 -- show invisible characters
 opt.list = true
@@ -176,7 +192,6 @@ opt.listchars = {
 -- disable :intro startup screen
 opt.shortmess:append 'I'
 --}}}
-
 --{{{ Mapping functions
 function set_keymap(mode, from, to)
     local opts = {noremap = true, silent = false}
@@ -187,7 +202,6 @@ function nvim_set_keymap(mode, from, to, opts)
     vim.api.nvim_set_keymap(mode, from, to, opts)
 end
 --}}}
-
 --{{{ Mapping
 g.mapleader = "\\"
 
@@ -224,7 +238,6 @@ set_keymap("v", "J", ":m '>+1<CR>gv=gv")
 set_keymap("v", "K", ":m '<-2<CR>gv=gv")
 
 --}}}
-
 --{{{ Plugins Configuration
 
 --{{{2 Plugins/LuaLine
@@ -232,8 +245,6 @@ require('lualine').setup {
     options = {
         icons_enabled = true,
         theme = 'auto',
-        --component_separators = { left = '', right = ''},
-        --section_separators = { left = '', right = ''},
         component_separators = { left = ' ', right = ' '},
         section_separators = { left = ' ', right = ' '},
         disabled_filetypes = { "NvimTree" },
@@ -260,13 +271,11 @@ require('lualine').setup {
     extensions = {},
 }
 ---}}}2
-
 --{{{2  Plugins/hop
 require'hop'.setup { keys = 'etovxqpdygfblzhckisuran', jump_on_sole_occurrence = false }
 vim.api.nvim_set_keymap('n', 'f', "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.AFTER_CURSOR, current_line_only = false })<cr>", {})
 vim.api.nvim_set_keymap('n', 'F', "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.BEFORE_CURSOR, current_line_only = false })<cr>", {})
 --}}}2
-
 --{{{2 Plugins/cmp
 local cmp = require'cmp'
 cmp.setup({
@@ -318,7 +327,6 @@ cmp.setup.cmdline(':', {
     })
 })
 --}}}2
-
 --{{{2 Plugins/lsp-config
 
 local opts = { noremap=true, silent=false }
@@ -326,33 +334,89 @@ vim.api.nvim_set_keymap('n', '<leader>dp', '<cmd>lua vim.diagnostic.goto_prev()<
 vim.api.nvim_set_keymap('n', '<leader>dn', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
 vim.api.nvim_set_keymap('n', '<leader>dl', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
 
-vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
-vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
-vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>k', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
---vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
---vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
---vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
---vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
-vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>=', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+local on_attach = function(client, bufnr)
+    -- Enable completion triggered by <c-x><c-o>
+    vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+    -- Mappings.
+    -- See `:help vim.lsp.*` for documentation on any of the below functions
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>=', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+end
 
 local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
-
-require('lspconfig')['pyright'].setup {
-    capabilities = capabilities
+require('lspconfig').pylsp.setup {
+    cmd = {"pyls"},
+    filetypes = {"python"},
+    settings = {
+        pyls = {
+            configurationSources = {"flake8"},
+            plugins = {
+                -- jedi_completion = {enabled = true},
+                -- jedi_hover = {enabled = true},
+                -- jedi_references = {enabled = true},
+                -- jedi_signature_help = {enabled = true},
+                -- jedi_symbols = {enabled = true, all_scopes = true},
+                -- pycodestyle = {enabled = false},
+                flake8 = {
+                    enabled = true,
+                    ignore = {},
+                    maxLineLength = 89
+                },
+                mypy = {enabled = false},
+                isort = {enabled = true},
+                yapf = {enabled = true},
+                pylint = {enabled = false},
+                pydocstyle = {enabled = false},
+                mccabe = {enabled = false},
+                preload = {enabled = false},
+                rope_completion = {enabled = false}
+            -- configurationSources = {"flake8"},
+            -- plugins = {
+            --     -- jedi_completion = {enabled = true},
+            --     -- jedi_hover = {enabled = true},
+            --     -- jedi_references = {enabled = true},
+            --     -- jedi_signature_help = {enabled = true},
+            --     -- jedi_symbols = {enabled = true, all_scopes = true},
+            --     pycodestyle = {enabled = false},
+            --     flake8 = {
+            --         enabled = true,
+            --         ignore = {},
+            --         maxLineLength = 89
+            --     },
+            --     mypy = {enabled = false},
+            --     isort = {enabled = true},
+            --     yapf = {enabled = true},
+            --     pylint = {enabled = false},
+            --     pydocstyle = {enabled = false},
+            --     mccabe = {enabled = false},
+            --     preload = {enabled = false},
+            --     rope_completion = {enabled = true}
+            }
+        }
+    },
+    on_attach = on_attach
 }
 require('lspconfig')['clangd'].setup {
     capabilities = capabilities,
+    on_attach = on_attach
 }
 require('lspconfig')['csharp_ls'].setup {
     capabilities = capabilities,
+    on_attach = on_attach
 }
 --}}}2
-
 --{{{2 Plugins/tree
 require'nvim-tree'.setup {
     auto_close = false,
@@ -450,7 +514,6 @@ require'nvim-tree'.setup {
 
 set_keymap("n", "<leader>n", ":NvimTreeToggle<CR>")
 --}}}2
-
 --{{{2 Plugins/vim-gitgutter
 cmd[[
 let g:gitgutter_sign_added = '+'
@@ -465,47 +528,44 @@ nnoremap <leader>ggn <Plug>(GitGutterNextHunk)
 nnoremap <leader>ggp <Plug>(GitGutterPrevHunk)
 ]]
 --}}}2
-
 --{{{2 Plugins/Comment.nvim
 --
 -- use gc to comment/uncomment
 require('Comment').setup()
 --}}}2
-
 --{{{2 Plugins/marks.nvim
 --require'marks'.setup {
-  -- whether to map keybinds or not. default true
-  --default_mappings = true,
-  -- which builtin marks to show. default {}
-  --builtin_marks = { ".", "<", ">", "^" },
-  -- whether movements cycle back to the beginning/end of buffer. default true
-  --cyclic = true,
-  -- whether the shada file is updated after modifying uppercase marks. default false
-  --force_write_shada = false,
-  -- how often (in ms) to redraw signs/recompute mark positions. 
-  -- higher values will have better performance but may cause visual lag, 
-  -- while lower values may cause performance penalties. default 150.
-  --refresh_interval = 250,
-  -- sign priorities for each type of mark - builtin marks, uppercase marks, lowercase
-  -- marks, and bookmarks.
-  -- can be either a table with all/none of the keys, or a single number, in which case
-  -- the priority applies to all marks.
-  -- default 10.
-  --sign_priority = { lower=10, upper=15, builtin=8, bookmark=20 },
-  -- disables mark tracking for specific filetypes. default {}
-  --excluded_filetypes = {},
-  -- marks.nvim allows you to configure up to 10 bookmark groups, each with its own
-  -- sign/virttext. Bookmarks can be used to group together positions and quickly move
-  -- across multiple buffers. default sign is '!@#$%^&*()' (from 0 to 9), and
-  -- default virt_text is "".
-  --bookmark_0 = {
-    --sign = "⚑",
-    --virt_text = "hello world"
-  --},
-  --mappings = {}
+-- whether to map keybinds or not. default true
+--default_mappings = true,
+-- which builtin marks to show. default {}
+--builtin_marks = { ".", "<", ">", "^" },
+-- whether movements cycle back to the beginning/end of buffer. default true
+--cyclic = true,
+-- whether the shada file is updated after modifying uppercase marks. default false
+--force_write_shada = false,
+-- how often (in ms) to redraw signs/recompute mark positions. 
+-- higher values will have better performance but may cause visual lag, 
+-- while lower values may cause performance penalties. default 150.
+--refresh_interval = 250,
+-- sign priorities for each type of mark - builtin marks, uppercase marks, lowercase
+-- marks, and bookmarks.
+-- can be either a table with all/none of the keys, or a single number, in which case
+-- the priority applies to all marks.
+-- default 10.
+--sign_priority = { lower=10, upper=15, builtin=8, bookmark=20 },
+-- disables mark tracking for specific filetypes. default {}
+--excluded_filetypes = {},
+-- marks.nvim allows you to configure up to 10 bookmark groups, each with its own
+-- sign/virttext. Bookmarks can be used to group together positions and quickly move
+-- across multiple buffers. default sign is '!@#$%^&*()' (from 0 to 9), and
+-- default virt_text is "".
+--bookmark_0 = {
+--sign = "⚑",
+--virt_text = "hello world"
+--},
+--mappings = {}
 --}
 --}}}2
-
 --{{{2 Plugins/telescope
 require('telescope').setup{
     defaults = {
@@ -516,83 +576,247 @@ opts = {noremap = true, silent = true}
 vim.api.nvim_set_keymap("n", "<leader><leader>b", "<cmd>Telescope buffers<cr>", opts)
 vim.api.nvim_set_keymap("n", "<leader><leader>f", "<cmd>Telescope find_files<cr>", opts)
 --}}}2
-
 --{{{2 Plugins/neogit
 local neogit = require("neogit")
 
 neogit.setup {
-  disable_signs = false,
-  disable_hint = false,
-  disable_context_highlighting = false,
-  disable_commit_confirmation = false,
-  -- Neogit refreshes its internal state after specific events, which can be expensive depending on the repository size. 
-  -- Disabling `auto_refresh` will make it so you have to manually refresh the status after you open it.
-  auto_refresh = true,
-  disable_builtin_notifications = false,
-  use_magit_keybindings = false,
-  commit_popup = {
-      kind = "split",
-  },
-  -- Change the default way of opening neogit
-  kind = "tab",
-  -- customize displayed signs
-  signs = {
-    -- { CLOSED, OPENED }
-    section = { ">", "v" },
-    item = { ">", "v" },
-    hunk = { "", "" },
-  },
-  integrations = {
-    -- Neogit only provides inline diffs. If you want a more traditional way to look at diffs, you can use `sindrets/diffview.nvim`.
-    -- The diffview integration enables the diff popup, which is a wrapper around `sindrets/diffview.nvim`.
-    --
-    -- Requires you to have `sindrets/diffview.nvim` installed.
-    -- use { 
-    --   'TimUntersberger/neogit', 
-    --   requires = { 
-    --     'nvim-lua/plenary.nvim',
-    --     'sindrets/diffview.nvim' 
-    --   }
-    -- }
-    --
-    diffview = false  
-  },
-  -- Setting any section to `false` will make the section not render at all
-  sections = {
-    untracked = {
-      folded = false
+    disable_signs = false,
+    disable_hint = false,
+    disable_context_highlighting = false,
+    disable_commit_confirmation = false,
+    -- Neogit refreshes its internal state after specific events, which can be expensive depending on the repository size. 
+    -- Disabling `auto_refresh` will make it so you have to manually refresh the status after you open it.
+    auto_refresh = true,
+    disable_builtin_notifications = false,
+    use_magit_keybindings = false,
+    commit_popup = {
+        kind = "split",
     },
-    unstaged = {
-      folded = false
+    -- Change the default way of opening neogit
+    kind = "tab",
+    -- customize displayed signs
+    signs = {
+        -- { CLOSED, OPENED }
+        section = { ">", "v" },
+        item = { ">", "v" },
+        hunk = { "", "" },
     },
-    staged = {
-      folded = false
+    integrations = {
+        -- Neogit only provides inline diffs. If you want a more traditional way to look at diffs, you can use `sindrets/diffview.nvim`.
+        -- The diffview integration enables the diff popup, which is a wrapper around `sindrets/diffview.nvim`.
+        --
+        -- Requires you to have `sindrets/diffview.nvim` installed.
+        -- use { 
+        --   'TimUntersberger/neogit', 
+        --   requires = { 
+        --     'nvim-lua/plenary.nvim',
+        --     'sindrets/diffview.nvim' 
+        --   }
+        -- }
+        --
+        diffview = false  
     },
-    stashes = {
-      folded = true
+    -- Setting any section to `false` will make the section not render at all
+    sections = {
+        untracked = {
+            folded = false
+        },
+        unstaged = {
+            folded = false
+        },
+        staged = {
+            folded = false
+        },
+        stashes = {
+            folded = true
+        },
+        unpulled = {
+            folded = true
+        },
+        unmerged = {
+            folded = false
+        },
+        recent = {
+            folded = true
+        },
     },
-    unpulled = {
-      folded = true
-    },
-    unmerged = {
-      folded = false
-    },
-    recent = {
-      folded = true
-    },
-  },
-  -- override/add mappings
-  mappings = {
-    -- modify status buffer mappings
-    status = {
-      -- Adds a mapping with "B" as key that does the "BranchPopup" command
-      ["B"] = "BranchPopup",
-      -- Removes the default mapping of "s"
-      ["s"] = "",
+    -- override/add mappings
+    mappings = {
+        -- modify status buffer mappings
+        status = {
+            -- Adds a mapping with "B" as key that does the "BranchPopup" command
+            ["B"] = "BranchPopup",
+            -- Removes the default mapping of "s"
+            ["s"] = "",
+        }
     }
-  }
 }
-set_keymap("n", "<leader>G", ":Neogit<CR>")
+set_keymap("n", "<leader>ggg", ":Neogit<CR>")
 --}}}2
+--{{{2 Plugins/nvim-treesitter
+require'nvim-treesitter.configs'.setup {
+    highlight = {
+        enable = true,
+        -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+        -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+        -- Using this option may slow down your editor, and you may see some duplicate highlights.
+        -- Instead of true it can also be a list of languages
+        additional_vim_regex_highlighting = false,
+    },
+}
+--}}}2
+--{{{2 Plugins/material.nvim
+require('material').setup({
+    contrast = {
+        sidebars = false, -- Enable contrast for sidebar-like windows ( for example Nvim-Tree )
+        floating_windows = false, -- Enable contrast for floating windows
+        line_numbers = false, -- Enable contrast background for line numbers
+        sign_column = false, -- Enable contrast background for the sign column
+        cursor_line = false, -- Enable darker background for the cursor line
+        non_current_windows = false, -- Enable darker background for non-current windows
+        popup_menu = false, -- Enable lighter background for the popup menu
+    },
 
+    italics = {
+        comments = false, -- Enable italic comments
+        keywords = false, -- Enable italic keywords
+        functions = false, -- Enable italic functions
+        strings = false, -- Enable italic strings
+        variables = false -- Enable italic variables
+    },
+
+    contrast_filetypes = { -- Specify which filetypes get the contrasted (darker) background
+        "terminal", -- Darker terminal background
+        "packer", -- Darker packer background
+        "qf" -- Darker qf list background
+    },
+
+    high_visibility = {
+        lighter = false, -- Enable higher contrast text for lighter style
+        darker = false -- Enable higher contrast text for darker style
+    },
+
+    disable = {
+        borders = false, -- Disable borders between verticaly split windows
+        background = false, -- Prevent the theme from setting the background (NeoVim then uses your teminal background)
+        term_colors = false, -- Prevent the theme from setting terminal colors
+        eob_lines = false -- Hide the end-of-buffer lines
+    },
+
+    lualine_style = "default", -- Lualine style ( can be 'stealth' or 'default' )
+
+    async_loading = true, -- Load parts of the theme asyncronously for faster startup (turned on by default)
+
+    custom_highlights = {} -- Overwrite highlights with your own
+})
+--}}}
+--{{{2 Plugins/startup
+require"startup".setup({
+    -- every line should be same width without escaped \
+    header = {
+        type = "text",
+        oldfiles_directory = false,
+        align = "center",
+        fold_section = false,
+        title = "Header",
+        margin = 10,
+        content = {
+            -- " ███╗   ██╗ ███████╗ ██████╗  ██╗   ██╗ ██╗ ███╗   ███╗",
+            -- " ████╗  ██║ ██╔════╝██╔═══██╗ ██║   ██║ ██║ ████╗ ████║",
+            -- " ██╔██╗ ██║ █████╗  ██║   ██║ ██║   ██║ ██║ ██╔████╔██║",
+            -- " ██║╚██╗██║ ██╔══╝  ██║   ██║ ╚██╗ ██╔╝ ██║ ██║╚██╔╝██║",
+            -- " ██║ ╚████║ ███████╗╚██████╔╝  ╚████╔╝  ██║ ██║ ╚═╝ ██║",
+            -- " ╚═╝  ╚═══╝ ╚══════╝ ╚═════╝    ╚═══╝   ╚═╝ ╚═╝     ╚═╝",
+-- "░░░░█▐▄▒▒▒▌▌▒▒▌░▌▒▐▐▐▒▒▐▒▒▌▒▀▄▀▄░",
+-- "░░░█▐▒▒▀▀▌░▀▀▀░░▀▀▀░░▀▀▄▌▌▐▒▒▒▌▐░",
+-- "░░▐▒▒▀▀▄▐░▀▀▄▄░░░░░░░░░░░▐▒▌▒▒▐░▌",
+-- "░░▐▒▌▒▒▒▌░▄▄▄▄█▄░░░░░░░▄▄▄▐▐▄▄▀░░",
+-- "░░▌▐▒▒▒▐░░░░░░░░░░░░░▀█▄░░░░▌▌░░░",
+-- "▄▀▒▒▌▒▒▐░░░░░░░▄░░▄░░░░░▀▀░░▌▌░░░",
+-- "▄▄▀▒▐▒▒▐░░░░░░░▐▀▀▀▄▄▀░░░░░░▌▌░░░",
+-- "░░░░█▌▒▒▌░░░░░▐▒▒▒▒▒▌░░░░░░▐▐▒▀▀▄",
+-- "░░▄▀▒▒▒▒▐░░░░░▐▒▒▒▒▐░░░░░▄█▄▒▐▒▒▒",
+-- "▄▀▒▒▒▒▒▄██▀▄▄░░▀▄▄▀░░▄▄▀█▄░█▀▒▒▒▒",
+"⣼⣴⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣠⣤⣶⣶⣿⣿⣿⣿⣶⣶⣤⣄⡀⠀⠀⠀⠀⠀⢀⣠⣦⡀",
+"⣿⣿⣿⠒⠀⠀⠀⠀⠀⡀⠀⠀⠀⠀⢀⣴⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⣄⠀⠀⣀⣴⣸⡏⠀",
+"⠻⠛⠁⠀⠀⠐⠿⠂⢀⣿⣶⣤⣤⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⡖⣿⣿⣿⡟⠂",
+"⠀⢀⣤⣤⠀⠀⠀⣠⣾⣿⡿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣎⢻⠛⠁⠀",
+"⠀⠀⠙⠋⠀⢠⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢿⣿⣿⣿⣿⠏⢿⣿⣿⣿⢿⣿⣿⣿⣿⣿⣆⠀⠀⠀",
+"⠀⠀⠀⠀⠀⠹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠁⢸⣿⣿⣿⡟⠀⠈⣿⣿⡟⢸⣿⣿⣿⣿⣿⣿⡄⠀⠀",
+"⠀⠀⠀⠰⣾⡦⠙⠛⢿⠻⣿⣿⣿⣿⣿⣿⣿⠏⠀⠀⣸⣿⣿⡟⠀⠀⡀⢻⣿⠁⠸⣿⣿⣿⣿⣿⣿⣷⠀⠀",
+"⠀⠀⠀⠀⠀⠀⠀⠀⢸⢀⣿⣿⣿⣿⣿⣿⠓⢶⢄⠀⣿⣿⡟⠀⢖⠕⠊⢹⠳⣤⡀⣿⣿⣿⣿⣿⣿⣿⡀⠀",
+"⠀⠀⠀⠀⠀⠀⠀⠀⠈⠘⣿⣿⣿⣿⡿⠁⠀⠈⢧⢰⣿⠏⠀⢠⠃⠀⠀⠀⠀⠈⢒⣿⣿⣿⣻⣿⣿⣿⣧⠀",
+"⠀⠀⣶⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⡟⠀⠀⢰⠀⢘⡿⠃⠀⠀⠘⠀⡄⠀⠀⠀⠀⣸⣿⣿⡏⣿⣿⣿⣿⣿⣇",
+"⠀⠒⣿⠒⣶⠀⠀⠀⠀⠀⢻⣿⣿⡷⣄⠀⢸⠠⣊⠁⠀⠀⠀⢡⡀⡇⠀⠀⣀⣾⣿⣿⣿⢿⣾⣿⣿⣿⣿⣿",
+"⠀⠀⣿⠀⣿⠀⠀⠀⠀⠀⠘⣿⣿⣿⡉⠉⠛⠋⠀⠀⠀⠀⠀⠀⠈⠉⠉⠉⠓⠊⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿",
+"⠀⠀⠀⠀⠠⠴⡖⠂⠀⠀⢰⣿⣿⣿⣧⡀⠀⠀⠀⠀⠑⠀⠀⠀⠀⠀⠀⠀⢀⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣎",
+"⠀⠀⠀⠀⠉⢩⡏⠉⠀⣠⣿⣿⣿⣿⣿⣿⣦⣄⡀⠀⠐⠒⠒⠂⠀⢀⣠⢶⡛⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
+"⠀⠀⠀⠀⠀⠀⠀⢀⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣦⠤⣤⣤⡶⠛⠁⢈⢎⣾⢿⣿⣿⣿⣿⣿⣿⣿⣿⣏",
+"⠀⠀⠀⠀⠀⡀⠚⠋⠁⣾⣿⣿⣿⣿⣿⣿⣿⠿⠛⡝⠁⠀⡟⠉⠀⢀⡴⠁⡼⠃⡜⠈⠙⠻⢿⣿⣿⣿⣿⣿",
+"⠀⠀⣀⡀⢾⣿⡆⠀⠀⣿⣿⣿⣿⡿⠛⢉⠀⠀⢠⠇⢃⠰⠀⢠⣖⠁⢀⠜⠀⡰⠁⠀⠀⠀⡠⠊⠙⣻⢿⣿",
+"⠀⠘⠿⠋⠀⠁⠀⠀⠀⣿⣿⣼⠁⠀⠀⠀⢣⠄⢸⢀⣿⣦⠀⢸⡣⣷⣅⠀⠰⠁⠀⢀⠠⠊⠀⠀⡔⠀⠀⠹",
+"⠀⠀⠀⠀⠀⠀⠀⠀⠀⢻⣇⠃⡄⠀⠀⠀⠀⢫⠜⠁⢹⣏⣤⣟⣼⠏⠈⢆⠃⣀⡔⠁⠀⠀⠀⡜⠀⠀⠀⠀",
+"⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⡏⠀⠡⠀⠀⠀⠀⠀⢫⢄⢀⣿⣿⣿⠁⠀⢀⡤⡪⠋⠀⠀⠀⠀⢠⠁⠀⠀⠀⠀",
+"⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠘⠕⣆⠂⣿⣿⡿⠔⢊⠕⠉⠀⠀⠀⠀⠀⠀⡆⠀⠀⠀⠀⠀",
+"⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢷⡂⣼⣿⠡⠊⠁⠀⠀⠀⠀⠀⠀⠀⣾⠀⠀⠀⠀⠀⠀",
+"⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⣵⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠗⠀⠀⠀⠀⠀⠀",
+        },
+        highlight = "Statement",
+        default_color = "",
+        oldfiles_amount = 0,
+    },
+    -- name which will be displayed and command
+    body = {
+        type = "mapping",
+        oldfiles_directory = false,
+        align = "center",
+        fold_section = false,
+        title = "Basic Commands",
+        margin = 5,
+        content = {
+            -- { " Find File", "Telescope find_files", "<leader>ff" },
+            -- { " Find Word", "Telescope live_grep", "<leader>lg" },
+            -- { " Recent Files", "Telescope oldfiles", "<leader>of" },
+            -- { " File Browser", "Telescope file_browser", "<leader>fb" },
+            -- { " Colorschemes", "Telescope colorscheme", "<leader>cs" },
+            -- { " New File", "lua require'startup'.new_file()", "<leader>nf" },
+        },
+        highlight = "String",
+        default_color = "",
+        oldfiles_amount = 0,
+    },
+    footer = {
+        type = "text",
+        oldfiles_directory = false,
+        align = "center",
+        fold_section = false,
+        title = "Footer",
+        margin = 5,
+        content = { "" },
+        highlight = "Number",
+        default_color = "",
+        oldfiles_amount = 0,
+    },
+
+    options = {
+        mapping_keys = true,
+        cursor_column = 0.5,
+        empty_lines_between_mappings = true,
+        disable_statuslines = true,
+        paddings = { 1, 3, 3, 0 },
+    },
+    mappings = {
+        execute_command = "<CR>",
+        open_file = "o",
+        open_file_split = "<c-o>",
+        open_section = "<TAB>",
+        open_help = "?",
+    },
+    colors = {
+        background = "#1f2227",
+        folded_section = "#56b6c2",
+    },
+    parts = { "header" },
+})
+--}}}2
 --}}}
