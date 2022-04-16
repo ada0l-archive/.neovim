@@ -101,7 +101,9 @@ opt.expandtab = true
 opt.smartindent = true
 
 -- Disable bell
+opt.errorbells = false
 opt.visualbell = true
+opt.timeoutlen = 500
 
 -- Search
 opt.hlsearch = true
@@ -109,6 +111,8 @@ opt.incsearch = true
 opt.ignorecase = true
 opt.smartcase = true
 opt.showmatch = true
+opt.magic = true
+opt.lazyredraw = false
 
 -- Backups
 opt.swapfile = false
@@ -153,7 +157,7 @@ set fileformats=unix,dos,mac
 set keymap=russian-jcukenwin
 set iminsert=0
 
-" spell
+"spell
 set spell spelllang=en_us,ru
 inoremap <c-l> <c-^>
 ]]
@@ -165,17 +169,26 @@ opt.autoread = true
 --}}}
 --{{{ Visual
 opt.so=999
+
+opt.ttyfast = true
+
 cmd[[ syntax on ]]
+
 opt.ruler = true
+
 opt.number = true
 opt.relativenumber = true
+
 opt.wrap = false
+
 opt.signcolumn = "yes:1"
 cmd[[ set colorcolumn=70 ]]
 cmd[[ au FileType startup setlocal colorcolumn=0 ]]
+
 opt.termguicolors = true
 vim.o.background = "dark"
 vim.g.material_style = "darker"
+
 cmd([[colorscheme material]])
 cmd([[set guicursor=]])
 
@@ -215,14 +228,13 @@ set_keymap("n", "<leader>vs", ":source ~/AppData/Local/nvim/init.lua<CR>")
 set_keymap("n", "n", "nzzzv")
 set_keymap("n", "N", "Nzzzv")
 
+set_keymap("i", "jk", "<Esc>")
+
 -- esc in terminal mode
 set_keymap("t", "<Esc>", "<C-\\><C-n>")
 
 -- disable highlight
 set_keymap("n", "<leader><cr>", ":noh<cr>")
-
--- buffers
-set_keymap("n", "<leader>b", ":buffers<cr>:b ")
 
 -- cd
 set_keymap("n", "<leader>cd", ":cd %:p:h<cr>:pwd<cr>")
@@ -239,7 +251,6 @@ set_keymap("v", "K", ":m '<-2<CR>gv=gv")
 
 --}}}
 --{{{ Plugins Configuration
-
 --{{{2 Plugins/LuaLine
 require('lualine').setup {
     options = {
@@ -330,9 +341,9 @@ cmp.setup.cmdline(':', {
 --{{{2 Plugins/lsp-config
 
 local opts = { noremap=true, silent=false }
-vim.api.nvim_set_keymap('n', '<leader>dp', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
-vim.api.nvim_set_keymap('n', '<leader>dn', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
-vim.api.nvim_set_keymap('n', '<leader>dl', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
+vim.api.nvim_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
+vim.api.nvim_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
+vim.api.nvim_set_keymap('n', '<space>d', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
 
 local on_attach = function(client, bufnr)
     -- Enable completion triggered by <c-x><c-o>
@@ -345,14 +356,14 @@ local on_attach = function(client, bufnr)
     vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
     vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
     vim.api.nvim_buf_set_keymap(bufnr, 'n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
     vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-    vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>=', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
 end
 
 local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
@@ -513,6 +524,7 @@ require'nvim-tree'.setup {
 }
 
 set_keymap("n", "<leader>n", ":NvimTreeToggle<CR>")
+set_keymap("n", "<leader>N", ":NvimTreeFindFile<CR>")
 --}}}2
 --{{{2 Plugins/vim-gitgutter
 cmd[[
@@ -522,49 +534,17 @@ let g:gitgutter_sign_removed = '-'
 let g:gitgutter_sign_removed_first_line = '^'
 let g:gitgutter_sign_modified_removed = '<'
 
-nnoremap <leader>ggs <Plug>(GitGutterStageHunk)
-nnoremap <leader>ggu <Plug>(GitGutterUndoHunk)
-nnoremap <leader>ggn <Plug>(GitGutterNextHunk)
-nnoremap <leader>ggp <Plug>(GitGutterPrevHunk)
+nmap <leader>hp <Plug>(GitGutterPreviewHunk)
+nmap <leader>hs <Plug>(GitGutterStageHunk)
+nmap <leader>hu <Plug>(GitGutterUndoHunk)
+nmap [h <Plug>(GitGutterPrevHunk)
+nmap ]h <Plug>(GitGutterNextHunk)
 ]]
 --}}}2
 --{{{2 Plugins/Comment.nvim
 --
 -- use gc to comment/uncomment
 require('Comment').setup()
---}}}2
---{{{2 Plugins/marks.nvim
---require'marks'.setup {
--- whether to map keybinds or not. default true
---default_mappings = true,
--- which builtin marks to show. default {}
---builtin_marks = { ".", "<", ">", "^" },
--- whether movements cycle back to the beginning/end of buffer. default true
---cyclic = true,
--- whether the shada file is updated after modifying uppercase marks. default false
---force_write_shada = false,
--- how often (in ms) to redraw signs/recompute mark positions. 
--- higher values will have better performance but may cause visual lag, 
--- while lower values may cause performance penalties. default 150.
---refresh_interval = 250,
--- sign priorities for each type of mark - builtin marks, uppercase marks, lowercase
--- marks, and bookmarks.
--- can be either a table with all/none of the keys, or a single number, in which case
--- the priority applies to all marks.
--- default 10.
---sign_priority = { lower=10, upper=15, builtin=8, bookmark=20 },
--- disables mark tracking for specific filetypes. default {}
---excluded_filetypes = {},
--- marks.nvim allows you to configure up to 10 bookmark groups, each with its own
--- sign/virttext. Bookmarks can be used to group together positions and quickly move
--- across multiple buffers. default sign is '!@#$%^&*()' (from 0 to 9), and
--- default virt_text is "".
---bookmark_0 = {
---sign = "⚑",
---virt_text = "hello world"
---},
---mappings = {}
---}
 --}}}2
 --{{{2 Plugins/telescope
 require('telescope').setup{
@@ -573,8 +553,8 @@ require('telescope').setup{
     }
 }
 opts = {noremap = true, silent = true}
-vim.api.nvim_set_keymap("n", "<leader><leader>b", "<cmd>Telescope buffers<cr>", opts)
-vim.api.nvim_set_keymap("n", "<leader><leader>f", "<cmd>Telescope find_files<cr>", opts)
+vim.api.nvim_set_keymap("n", "<leader>b", "<cmd>Telescope buffers<cr>", opts)
+vim.api.nvim_set_keymap("n", "<leader>f", "<cmd>Telescope find_files<cr>", opts)
 --}}}2
 --{{{2 Plugins/neogit
 local neogit = require("neogit")
@@ -593,7 +573,7 @@ neogit.setup {
         kind = "split",
     },
     -- Change the default way of opening neogit
-    kind = "tab",
+    kind = "split",
     -- customize displayed signs
     signs = {
         -- { CLOSED, OPENED }
@@ -651,7 +631,7 @@ neogit.setup {
         }
     }
 }
-set_keymap("n", "<leader>ggg", ":Neogit<CR>")
+set_keymap("n", "<leader>g", ":Neogit<CR>")
 --}}}2
 --{{{2 Plugins/nvim-treesitter
 require'nvim-treesitter.configs'.setup {
