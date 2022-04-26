@@ -47,7 +47,7 @@ require('packer').startup(function(use)
         run = ':TSUpdate'
     }
 
-    use 'startup-nvim/startup.nvim'
+    -- use 'startup-nvim/startup.nvim'
 
     -- comment
     use 'numToStr/Comment.nvim'
@@ -158,7 +158,7 @@ set keymap=russian-jcukenwin
 set iminsert=0
 
 "spell
-set spell spelllang=en_us,ru
+"set spell spelllang=en_us,ru
 inoremap <c-l> <c-^>
 ]]
 
@@ -182,15 +182,15 @@ opt.relativenumber = true
 opt.wrap = false
 
 opt.signcolumn = "yes:1"
-cmd[[ set colorcolumn=70 ]]
+cmd[[ set colorcolumn=79 ]]
 cmd[[ au FileType startup setlocal colorcolumn=0 ]]
 
 opt.termguicolors = true
 vim.o.background = "dark"
 vim.g.material_style = "darker"
 
-cmd([[colorscheme material]])
-cmd([[set guicursor=]])
+cmd([[colorscheme gruvbox]])
+-- cmd([[set guicursor=]])
 
 -- show invisible characters
 opt.list = true
@@ -219,10 +219,10 @@ end
 g.mapleader = "\\"
 
 -- open init.lua
-set_keymap("n", "<leader>vo", ":tabnew ~/AppData/Local/nvim/init.lua<CR>")
+set_keymap("n", "<leader><leader>o", ":tabnew ~/AppData/Local/nvim/init.lua<CR>")
 
 -- source init.lua
-set_keymap("n", "<leader>vs", ":source ~/AppData/Local/nvim/init.lua<CR>")
+set_keymap("n", "<leader><leader>s", ":source ~/AppData/Local/nvim/init.lua<CR>")
 
 -- scrolling with search
 set_keymap("n", "n", "nzzzv")
@@ -238,6 +238,14 @@ set_keymap("n", "<leader><cr>", ":noh<cr>")
 
 -- cd
 set_keymap("n", "<leader>cd", ":cd %:p:h<cr>:pwd<cr>")
+
+-- split
+set_keymap("n", "<leader>v", ":vsplit<CR>")
+set_keymap("n", "<leader>s", ":split<CR>")
+
+-- save, quit
+set_keymap("n", "<leader>q", ":q<CR>")
+set_keymap("n", "<leader>w", ":w<CR>")
 
 -- Editing Mapping
 
@@ -353,6 +361,7 @@ local on_attach = function(client, bufnr)
     -- See `:help vim.lsp.*` for documentation on any of the below functions
     vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
     vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gb', '<c-o>', opts)
     vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
     vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
     vim.api.nvim_buf_set_keymap(bufnr, 'n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
@@ -367,58 +376,61 @@ local on_attach = function(client, bufnr)
 end
 
 local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
-require('lspconfig').pylsp.setup {
-    cmd = {"pyls"},
-    filetypes = {"python"},
-    settings = {
-        pyls = {
-            configurationSources = {"flake8"},
-            plugins = {
-                -- jedi_completion = {enabled = true},
-                -- jedi_hover = {enabled = true},
-                -- jedi_references = {enabled = true},
-                -- jedi_signature_help = {enabled = true},
-                -- jedi_symbols = {enabled = true, all_scopes = true},
-                -- pycodestyle = {enabled = false},
-                flake8 = {
-                    enabled = true,
-                    ignore = {},
-                    maxLineLength = 89
-                },
-                mypy = {enabled = false},
-                isort = {enabled = true},
-                yapf = {enabled = true},
-                pylint = {enabled = false},
-                pydocstyle = {enabled = false},
-                mccabe = {enabled = false},
-                preload = {enabled = false},
-                rope_completion = {enabled = false}
-            -- configurationSources = {"flake8"},
-            -- plugins = {
-            --     -- jedi_completion = {enabled = true},
-            --     -- jedi_hover = {enabled = true},
-            --     -- jedi_references = {enabled = true},
-            --     -- jedi_signature_help = {enabled = true},
-            --     -- jedi_symbols = {enabled = true, all_scopes = true},
-            --     pycodestyle = {enabled = false},
-            --     flake8 = {
-            --         enabled = true,
-            --         ignore = {},
-            --         maxLineLength = 89
-            --     },
-            --     mypy = {enabled = false},
-            --     isort = {enabled = true},
-            --     yapf = {enabled = true},
-            --     pylint = {enabled = false},
-            --     pydocstyle = {enabled = false},
-            --     mccabe = {enabled = false},
-            --     preload = {enabled = false},
-            --     rope_completion = {enabled = true}
-            }
-        }
-    },
+require('lspconfig').pyright.setup {
     on_attach = on_attach
 }
+-- require('lspconfig').pylsp.setup {
+--     cmd = {"pyls"},
+--     filetypes = {"python"},
+--     settings = {
+--         pyls = {
+--             configurationSources = {"flake8"},
+--             plugins = {
+--                 jedi_completion = {enabled = false},
+--                 jedi_hover = {enabled = false},
+--                 jedi_references = {enabled = false},
+--                 jedi_signature_help = {enabled = false},
+--                 jedi_symbols = {enabled = false, all_scopes = false},
+--                 pycodestyle = {enabled = false},
+--                 flake8 = {
+--                     enabled = false,
+--                     ignore = {},
+--                     maxLineLength = 89
+--                 },
+--                 mypy = {enabled = false},
+--                 isort = {enabled = false},
+--                 yapf = {enabled = false},
+--                 pylint = {enabled = true},
+--                 pydocstyle = {enabled = false},
+--                 mccabe = {enabled = false},
+--                 preload = {enabled = false},
+--                 rope_completion = {enabled = false}
+--             -- configurationSources = {"flake8"},
+--             -- plugins = {
+--             --     -- jedi_completion = {enabled = true},
+--             --     -- jedi_hover = {enabled = true},
+--             --     -- jedi_references = {enabled = true},
+--             --     -- jedi_signature_help = {enabled = true},
+--             --     -- jedi_symbols = {enabled = true, all_scopes = true},
+--             --     pycodestyle = {enabled = false},
+--             --     flake8 = {
+--             --         enabled = true,
+--             --         ignore = {},
+--             --         maxLineLength = 89
+--             --     },
+--             --     mypy = {enabled = false},
+--             --     isort = {enabled = true},
+--             --     yapf = {enabled = true},
+--             --     pylint = {enabled = false},
+--             --     pydocstyle = {enabled = false},
+--             --     mccabe = {enabled = false},
+--             --     preload = {enabled = false},
+--             --     rope_completion = {enabled = true}
+--             }
+--         }
+--     },
+--     on_attach = on_attach
+-- }
 require('lspconfig')['clangd'].setup {
     capabilities = capabilities,
     on_attach = on_attach
@@ -691,112 +703,112 @@ require('material').setup({
 })
 --}}}
 --{{{2 Plugins/startup
-require"startup".setup({
-    -- every line should be same width without escaped \
-    header = {
-        type = "text",
-        oldfiles_directory = false,
-        align = "center",
-        fold_section = false,
-        title = "Header",
-        margin = 10,
-        content = {
-            -- " ███╗   ██╗ ███████╗ ██████╗  ██╗   ██╗ ██╗ ███╗   ███╗",
-            -- " ████╗  ██║ ██╔════╝██╔═══██╗ ██║   ██║ ██║ ████╗ ████║",
-            -- " ██╔██╗ ██║ █████╗  ██║   ██║ ██║   ██║ ██║ ██╔████╔██║",
-            -- " ██║╚██╗██║ ██╔══╝  ██║   ██║ ╚██╗ ██╔╝ ██║ ██║╚██╔╝██║",
-            -- " ██║ ╚████║ ███████╗╚██████╔╝  ╚████╔╝  ██║ ██║ ╚═╝ ██║",
-            -- " ╚═╝  ╚═══╝ ╚══════╝ ╚═════╝    ╚═══╝   ╚═╝ ╚═╝     ╚═╝",
--- "░░░░█▐▄▒▒▒▌▌▒▒▌░▌▒▐▐▐▒▒▐▒▒▌▒▀▄▀▄░",
--- "░░░█▐▒▒▀▀▌░▀▀▀░░▀▀▀░░▀▀▄▌▌▐▒▒▒▌▐░",
--- "░░▐▒▒▀▀▄▐░▀▀▄▄░░░░░░░░░░░▐▒▌▒▒▐░▌",
--- "░░▐▒▌▒▒▒▌░▄▄▄▄█▄░░░░░░░▄▄▄▐▐▄▄▀░░",
--- "░░▌▐▒▒▒▐░░░░░░░░░░░░░▀█▄░░░░▌▌░░░",
--- "▄▀▒▒▌▒▒▐░░░░░░░▄░░▄░░░░░▀▀░░▌▌░░░",
--- "▄▄▀▒▐▒▒▐░░░░░░░▐▀▀▀▄▄▀░░░░░░▌▌░░░",
--- "░░░░█▌▒▒▌░░░░░▐▒▒▒▒▒▌░░░░░░▐▐▒▀▀▄",
--- "░░▄▀▒▒▒▒▐░░░░░▐▒▒▒▒▐░░░░░▄█▄▒▐▒▒▒",
--- "▄▀▒▒▒▒▒▄██▀▄▄░░▀▄▄▀░░▄▄▀█▄░█▀▒▒▒▒",
-"⣼⣴⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣠⣤⣶⣶⣿⣿⣿⣿⣶⣶⣤⣄⡀⠀⠀⠀⠀⠀⢀⣠⣦⡀",
-"⣿⣿⣿⠒⠀⠀⠀⠀⠀⡀⠀⠀⠀⠀⢀⣴⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⣄⠀⠀⣀⣴⣸⡏⠀",
-"⠻⠛⠁⠀⠀⠐⠿⠂⢀⣿⣶⣤⣤⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⡖⣿⣿⣿⡟⠂",
-"⠀⢀⣤⣤⠀⠀⠀⣠⣾⣿⡿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣎⢻⠛⠁⠀",
-"⠀⠀⠙⠋⠀⢠⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢿⣿⣿⣿⣿⠏⢿⣿⣿⣿⢿⣿⣿⣿⣿⣿⣆⠀⠀⠀",
-"⠀⠀⠀⠀⠀⠹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠁⢸⣿⣿⣿⡟⠀⠈⣿⣿⡟⢸⣿⣿⣿⣿⣿⣿⡄⠀⠀",
-"⠀⠀⠀⠰⣾⡦⠙⠛⢿⠻⣿⣿⣿⣿⣿⣿⣿⠏⠀⠀⣸⣿⣿⡟⠀⠀⡀⢻⣿⠁⠸⣿⣿⣿⣿⣿⣿⣷⠀⠀",
-"⠀⠀⠀⠀⠀⠀⠀⠀⢸⢀⣿⣿⣿⣿⣿⣿⠓⢶⢄⠀⣿⣿⡟⠀⢖⠕⠊⢹⠳⣤⡀⣿⣿⣿⣿⣿⣿⣿⡀⠀",
-"⠀⠀⠀⠀⠀⠀⠀⠀⠈⠘⣿⣿⣿⣿⡿⠁⠀⠈⢧⢰⣿⠏⠀⢠⠃⠀⠀⠀⠀⠈⢒⣿⣿⣿⣻⣿⣿⣿⣧⠀",
-"⠀⠀⣶⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⡟⠀⠀⢰⠀⢘⡿⠃⠀⠀⠘⠀⡄⠀⠀⠀⠀⣸⣿⣿⡏⣿⣿⣿⣿⣿⣇",
-"⠀⠒⣿⠒⣶⠀⠀⠀⠀⠀⢻⣿⣿⡷⣄⠀⢸⠠⣊⠁⠀⠀⠀⢡⡀⡇⠀⠀⣀⣾⣿⣿⣿⢿⣾⣿⣿⣿⣿⣿",
-"⠀⠀⣿⠀⣿⠀⠀⠀⠀⠀⠘⣿⣿⣿⡉⠉⠛⠋⠀⠀⠀⠀⠀⠀⠈⠉⠉⠉⠓⠊⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿",
-"⠀⠀⠀⠀⠠⠴⡖⠂⠀⠀⢰⣿⣿⣿⣧⡀⠀⠀⠀⠀⠑⠀⠀⠀⠀⠀⠀⠀⢀⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣎",
-"⠀⠀⠀⠀⠉⢩⡏⠉⠀⣠⣿⣿⣿⣿⣿⣿⣦⣄⡀⠀⠐⠒⠒⠂⠀⢀⣠⢶⡛⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
-"⠀⠀⠀⠀⠀⠀⠀⢀⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣦⠤⣤⣤⡶⠛⠁⢈⢎⣾⢿⣿⣿⣿⣿⣿⣿⣿⣿⣏",
-"⠀⠀⠀⠀⠀⡀⠚⠋⠁⣾⣿⣿⣿⣿⣿⣿⣿⠿⠛⡝⠁⠀⡟⠉⠀⢀⡴⠁⡼⠃⡜⠈⠙⠻⢿⣿⣿⣿⣿⣿",
-"⠀⠀⣀⡀⢾⣿⡆⠀⠀⣿⣿⣿⣿⡿⠛⢉⠀⠀⢠⠇⢃⠰⠀⢠⣖⠁⢀⠜⠀⡰⠁⠀⠀⠀⡠⠊⠙⣻⢿⣿",
-"⠀⠘⠿⠋⠀⠁⠀⠀⠀⣿⣿⣼⠁⠀⠀⠀⢣⠄⢸⢀⣿⣦⠀⢸⡣⣷⣅⠀⠰⠁⠀⢀⠠⠊⠀⠀⡔⠀⠀⠹",
-"⠀⠀⠀⠀⠀⠀⠀⠀⠀⢻⣇⠃⡄⠀⠀⠀⠀⢫⠜⠁⢹⣏⣤⣟⣼⠏⠈⢆⠃⣀⡔⠁⠀⠀⠀⡜⠀⠀⠀⠀",
-"⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⡏⠀⠡⠀⠀⠀⠀⠀⢫⢄⢀⣿⣿⣿⠁⠀⢀⡤⡪⠋⠀⠀⠀⠀⢠⠁⠀⠀⠀⠀",
-"⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠘⠕⣆⠂⣿⣿⡿⠔⢊⠕⠉⠀⠀⠀⠀⠀⠀⡆⠀⠀⠀⠀⠀",
-"⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢷⡂⣼⣿⠡⠊⠁⠀⠀⠀⠀⠀⠀⠀⣾⠀⠀⠀⠀⠀⠀",
-"⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⣵⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠗⠀⠀⠀⠀⠀⠀",
-        },
-        highlight = "Statement",
-        default_color = "",
-        oldfiles_amount = 0,
-    },
-    -- name which will be displayed and command
-    body = {
-        type = "mapping",
-        oldfiles_directory = false,
-        align = "center",
-        fold_section = false,
-        title = "Basic Commands",
-        margin = 5,
-        content = {
-            -- { " Find File", "Telescope find_files", "<leader>ff" },
-            -- { " Find Word", "Telescope live_grep", "<leader>lg" },
-            -- { " Recent Files", "Telescope oldfiles", "<leader>of" },
-            -- { " File Browser", "Telescope file_browser", "<leader>fb" },
-            -- { " Colorschemes", "Telescope colorscheme", "<leader>cs" },
-            -- { " New File", "lua require'startup'.new_file()", "<leader>nf" },
-        },
-        highlight = "String",
-        default_color = "",
-        oldfiles_amount = 0,
-    },
-    footer = {
-        type = "text",
-        oldfiles_directory = false,
-        align = "center",
-        fold_section = false,
-        title = "Footer",
-        margin = 5,
-        content = { "" },
-        highlight = "Number",
-        default_color = "",
-        oldfiles_amount = 0,
-    },
-
-    options = {
-        mapping_keys = true,
-        cursor_column = 0.5,
-        empty_lines_between_mappings = true,
-        disable_statuslines = true,
-        paddings = { 1, 3, 3, 0 },
-    },
-    mappings = {
-        execute_command = "<CR>",
-        open_file = "o",
-        open_file_split = "<c-o>",
-        open_section = "<TAB>",
-        open_help = "?",
-    },
-    colors = {
-        background = "#1f2227",
-        folded_section = "#56b6c2",
-    },
-    parts = { "header" },
-})
+-- require"startup".setup({
+--     -- every line should be same width without escaped \
+--     header = {
+--         type = "text",
+--         oldfiles_directory = false,
+--         align = "center",
+--         fold_section = false,
+--         title = "Header",
+--         margin = 10,
+--         content = {
+--             -- " ███╗   ██╗ ███████╗ ██████╗  ██╗   ██╗ ██╗ ███╗   ███╗",
+--             -- " ████╗  ██║ ██╔════╝██╔═══██╗ ██║   ██║ ██║ ████╗ ████║",
+--             -- " ██╔██╗ ██║ █████╗  ██║   ██║ ██║   ██║ ██║ ██╔████╔██║",
+--             -- " ██║╚██╗██║ ██╔══╝  ██║   ██║ ╚██╗ ██╔╝ ██║ ██║╚██╔╝██║",
+--             -- " ██║ ╚████║ ███████╗╚██████╔╝  ╚████╔╝  ██║ ██║ ╚═╝ ██║",
+--             -- " ╚═╝  ╚═══╝ ╚══════╝ ╚═════╝    ╚═══╝   ╚═╝ ╚═╝     ╚═╝",
+-- -- "░░░░█▐▄▒▒▒▌▌▒▒▌░▌▒▐▐▐▒▒▐▒▒▌▒▀▄▀▄░",
+-- -- "░░░█▐▒▒▀▀▌░▀▀▀░░▀▀▀░░▀▀▄▌▌▐▒▒▒▌▐░",
+-- -- "░░▐▒▒▀▀▄▐░▀▀▄▄░░░░░░░░░░░▐▒▌▒▒▐░▌",
+-- -- "░░▐▒▌▒▒▒▌░▄▄▄▄█▄░░░░░░░▄▄▄▐▐▄▄▀░░",
+-- -- "░░▌▐▒▒▒▐░░░░░░░░░░░░░▀█▄░░░░▌▌░░░",
+-- -- "▄▀▒▒▌▒▒▐░░░░░░░▄░░▄░░░░░▀▀░░▌▌░░░",
+-- -- "▄▄▀▒▐▒▒▐░░░░░░░▐▀▀▀▄▄▀░░░░░░▌▌░░░",
+-- -- "░░░░█▌▒▒▌░░░░░▐▒▒▒▒▒▌░░░░░░▐▐▒▀▀▄",
+-- -- "░░▄▀▒▒▒▒▐░░░░░▐▒▒▒▒▐░░░░░▄█▄▒▐▒▒▒",
+-- -- "▄▀▒▒▒▒▒▄██▀▄▄░░▀▄▄▀░░▄▄▀█▄░█▀▒▒▒▒",
+-- "⣼⣴⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣠⣤⣶⣶⣿⣿⣿⣿⣶⣶⣤⣄⡀⠀⠀⠀⠀⠀⢀⣠⣦⡀",
+-- "⣿⣿⣿⠒⠀⠀⠀⠀⠀⡀⠀⠀⠀⠀⢀⣴⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⣄⠀⠀⣀⣴⣸⡏⠀",
+-- "⠻⠛⠁⠀⠀⠐⠿⠂⢀⣿⣶⣤⣤⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⡖⣿⣿⣿⡟⠂",
+-- "⠀⢀⣤⣤⠀⠀⠀⣠⣾⣿⡿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣎⢻⠛⠁⠀",
+-- "⠀⠀⠙⠋⠀⢠⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢿⣿⣿⣿⣿⠏⢿⣿⣿⣿⢿⣿⣿⣿⣿⣿⣆⠀⠀⠀",
+-- "⠀⠀⠀⠀⠀⠹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠁⢸⣿⣿⣿⡟⠀⠈⣿⣿⡟⢸⣿⣿⣿⣿⣿⣿⡄⠀⠀",
+-- "⠀⠀⠀⠰⣾⡦⠙⠛⢿⠻⣿⣿⣿⣿⣿⣿⣿⠏⠀⠀⣸⣿⣿⡟⠀⠀⡀⢻⣿⠁⠸⣿⣿⣿⣿⣿⣿⣷⠀⠀",
+-- "⠀⠀⠀⠀⠀⠀⠀⠀⢸⢀⣿⣿⣿⣿⣿⣿⠓⢶⢄⠀⣿⣿⡟⠀⢖⠕⠊⢹⠳⣤⡀⣿⣿⣿⣿⣿⣿⣿⡀⠀",
+-- "⠀⠀⠀⠀⠀⠀⠀⠀⠈⠘⣿⣿⣿⣿⡿⠁⠀⠈⢧⢰⣿⠏⠀⢠⠃⠀⠀⠀⠀⠈⢒⣿⣿⣿⣻⣿⣿⣿⣧⠀",
+-- "⠀⠀⣶⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⡟⠀⠀⢰⠀⢘⡿⠃⠀⠀⠘⠀⡄⠀⠀⠀⠀⣸⣿⣿⡏⣿⣿⣿⣿⣿⣇",
+-- "⠀⠒⣿⠒⣶⠀⠀⠀⠀⠀⢻⣿⣿⡷⣄⠀⢸⠠⣊⠁⠀⠀⠀⢡⡀⡇⠀⠀⣀⣾⣿⣿⣿⢿⣾⣿⣿⣿⣿⣿",
+-- "⠀⠀⣿⠀⣿⠀⠀⠀⠀⠀⠘⣿⣿⣿⡉⠉⠛⠋⠀⠀⠀⠀⠀⠀⠈⠉⠉⠉⠓⠊⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿",
+-- "⠀⠀⠀⠀⠠⠴⡖⠂⠀⠀⢰⣿⣿⣿⣧⡀⠀⠀⠀⠀⠑⠀⠀⠀⠀⠀⠀⠀⢀⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣎",
+-- "⠀⠀⠀⠀⠉⢩⡏⠉⠀⣠⣿⣿⣿⣿⣿⣿⣦⣄⡀⠀⠐⠒⠒⠂⠀⢀⣠⢶⡛⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿",
+-- "⠀⠀⠀⠀⠀⠀⠀⢀⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣦⠤⣤⣤⡶⠛⠁⢈⢎⣾⢿⣿⣿⣿⣿⣿⣿⣿⣿⣏",
+-- "⠀⠀⠀⠀⠀⡀⠚⠋⠁⣾⣿⣿⣿⣿⣿⣿⣿⠿⠛⡝⠁⠀⡟⠉⠀⢀⡴⠁⡼⠃⡜⠈⠙⠻⢿⣿⣿⣿⣿⣿",
+-- "⠀⠀⣀⡀⢾⣿⡆⠀⠀⣿⣿⣿⣿⡿⠛⢉⠀⠀⢠⠇⢃⠰⠀⢠⣖⠁⢀⠜⠀⡰⠁⠀⠀⠀⡠⠊⠙⣻⢿⣿",
+-- "⠀⠘⠿⠋⠀⠁⠀⠀⠀⣿⣿⣼⠁⠀⠀⠀⢣⠄⢸⢀⣿⣦⠀⢸⡣⣷⣅⠀⠰⠁⠀⢀⠠⠊⠀⠀⡔⠀⠀⠹",
+-- "⠀⠀⠀⠀⠀⠀⠀⠀⠀⢻⣇⠃⡄⠀⠀⠀⠀⢫⠜⠁⢹⣏⣤⣟⣼⠏⠈⢆⠃⣀⡔⠁⠀⠀⠀⡜⠀⠀⠀⠀",
+-- "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⡏⠀⠡⠀⠀⠀⠀⠀⢫⢄⢀⣿⣿⣿⠁⠀⢀⡤⡪⠋⠀⠀⠀⠀⢠⠁⠀⠀⠀⠀",
+-- "⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠒⠘⠕⣆⠂⣿⣿⡿⠔⢊⠕⠉⠀⠀⠀⠀⠀⠀⡆⠀⠀⠀⠀⠀",
+-- "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢷⡂⣼⣿⠡⠊⠁⠀⠀⠀⠀⠀⠀⠀⣾⠀⠀⠀⠀⠀⠀",
+-- "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⣵⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠗⠀⠀⠀⠀⠀⠀",
+--         },
+--         highlight = "Statement",
+--         default_color = "",
+--         oldfiles_amount = 0,
+--     },
+--     -- name which will be displayed and command
+--     body = {
+--         type = "mapping",
+--         oldfiles_directory = false,
+--         align = "center",
+--         fold_section = false,
+--         title = "Basic Commands",
+--         margin = 5,
+--         content = {
+--             -- { " Find File", "Telescope find_files", "<leader>ff" },
+--             -- { " Find Word", "Telescope live_grep", "<leader>lg" },
+--             -- { " Recent Files", "Telescope oldfiles", "<leader>of" },
+--             -- { " File Browser", "Telescope file_browser", "<leader>fb" },
+--             -- { " Colorschemes", "Telescope colorscheme", "<leader>cs" },
+--             -- { " New File", "lua require'startup'.new_file()", "<leader>nf" },
+--         },
+--         highlight = "String",
+--         default_color = "",
+--         oldfiles_amount = 0,
+--     },
+--     footer = {
+--         type = "text",
+--         oldfiles_directory = false,
+--         align = "center",
+--         fold_section = false,
+--         title = "Footer",
+--         margin = 5,
+--         content = { "" },
+--         highlight = "Number",
+--         default_color = "",
+--         oldfiles_amount = 0,
+--     },
+--
+--     options = {
+--         mapping_keys = true,
+--         cursor_column = 0.5,
+--         empty_lines_between_mappings = true,
+--         disable_statuslines = true,
+--         paddings = { 1, 3, 3, 0 },
+--     },
+--     mappings = {
+--         execute_command = "<CR>",
+--         open_file = "o",
+--         open_file_split = "<c-o>",
+--         open_section = "<TAB>",
+--         open_help = "?",
+--     },
+--     colors = {
+--         background = "#1f2227",
+--         folded_section = "#56b6c2",
+--     },
+--     parts = { "header" },
+-- })
 --}}}2
 --}}}
