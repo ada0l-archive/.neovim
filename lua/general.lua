@@ -1,3 +1,4 @@
+vim.cmd[[ language en_US ]]
 vim.opt.fileformat = "unix"
 -- Encoding
 vim.opt.encoding = "utf-8"
