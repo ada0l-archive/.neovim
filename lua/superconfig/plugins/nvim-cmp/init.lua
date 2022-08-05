@@ -27,9 +27,10 @@ local lsp_symbols = {
     Operator = "",
     TypeParameter = ""
 }
+
 local cmp = require('cmp')
 
-require('luasnip.loaders.from_vscode').lazy_load()
+-- require('luasnip.loaders.from_vscode').lazy_load()
 
 cmp.setup({
     snippet = {
@@ -38,8 +39,16 @@ cmp.setup({
         end,
     },
     window = {
-        completion = cmp.config.window.bordered(),
-        documentation = cmp.config.window.bordered(),
+        completion = {
+            winhighlight = 'Normal:Pmenu,FloatBorder:Pmenu,CursorLine:PmenuSel,Search:None',
+        },
+        documentation = {
+            winhighlight = 'Normal:Pmenu,FloatBorder:Pmenu,CursorLine:PmenuSel,Search:None',
+        },
+    },
+    performance = {
+        debounce = 50,
+        fetching_timeout = 100
     },
     mapping = cmp.mapping.preset.insert({
         ['<C-k>'] = cmp.mapping.scroll_docs(-4),
@@ -65,32 +74,34 @@ cmp.setup({
         end, {'i', 's'}),
     }),
     sources = {
-        {name = 'luasnip'},
-        {name = 'nvim_lsp'},
-        {name = 'path'},
-        {name = 'buffer'},
+      { name = 'nvim_lsp' },
+      { name = 'nvim_lua' },
+      { name = 'luasnip' },
+      { name = 'buffer' },
+      { name = 'path' },
     },
-    formatting = {
-        format = function(entry, item)
-            item.kind = lsp_symbols[item.kind] .. " " .. item.kind
-            item.menu =
-            ({
-                spell = "[Spell]",
-                buffer = "[Buffer]",
-                calc = "[Calc]",
-                emoji = "[Emoji]",
-                nvim_lsp = "[LSP]",
-                path = "[Path]",
-                look = "[Look]",
-                treesitter = "[treesitter]",
-                luasnip = "[LuaSnip]",
-                nvim_lua = "[Lua]",
-                latex_symbols = "[Latex]",
-                cmp_tabnine = "[Tab9]"
-            })[entry.source.name]
-            return item
-        end
-    },
+  formatting = {
+      format = function(entry, item)
+          item.kind = lsp_symbols[item.kind] .. " " .. item.kind
+          item.dup = { buffer = 1, path = 1, nvim_ls = 0 }
+          item.menu =
+          ({
+              spell = "[Spell]",
+              buffer = "[Buffer]",
+              calc = "[Calc]",
+              emoji = "[Emoji]",
+              nvim_lsp = "[LSP]",
+              path = "[Path]",
+              look = "[Look]",
+              treesitter = "[treesitter]",
+              luasnip = "[LuaSnip]",
+              nvim_lua = "[Lua]",
+              latex_symbols = "[Latex]",
+              cmp_tabnine = "[Tab9]"
+          })[entry.source.name]
+          return item
+      end
+  }
 })
 
 -- Set configuration for specific filetype.
