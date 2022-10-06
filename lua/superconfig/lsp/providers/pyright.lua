@@ -39,6 +39,15 @@ end
 local M = {
   name = 'pyright',
   settings = {
+    settings = {
+      python = {
+        analysis = {
+          typeCheckingMode = 'off',
+          useLibraryCodeForTypes = true,
+          completeFunctionParens = true,
+        },
+      },
+    }
     --[[ before_init = function(_, config)
       a = get_python_path(config.root_dir)
       print("Load" .. a)

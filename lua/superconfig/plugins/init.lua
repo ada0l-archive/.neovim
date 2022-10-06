@@ -29,6 +29,16 @@ require('packer').startup(function(use)
       require('superconfig.plugins.gruvbox')
     end,
   })
+  -- use({
+  --   'projekt0n/github-nvim-theme',
+  --   config = function()
+  --     vim.cmd[[ colorscheme github_light ]]
+  --     require('github-theme').setup({
+  --       theme_style = "light",
+  --       transparent = true
+  --     })
+  --   end
+  -- })
 
   use({
     'nvim-lualine/lualine.nvim',
@@ -153,7 +163,7 @@ require('packer').startup(function(use)
           require('superconfig.plugins.nvim-cmp')
     end,
     requires = {
-      {
+      --[[ {
         'L3MON4D3/LuaSnip',
         config = function()
           require("luasnip.loaders.from_vscode").lazy_load()
@@ -162,7 +172,7 @@ require('packer').startup(function(use)
           { "rafamadriz/friendly-snippets", },
         },
         before = 'nvim-cmp',
-      },
+      }, ]]
       { 'hrsh7th/cmp-nvim-lsp', after = 'nvim-cmp' },
       { 'hrsh7th/cmp-buffer', after = 'nvim-cmp' },
       { 'hrsh7th/cmp-path', after = 'nvim-cmp' },
@@ -225,4 +235,18 @@ require('packer').startup(function(use)
     'bitfyre/vim-indent-html',
     ft = 'html'
   })
+
+  -- use({
+  --   'D:/_PROJECTS/neovim/nvim-translator',
+  --   as = 'nvim-translator',
+  --   config = function()
+  --     require"nvim-translator".setup()
+  --   end
+  -- })
+  -- use({
+  --   'D:/_PROJECTS/neovim/nvim-mabayui',
+  --   config = function()
+  --     require"mabayui".setup()
+  --   end
+  -- })
 end)

@@ -30,14 +30,7 @@ local lsp_symbols = {
 
 local cmp = require('cmp')
 
--- require('luasnip.loaders.from_vscode').lazy_load()
-
 cmp.setup({
-    snippet = {
-        expand = function(args)
-            require('luasnip').lsp_expand(args.body)
-        end,
-    },
     window = {
         completion = {
             winhighlight = 'Normal:Pmenu,FloatBorder:Pmenu,CursorLine:PmenuSel,Search:None',
@@ -83,7 +76,6 @@ cmp.setup({
   formatting = {
       format = function(entry, item)
           item.kind = lsp_symbols[item.kind] .. " " .. item.kind
-          item.dup = { buffer = 1, path = 1, nvim_ls = 0 }
           item.menu =
           ({
               spell = "[Spell]",

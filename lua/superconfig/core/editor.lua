@@ -77,7 +77,7 @@ set iminsert=0
 inoremap <c-l> <c-^>
 
 "spell
-autocmd FileType markdown sellocal spell spelllang=en_us,ru
+autocmd FileType markdown setlocal spell spelllang=en_us,ru
 ]]
 
 -- auto reloading file

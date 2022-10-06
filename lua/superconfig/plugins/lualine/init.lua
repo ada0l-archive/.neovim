@@ -19,6 +19,7 @@ sections = {
     'diagnostics'
   },
   lualine_x = {
+    'encoding'
   },
   lualine_y = {
     'progress'
@@ -27,17 +28,6 @@ sections = {
     'location'
   }
 }
-
-if vim.fn.exists('g:started_by_firenvim') == 1 then
-  sections = {
-    lualine_a = {},
-    lualine_b = {},
-    lualine_c = {},
-    lualine_x = {},
-    lualine_y = {'progress'},
-    lualine_z = {'location'}
-  }
-end
 
 require('lualine').setup {
   options = {

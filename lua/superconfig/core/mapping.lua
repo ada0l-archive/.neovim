@@ -14,8 +14,6 @@ map('n', '<leader><leader>s', ':source ~/AppData/Local/nvim/init.lua<CR>', {})
 map('n', 'n', 'nzzzv', {})
 map('n', 'N', 'Nzzzv', {})
 
-map('i', 'jk', '<Esc>', {})
-
 -- esc in terminal mode
 map('t', '<Esc>', '<C-\\><C-n>', {})
 

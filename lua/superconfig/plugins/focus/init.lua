@@ -1,1 +1,1 @@
-require("focus").setup({autoresize = true})
+require("focus").setup({autoresize = false})

@@ -3,7 +3,8 @@ local M = {
   require('superconfig.lsp.providers.pyright'),
   require('superconfig.lsp.providers.sumneko'),
   require('superconfig.lsp.providers.tsserver'),
-  require('superconfig.lsp.providers.emmet')
+  require('superconfig.lsp.providers.emmet'),
+  require('superconfig.lsp.providers.clangd')
 }
 
 return M
