@@ -33,7 +33,7 @@ require('lualine').setup {
   options = {
     icons_enabled = true,
     theme = 'auto',
-    disabled_filetypes = { "NvimTree" },
+    disabled_filetypes = { "NvimTree", "vista" },
     always_divide_middle = true,
     globalstatus = false,
     component_separators = { left = '', right = ''},

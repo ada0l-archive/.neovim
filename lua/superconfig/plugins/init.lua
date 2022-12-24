@@ -17,28 +17,31 @@ require('packer').startup(function(use)
     'wbthomason/packer.nvim',
   })
 
-  -- cache plugins
-  --[[ use({
-    'lewis6991/impatient.nvim'
-  }) ]]
-
   -- nice look
+  -- use({
+  --   'ellisonleao/gruvbox.nvim',
+  --   config = function()
+  --     require('superconfig.plugins.gruvbox')
+  --   end,
+  -- })
+
   use({
-    'ellisonleao/gruvbox.nvim',
+    'olimorris/onedarkpro.nvim',
     config = function()
-      require('superconfig.plugins.gruvbox')
+      require('superconfig.plugins.onedarkpro')
     end,
   })
-  -- use({
-  --   'projekt0n/github-nvim-theme',
-  --   config = function()
-  --     vim.cmd[[ colorscheme github_light ]]
-  --     require('github-theme').setup({
-  --       theme_style = "light",
-  --       transparent = true
-  --     })
-  --   end
-  -- })
+  use {
+    "utilyre/barbecue.nvim",
+    requires = {
+      "neovim/nvim-lspconfig",
+      "smiteshp/nvim-navic",
+      "kyazdani42/nvim-web-devicons", -- optional
+    },
+    config = function()
+      require("barbecue").setup()
+    end,
+  }
 
   use({
     'nvim-lualine/lualine.nvim',
@@ -56,6 +59,13 @@ require('packer').startup(function(use)
     'tpope/vim-fugitive',
     opt = true,
     cmd = 'Git'
+  })
+
+  use({
+    'kdheepak/lazygit.nvim',
+    config = function()
+      require('superconfig.plugins.lazygit')
+    end,
   })
 
   use({
@@ -123,14 +133,6 @@ require('packer').startup(function(use)
     cmd = 'Goyo'
   })
 
-  -- neovim in browser
-  use({
-    'glacambre/firenvim',
-    run = function()
-      vim.fn['firenvim#install'](0)
-    end
-  })
-
   -- lsp
   use({
     'neovim/nvim-lspconfig',
@@ -163,22 +165,20 @@ require('packer').startup(function(use)
           require('superconfig.plugins.nvim-cmp')
     end,
     requires = {
-      --[[ {
-        'L3MON4D3/LuaSnip',
-        config = function()
-          require("luasnip.loaders.from_vscode").lazy_load()
-        end,
-        requires = {
-          { "rafamadriz/friendly-snippets", },
-        },
-        before = 'nvim-cmp',
-      }, ]]
       { 'hrsh7th/cmp-nvim-lsp', after = 'nvim-cmp' },
       { 'hrsh7th/cmp-buffer', after = 'nvim-cmp' },
       { 'hrsh7th/cmp-path', after = 'nvim-cmp' },
       { 'hrsh7th/cmp-cmdline', after = 'nvim-cmp' },
     },
     event = 'InsertEnter',
+  })
+
+  -- debug
+  use({
+    'sakhnik/nvim-gdb',
+    config = function()
+      require('superconfig.plugins.gdb')
+    end
   })
 
   -- lang/syntax stuff
@@ -193,6 +193,9 @@ require('packer').startup(function(use)
   -- tags
   use({
     'liuchengxu/vista.vim',
+    config = function()
+      require('superconfig.plugins.vista')
+    end,
     after = 'nvim-lspconfig'
   })
 
@@ -236,17 +239,12 @@ require('packer').startup(function(use)
     ft = 'html'
   })
 
-  -- use({
-  --   'D:/_PROJECTS/neovim/nvim-translator',
-  --   as = 'nvim-translator',
-  --   config = function()
-  --     require"nvim-translator".setup()
-  --   end
-  -- })
-  -- use({
-  --   'D:/_PROJECTS/neovim/nvim-mabayui',
-  --   config = function()
-  --     require"mabayui".setup()
-  --   end
-  -- })
+  -- obsidian
+  use({
+    'epwalsh/obsidian.nvim',
+    config = function()
+      require('superconfig.plugins.obsidian')
+    end,
+    after = 'nvim-cmp'
+  })
 end)

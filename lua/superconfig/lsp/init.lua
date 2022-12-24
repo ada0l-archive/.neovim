@@ -3,6 +3,8 @@ local merge = require('superconfig.utils').merge
 local default = require('superconfig.lsp.default')
 local lspconfig = require('lspconfig')
 
+vim.diagnostic.config(require('superconfig.lsp.diagnostic'))
+
 local function goto_definition(split_cmd)
   local util = vim.lsp.util
   local log = require("vim.lsp.log")
@@ -35,6 +37,7 @@ local function goto_definition(split_cmd)
   return handler
 end
 
+-- tabnew after goto definition
 vim.lsp.handlers["textDocument/definition"] = goto_definition('tabnew')
 
 function get_capabilities()
@@ -60,7 +63,6 @@ function get_capabilities()
   }
   capabilities.experimental = {}
   capabilities.experimental.hoverActions = true
-
   return capabilities
 end
 

@@ -5,7 +5,9 @@ vim.api.nvim_create_autocmd('BufEnter', {
 })
 
 require('nvim-tree').setup({
+  sync_root_with_cwd = true,
   view = {
+    adaptive_size = true,
     mappings = {
       list = {
         { key = "u", action = "dir_up" },

@@ -22,7 +22,7 @@ local function get_python_path(workspace)
 
       local path_to_env = handle:read('*a')
       handle:close()
-  
+
       path_to_env = path_to_env:sub(1, -2) -- delete \n
       path_to_env = path.join(path.join(path_to_env, 'Scripts', 'python.exe'))
 

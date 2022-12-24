@@ -35,4 +35,10 @@ function M.load_mods(mods)
   end
 end
 
+function M.set_options(options)
+  for key, value in pairs(options) do
+    vim.opt[key] = value
+  end
+end
+
 return M

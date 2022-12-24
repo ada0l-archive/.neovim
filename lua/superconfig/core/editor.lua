@@ -2,49 +2,11 @@ local cmd = vim.cmd
 local opt = vim.opt
 local g = vim.g
 
-g.mapleader = "\\"
+local utils = require('superconfig.utils')
+local set_options = utils.set_options
 
--- default language
-cmd[[ language en_US ]]
-
-opt.fileformat = "unix"
-
--- Encoding
-opt.encoding = "utf-8"
-opt.fileencoding = "utf-8"
-opt.fileencodings = "utf-8"
-
--- Tabs
-opt.tabstop = 4
-opt.softtabstop = 4
-opt.shiftwidth = 4
-opt.expandtab = true
-opt.smartindent = true
-
--- Disable bell
-opt.errorbells = false
-opt.visualbell = true
-opt.timeoutlen = 500
-
--- Search
-opt.hlsearch = true
-opt.incsearch = true
-opt.ignorecase = true
-opt.smartcase = true
-opt.showmatch = true
-opt.magic = true
-opt.lazyredraw = false
-
--- Backups
-opt.swapfile = false
-opt.backup = false
-opt.writebackup = false
-opt.undofile = true -- Save undo history
-opt.confirm = true -- prompt to save before destructive actions
-
--- Binary
-ignore_files = {
-    '*.aux', '*.out', '*.toc', '*.o', '*.obj', '*.dll', '*.jar',
+local ignore_files = {
+    '*.aux', '*.toc', '*.o', '*.obj', '*.dll', '*.jar',
     '*.pyc', '__pycache__', '*.rbc', '*.class',
 
     '*.ai', '*.bmp', '*.gif', '*.ico', '*.jpg', '*.jpeg', '*.png',
@@ -67,7 +29,76 @@ ignore_files = {
     '*.exe',
     'node_modules'
 }
-opt.wildignore = opt.wildignore + ignore_files
+
+g.mapleader = "\\"
+
+-- default language
+cmd[[ language en_US ]]
+
+set_options({
+  fileformat = "unix",
+  -- utf-8
+  encoding = "utf-8",
+  fileencoding = "utf-8",
+  fileencodings = "utf-8",
+  --disable backupds
+  swapfile = false,
+  backup = false,
+  writebackup = false,
+  undofile = true,
+  confirm = true,
+  -- Tabs
+  tabstop = 4,
+  softtabstop = 4,
+  shiftwidth = 4,
+  expandtab = true,
+  smartindent = true,
+  -- Disable bell
+  errorbells = false,
+  visualbell = true,
+  timeoutlen = 500,
+  -- Search
+  hlsearch = true,
+  incsearch = true,
+  ignorecase = true,
+  smartcase = true,
+  showmatch = true,
+  magic = true,
+  lazyredraw = false,
+  wildignore = opt.wildignore + ignore_files,
+  -- auto reloading file
+  autoread = true,
+  -- autocomplete
+  completeopt = { 'menu', 'menuone', 'noselect' },
+  shortmess = opt.shortmess + { c = true },
+  -- perfomance
+  redrawtime = 1500,
+  timeoutlen = 500,
+  ttimeoutlen = 10,
+  updatetime = 100,
+  ttyfast = true,
+  -- visual
+  so=7,
+  ruler = true,
+  number = true,
+  relativenumber = true,
+  wrap = false,
+  signcolumn = "yes:1",
+  termguicolors = true,
+  colorcolumn = "79",
+  -- invisible characters,
+  list = true,
+  listchars = {
+    eol = ' ',
+    tab = '→ ',
+    extends = '…',
+    precedes = '…',
+    trail = '·',
+  },
+})
+
+-- disable :intro startup screen,
+opt.shortmess:append 'I'
 
 -- keymap for russain language and spell
 cmd[[
@@ -80,44 +111,13 @@ inoremap <c-l> <c-^>
 autocmd FileType markdown setlocal spell spelllang=en_us,ru
 ]]
 
--- auto reloading file
-opt.autoread = true
-
--- autocomplete
-opt.completeopt = { 'menu', 'menuone', 'noselect' }
-opt.shortmess = opt.shortmess + { c = true }
-
--- perfomance
-opt.redrawtime = 1500
-opt.timeoutlen = 500
-opt.ttimeoutlen = 10
-opt.updatetime = 100
-
 -- 2 spaces for js, ts, etc.
-cmd([[
-  autocmd FileType lua,json,typescript,javascript,vue setlocal shiftwidth=2 tabstop=2 softtabstop=2
-]])
+cmd([[autocmd FileType lua,json,typescript,javascript,vue setlocal shiftwidth=2 tabstop=2 softtabstop=2]])
+cmd([[autocmd BufEnter *.bnf setlocal ft=enbf]])
+
+-- delete trailing whitespace
+cmd[[autocmd BufWritePre * :%s/\s\+$//e]]
 
 -- visual
-opt.so=3
-opt.ttyfast = true
 cmd[[ syntax on ]]
-opt.ruler = true
-opt.number = true
-opt.relativenumber = true
-opt.wrap = false
-opt.signcolumn = "yes:1"
-cmd[[ set colorcolumn=79 ]]
 cmd[[ au FileType startup setlocal colorcolumn=0 ]]
-opt.termguicolors = true
--- show invisible characters
-opt.list = false
-opt.listchars = {
-    eol = ' ',
-    tab = '→ ',
-    extends = '…',
-    precedes = '…',
-    trail = '·',
-}
--- disable :intro startup screen
-opt.shortmess:append 'I'

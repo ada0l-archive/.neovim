@@ -11,25 +11,8 @@ function M.on_attach(client, bufnr)
   require('superconfig.lsp.mapping').init(client, bufnr)
 end
 
-M.flags = {
-  debounce_text_changes = 150,
-}
-
--- M.capabilities = {}
-
--- M.root_dir = function(fname)
---   local util = require('lspconfig').util
---   return util.root_pattern('.git')(fname)
---     or util.root_pattern('tsconfig.base.json')(fname)
---     or util.root_pattern('package.json')(fname)
---     or util.root_pattern('.eslintrc.js')(fname)
---     or util.root_pattern('.eslintrc.json')(fname)
---     or util.root_pattern('tsconfig.json')(fname)
---     or util.root_pattern('pyproject.toml')(fname)
--- end
-
+M.flags = { debounce_text_changes = 150, }
 M.autostart = true
-
 M.single_file_support = true
 
 return M
