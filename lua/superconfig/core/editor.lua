@@ -13,6 +13,7 @@ local ignore_files = {
     '*.psd', '*.webp', '*.avi', '*.m4a', '*.mp3', '*.oga', '*.ogg',
     '*.wav', '*.webm', '*.eot', '*.otf', '*.ttf', '*.woff', '*.doc',
     '*.pdf',
+    '.null-ls*',
 
     'obj', 'bin',
 
@@ -24,8 +25,6 @@ local ignore_files = {
     'venv',
     '.svn',
 
-    '.git',
-    '.svn',
     '*.exe',
     'node_modules'
 }
@@ -95,21 +94,18 @@ set_options({
     precedes = '…',
     trail = '·',
   },
+  -- russian layout
+  keymap = 'russian-jcukenwin',
+  iminsert = 0,
 })
 
 -- disable :intro startup screen,
 opt.shortmess:append 'I'
 
--- keymap for russain language and spell
-cmd[[
-set fileformats=unix,dos,mac
-set keymap=russian-jcukenwin
-set iminsert=0
-inoremap <c-l> <c-^>
+cmd[[set iminsert=0 ]]
 
-"spell
-autocmd FileType markdown setlocal spell spelllang=en_us,ru
-]]
+-- spell
+cmd[[ autocmd FileType markdown setlocal spell spelllang=en_us,ru ]]
 
 -- 2 spaces for js, ts, etc.
 cmd([[autocmd FileType lua,json,typescript,javascript,vue setlocal shiftwidth=2 tabstop=2 softtabstop=2]])
@@ -120,4 +116,3 @@ cmd[[autocmd BufWritePre * :%s/\s\+$//e]]
 
 -- visual
 cmd[[ syntax on ]]
-cmd[[ au FileType startup setlocal colorcolumn=0 ]]

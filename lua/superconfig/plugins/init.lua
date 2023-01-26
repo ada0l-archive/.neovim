@@ -18,19 +18,13 @@ require('packer').startup(function(use)
   })
 
   -- nice look
-  -- use({
-  --   'ellisonleao/gruvbox.nvim',
-  --   config = function()
-  --     require('superconfig.plugins.gruvbox')
-  --   end,
-  -- })
-
   use({
-    'olimorris/onedarkpro.nvim',
+    'ellisonleao/gruvbox.nvim',
     config = function()
-      require('superconfig.plugins.onedarkpro')
+      require('superconfig.plugins.gruvbox')
     end,
   })
+
   use {
     "utilyre/barbecue.nvim",
     requires = {
@@ -68,10 +62,6 @@ require('packer').startup(function(use)
     end,
   })
 
-  use({
-    'nvim-lua/plenary.nvim'
-  })
-
   -- git column signs
   use({
     'lewis6991/gitsigns.nvim',
@@ -79,9 +69,9 @@ require('packer').startup(function(use)
       'nvim-lua/plenary.nvim'
     },
     config = function()
+      -- require('gitsigns').setup()
       require('superconfig.plugins.gitsigns')
     end,
-    opt = true,
   })
 
   -- filemanager
@@ -115,6 +105,7 @@ require('packer').startup(function(use)
     requires = {
       'nvim-lua/plenary.nvim',
     },
+    tag='nvim-0.6',
     config = function()
       require('superconfig.plugins.telescope')
     end,
@@ -173,18 +164,11 @@ require('packer').startup(function(use)
     event = 'InsertEnter',
   })
 
-  -- debug
-  use({
-    'sakhnik/nvim-gdb',
-    config = function()
-      require('superconfig.plugins.gdb')
-    end
-  })
-
   -- lang/syntax stuff
   use({
     'nvim-treesitter/nvim-treesitter',
     run = ':TSUpdate',
+    tag='v0.8.1',
     config = function()
       require('superconfig.plugins.treesitter')
     end

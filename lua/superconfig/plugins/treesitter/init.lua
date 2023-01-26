@@ -4,8 +4,9 @@ require('nvim-treesitter.configs').setup {
         "go", "html", "javascript", "json", "latex", "lua", "make",
         "markdown", "prisma", "python", "scss", "vim", "sql"
     },
+    compilers = { "clang" },
     install = {
-      prefer_git= true
+      prefer_git= false
     },
     auto_install = true,
     highlight = {

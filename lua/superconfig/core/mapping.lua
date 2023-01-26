@@ -70,13 +70,15 @@ map('n', '<c-y>', '5<c-y>', {})
 map('v', '<', '<gv', {})
 map('v', '>', '>gv', {})
 
+-- switch language
+map('i', '<c-l>', '<c-^>')
+map('n', '<c-l>', '<c-^>')
 
 -- Move visual block
 vim.cmd[[
 vnoremap <A-j> :m '>+1<CR>gv=gv
 vnoremap <A-k> :m '<-2<CR>gv=gv
 ]]
-
 
 vim.cmd[[
 cno $h e ~/

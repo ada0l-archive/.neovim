@@ -20,6 +20,7 @@ require('nvim-tree').setup({
       "node_modules",
       ".cache",
       "__pycache__",
+      ".null-ls*"
     },
   }
 })
