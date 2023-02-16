@@ -1,4 +1,4 @@
-vim.cmd[[
+vim.cmd [[
 if exists('g:neovide')
   let g:neovide_refresh_rate=70
   let g:neovide_scroll_animation_length = 0.3

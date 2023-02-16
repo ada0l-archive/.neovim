@@ -12,7 +12,7 @@ function M.map(mode, lhs, rhs, opts)
   if opts then
     options = M.merge(options, opts)
   end
-  vim.api.nvim_set_keymap(mode, lhs, rhs, options)
+  vim.keymap.set(mode, lhs, rhs, options)
 end
 
 function M.buf_map(bufnr, mode, lhs, rhs, opts)
@@ -38,6 +38,17 @@ end
 function M.set_options(options)
   for key, value in pairs(options) do
     vim.opt[key] = value
+  end
+end
+
+function M.get_python_venv()
+  local cwd = vim.fn.getcwd()
+  if vim.fn.executable(cwd .. '/venv/bin/python') == 1 then
+    return cwd .. '/venv/bin/python'
+  elseif vim.fn.executable(cwd .. '/.venv/bin/python') == 1 then
+    return cwd .. '/.venv/bin/python'
+  else
+    return '/bin/python3'
   end
 end
 

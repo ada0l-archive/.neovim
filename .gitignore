@@ -5,3 +5,4 @@ init_old1.lua
 oldoldold
 *.json
 *.html
+py_venv/

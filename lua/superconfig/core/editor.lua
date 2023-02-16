@@ -6,33 +6,33 @@ local utils = require('superconfig.utils')
 local set_options = utils.set_options
 
 local ignore_files = {
-    '*.aux', '*.toc', '*.o', '*.obj', '*.dll', '*.jar',
-    '*.pyc', '__pycache__', '*.rbc', '*.class',
+  '*.aux', '*.toc', '*.o', '*.obj', '*.dll', '*.jar',
+  '*.pyc', '__pycache__', '*.rbc', '*.class',
 
-    '*.ai', '*.bmp', '*.gif', '*.ico', '*.jpg', '*.jpeg', '*.png',
-    '*.psd', '*.webp', '*.avi', '*.m4a', '*.mp3', '*.oga', '*.ogg',
-    '*.wav', '*.webm', '*.eot', '*.otf', '*.ttf', '*.woff', '*.doc',
-    '*.pdf',
-    '.null-ls*',
+  '*.ai', '*.bmp', '*.gif', '*.ico', '*.jpg', '*.jpeg', '*.png',
+  '*.psd', '*.webp', '*.avi', '*.m4a', '*.mp3', '*.oga', '*.ogg',
+  '*.wav', '*.webm', '*.eot', '*.otf', '*.ttf', '*.woff', '*.doc',
+  '*.pdf',
+  '.null-ls*',
 
-    'obj', 'bin',
+  'obj', 'bin',
 
-    '*.zip', '*.tar.gz', '*.tar.bz2', '*.rar', '*.tar.xz',
-    '*.*~', '*~ ', '*.swp', '.lock', '.DS_Store', 'tags.lock',
+  '*.zip', '*.tar.gz', '*.tar.bz2', '*.rar', '*.tar.xz',
+  '*.*~', '*~ ', '*.swp', '.lock', '.DS_Store', 'tags.lock',
 
-    '.git',
-    '.idea',
-    'venv',
-    '.svn',
+  '.git',
+  '.idea',
+  'venv',
+  '.svn',
 
-    '*.exe',
-    'node_modules'
+  '*.exe',
+  'node_modules'
 }
 
 g.mapleader = "\\"
 
 -- default language
-cmd[[ language en_US ]]
+-- cmd[[ language en_US ]]
 
 set_options({
   fileformat = "unix",
@@ -77,7 +77,7 @@ set_options({
   updatetime = 100,
   ttyfast = true,
   -- visual
-  so=7,
+  so = 7,
   ruler = true,
   number = true,
   relativenumber = true,
@@ -102,17 +102,17 @@ set_options({
 -- disable :intro startup screen,
 opt.shortmess:append 'I'
 
-cmd[[set iminsert=0 ]]
+cmd [[set iminsert=0 ]]
 
 -- spell
-cmd[[ autocmd FileType markdown setlocal spell spelllang=en_us,ru ]]
+cmd [[ autocmd FileType markdown setlocal spell spelllang=en_us,ru ]]
 
 -- 2 spaces for js, ts, etc.
 cmd([[autocmd FileType lua,json,typescript,javascript,vue setlocal shiftwidth=2 tabstop=2 softtabstop=2]])
 cmd([[autocmd BufEnter *.bnf setlocal ft=enbf]])
 
 -- delete trailing whitespace
-cmd[[autocmd BufWritePre * :%s/\s\+$//e]]
+cmd [[autocmd BufWritePre * :%s/\s\+$//e]]
 
 -- visual
-cmd[[ syntax on ]]
+cmd [[ syntax on ]]

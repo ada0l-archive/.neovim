@@ -1,22 +1,11 @@
 local utils = require('superconfig.utils')
 local map = utils.map
 
-plugins_with_mapping = {
-  'hop',
-  'nvim-tree',
-  'telescope',
-  'vista'
-}
-
-for _, plugin in ipairs(plugins_with_mapping) do
-  require('superconfig.plugins.' .. plugin .. '.mapping').init()
-end
-
 -- open init.lua
-map('n', '<leader><leader>o', ':tabnew ~/AppData/Local/nvim/init.lua<CR>', {})
+map('n', '<leader><leader>o', ':tabnew ~/.config/nvim/init.lua<CR>', {})
 
 -- source init.lua
-map('n', '<leader><leader>s', ':source ~/AppData/Local/nvim/init.lua<CR>', {})
+map('n', '<leader><leader>s', ':source ~/.config/nvim/init.lua<CR>', {})
 
 -- scrolling with search
 map('n', 'n', 'nzzzv', {})
@@ -75,14 +64,13 @@ map('i', '<c-l>', '<c-^>')
 map('n', '<c-l>', '<c-^>')
 
 -- Move visual block
-vim.cmd[[
+vim.cmd [[
 vnoremap <A-j> :m '>+1<CR>gv=gv
 vnoremap <A-k> :m '<-2<CR>gv=gv
 ]]
 
-vim.cmd[[
+vim.cmd [[
 cno $h e ~/
-cno $ttp cd D:/univer/5_semester/tiny-tiny-pascal/<CR>
 
 cnoremap <c-P> <up>
 cnoremap <c-N> <down>

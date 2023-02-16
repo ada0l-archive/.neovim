@@ -1,6 +1,6 @@
 sections = {
   lualine_a = {
-    {'filetype', icon_only = true},
+    { 'filetype', icon_only = true },
     {
       'filename',
       path = 0,
@@ -36,15 +36,15 @@ require('lualine').setup {
     disabled_filetypes = { "NvimTree", "vista" },
     always_divide_middle = true,
     globalstatus = false,
-    component_separators = { left = '', right = ''},
-    section_separators = { left = '', right = ''},
+    component_separators = { left = '', right = '' },
+    section_separators = { left = '', right = '' },
   },
   sections = sections,
   inactive_sections = {
     lualine_a = {},
     lualine_b = {},
-    lualine_c = {'filename'},
-    lualine_x = {'location'},
+    lualine_c = { 'filename' },
+    lualine_x = { 'location' },
     lualine_y = {},
     lualine_z = {}
   },
