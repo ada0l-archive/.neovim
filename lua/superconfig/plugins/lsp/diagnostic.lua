@@ -1,3 +1,5 @@
+local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
+
 return {
   virtual_text = true,
   signs = { active = signs },
@@ -5,7 +7,7 @@ return {
   underline = true,
   severity_sort = true,
   float = {
-    focused = false,
+    --focused = false,
     style = "minimal",
     border = "rounded",
     source = "always",

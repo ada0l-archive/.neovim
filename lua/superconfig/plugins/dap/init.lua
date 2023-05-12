@@ -42,3 +42,5 @@ end
 for _, configuration in ipairs(configurations) do
   dap.configurations[configuration.name] = configuration.settings
 end
+
+require('superconfig.plugins.dap.mapping')

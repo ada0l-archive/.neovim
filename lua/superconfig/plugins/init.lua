@@ -18,11 +18,20 @@ require('packer').startup(function(use)
   })
 
   -- nice look
+  -- use({
+  --   'ellisonleao/gruvbox.nvim',
+  --   config = function()
+  --     require('superconfig.plugins.gruvbox')
+  --   end,
+  -- })
   use({
-    'ellisonleao/gruvbox.nvim',
+    'svrana/neosolarized.nvim',
+    requires = {
+      "tjdevries/colorbuddy.nvim"
+    },
     config = function()
-      require('superconfig.plugins.gruvbox')
-    end,
+      require("superconfig.plugins.neosolarized")
+    end
   })
 
   -- vs code like, position indicator
@@ -56,32 +65,35 @@ require('packer').startup(function(use)
     cmd = 'Git'
   })
 
-  use({
-    'kdheepak/lazygit.nvim',
-    config = function()
-      require('superconfig.plugins.lazygit')
-    end,
-  })
-
   -- git column signs
   use({
     'lewis6991/gitsigns.nvim',
     requires = {
       'nvim-lua/plenary.nvim'
     },
+    after = {
+      'which-key.nvim'
+    },
     config = function()
-      -- require('gitsigns').setup()
       require('superconfig.plugins.gitsigns')
     end,
   })
 
   -- filemanager
   use({
-    'kyazdani42/nvim-tree.lua',
+    'nvim-neo-tree/neo-tree.nvim',
+    tag = "2.59",
+    requires = {
+      "nvim-lua/plenary.nvim",
+      "nvim-tree/nvim-web-devicons",
+      "MunifTanjim/nui.nvim",
+    },
+    after = {
+      'which-key.nvim'
+    },
     config = function()
-      require('superconfig.plugins.nvim-tree')
-      require('superconfig.plugins.nvim-tree.mapping')
-    end,
+      require('superconfig.plugins.neo-tree')
+    end
   })
 
   -- comments
@@ -98,11 +110,20 @@ require('packer').startup(function(use)
     'nvim-telescope/telescope.nvim',
     requires = {
       'nvim-lua/plenary.nvim',
+      {
+        'ahmedkhalf/project.nvim',
+        config = function()
+          require("superconfig.plugins.project")
+        end
+      }
     },
     tag = 'nvim-0.6',
+    after = {
+      'which-key.nvim'
+    },
     config = function()
+      require('telescope').load_extension('projects')
       require('superconfig.plugins.telescope')
-      require('superconfig.plugins.telescope.mapping')
     end,
   })
 
@@ -130,20 +151,32 @@ require('packer').startup(function(use)
       })
       require('superconfig.plugins.lsp')
     end,
+    after = {
+      "mason.nvim"
+    },
     requires = {
       {
         'folke/neodev.nvim',
       },
       {
-        'ray-x/lsp_signature.nvim',
+        "williamboman/mason.nvim",
         config = function()
-          require('superconfig.plugins.lsp-signature')
-        end,
-        after = 'nvim-lspconfig',
+          require("mason").setup()
+        end
       },
-    },
-    event = 'BufWinEnter',
+      {
+        "williamboman/mason-lspconfig.nvim",
+        config = function()
+          require("mason-lspconfig").setup()
+        end
+      },
+      {
+        "ahmedkhalf/project.nvim",
+      },
+      event = 'BufWinEnter',
+    }
   })
+
   use({
     'jose-elias-alvarez/null-ls.nvim',
     config = function()
@@ -159,44 +192,44 @@ require('packer').startup(function(use)
       require('superconfig.plugins.nvim-cmp')
     end,
     requires = {
-      { 'hrsh7th/cmp-nvim-lsp',         after = 'nvim-cmp' },
-      { 'hrsh7th/cmp-buffer',           after = 'nvim-cmp' },
-      { 'hrsh7th/cmp-path',             after = 'nvim-cmp' },
-      { 'hrsh7th/cmp-cmdline',          after = 'nvim-cmp' },
-      { 'hrsh7th/cmp-vsnip',            after = 'nvim-cmp' },
-      { 'hrsh7th/vim-vsnip',            after = 'nvim-cmp' },
-      { 'rafamadriz/friendly-snippets', after = 'nvim-cmp' }
+      { 'hrsh7th/cmp-nvim-lsp',                after = 'nvim-cmp' },
+      { 'hrsh7th/cmp-buffer',                  after = 'nvim-cmp' },
+      { 'hrsh7th/cmp-path',                    after = 'nvim-cmp' },
+      { 'hrsh7th/cmp-cmdline',                 after = 'nvim-cmp' },
+      { 'hrsh7th/cmp-vsnip',                   after = 'nvim-cmp' },
+      { 'hrsh7th/vim-vsnip',                   after = 'nvim-cmp' },
+      { 'hrsh7th/cmp-nvim-lsp-signature-help', after = 'nvim-cmp' },
+      { 'rafamadriz/friendly-snippets',        after = 'nvim-cmp' },
+      { 'onsails/lspkind.nvim' }
     },
-    event = 'InsertEnter',
   })
 
   -- dap
-  use {
-    "rcarriga/nvim-dap-ui",
-    requires = {
-      "mfussenegger/nvim-dap",
-    },
-    config = function()
-      require('superconfig.plugins.dap')
-      require('superconfig.plugins.dap.mapping')
-    end,
-  }
+  -- use {
+  --   "rcarriga/nvim-dap-ui",
+  --   requires = {
+  --     "mfussenegger/nvim-dap",
+  --   },
+  --   config = function()
+  --     require('superconfig.plugins.dap')
+  --   end,
+  -- }
 
-  use {
-    "theHamsta/nvim-dap-virtual-text",
-    requires = {
-      "mfussenegger/nvim-dap",
-    },
-    config = function()
-      require('superconfig.plugins.dap-virtual-text')
-    end,
-  }
+  -- use {
+  --   "theHamsta/nvim-dap-virtual-text",
+  --   requires = {
+  --     "mfussenegger/nvim-dap",
+  --   },
+  --   config = function()
+  --     require('superconfig.plugins.dap-virtual-text')
+  --   end,
+  -- }
 
   -- lang/syntax stuff
   use({
     'nvim-treesitter/nvim-treesitter',
     run = ':TSUpdate',
-    tag = 'v0.8.1',
+    tag = 'v0.9.0',
     config = function()
       require('superconfig.plugins.treesitter')
     end
@@ -207,7 +240,6 @@ require('packer').startup(function(use)
     'liuchengxu/vista.vim',
     config = function()
       require('superconfig.plugins.vista')
-      require('superconfig.plugins.vista.mapping')
     end,
     after = 'nvim-lspconfig'
   })
@@ -218,31 +250,21 @@ require('packer').startup(function(use)
     branch = 'v2', -- optional but strongly recommended
     config = function()
       require('superconfig.plugins.hop')
-      require('superconfig.plugins.hop.mapping')
     end
   })
 
-  -- markdown
+  -- mapping
   use({
-    'davidgranstrom/nvim-markdown-preview',
-    cmd = 'MarkdownPreview'
+    'folke/which-key.nvim',
+    config = function()
+      require("superconfig.plugins.which-key")
+    end
   })
 
   -- python
-  use({
-    'Vimjas/vim-python-pep8-indent',
-    ft = 'py'
-  })
-
+  use({ 'Vimjas/vim-python-pep8-indent' })
   -- javascript
-  use({
-    'jason0x43/vim-js-indent',
-    ft = 'js'
-  })
-
+  use({ 'jason0x43/vim-js-indent', ft = 'javascript' })
   -- html
-  use({
-    'bitfyre/vim-indent-html',
-    ft = 'html'
-  })
+  use({ 'bitfyre/vim-indent-html', ft = 'html' })
 end)

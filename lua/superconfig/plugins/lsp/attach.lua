@@ -1,59 +1,81 @@
 local map = require('superconfig.utils').map
 local function on_attach(client, bufnr)
-  local function buf_set_option(...)
-    vim.api.nvim_buf_set_option(bufnr, ...)
-  end
-
-  -- Enable completion triggered by <c-x><c-o>
-  buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
 
   local capabilities = client.server_capabilities
   local opts = { noremap = true, silent = true }
+  local wk = require("which-key")
 
-  map('n', '<space>e', vim.diagnostic.open_float, opts)
+  local map_dict = {}
+
   map('n', '[d', vim.diagnostic.goto_prev, opts)
   map('n', ']d', vim.diagnostic.goto_next, opts)
-  map('n', '<space>q', vim.diagnostic.setloclist, opts)
+
+
+  map_dict["e"] = {
+    ":lua vim.diagnostic.setloclist()<CR>", "Diagnostic list"
+  }
 
   if capabilities.codeActionProvider then
-    map('n', '<space>ca', vim.lsp.buf.code_action, opts)
+    map_dict["a"] = {
+      ":lua vim.lsp.buf.code_action()<CR>", "Code action"
+    }
   end
 
   if capabilities.declarationProvider then
-    map('n', 'gD', vim.lsp.buf.declaration, opts)
+    map_dict["gD"] = {
+      ":lua vim.lsp.buf.declaration()<CR>", "Declaration"
+    }
   end
 
   if capabilities.definitionProvider then
-    map('n', 'gd', vim.lsp.buf.definition, opts)
+    map_dict["gd"] = {
+      ":lua vim.lsp.buf.definition()<CR>", "Definition"
+    }
   end
 
   if capabilities.hoverProvider then
-    map('n', 'K', vim.lsp.buf.hover, opts)
+    map_dict["k"] = {
+      ":lua vim.lsp.buf.hover()<CR>", "Hover"
+    }
   end
 
   if capabilities.implementationProvider then
-    map('n', 'gi', vim.lsp.buf.implementation, opts)
-  end
-
-  if capabilities.signatureHelpProvider then
-    map('n', '<C-k>', vim.lsp.buf.signature_help, opts)
-  end
-
-  if capabilities.typeDefinitionProvider then
-    map('n', '<space>D', vim.lsp.buf.type_definition, opts)
+    map_dict["gi"] = {
+      ":lua vim.lsp.buf.implementation()<CR>", "Implementation"
+    }
   end
 
   if capabilities.renameProvider then
-    map('n', '<space>rn', vim.lsp.buf.rename, opts)
+    map_dict["r"] = {
+      ":lua vim.lsp.buf.rename()<CR>", "Rename"
+    }
   end
 
-
   if capabilities.referencesProvider then
-    map('n', 'gr', vim.lsp.buf.references, opts)
+    map_dict["gi"] = {
+      ":lua vim.lsp.buf.references()<CR>", "References"
+    }
+  end
+
+  if client.name == "volar" then
+    client.server_capabilities.documentFormattingProvider = false
+    client.server_capabilities.documentRangeFormattingProvider = false
   end
 
   if capabilities.documentFormattingProvider then
-    map('n', '<space>f', function() vim.lsp.buf.format { async = true } end, opts)
+    map_dict["="] = {
+      ":lua vim.lsp.buf.format { async = true }<CR>", "format"
+    }
+    -- if vim.g.ada0l_format_autosave_disabled == nil then
+    --   vim.api.nvim_create_autocmd("BufWritePre", {
+    --     buffer = bufnr,
+    --     callback = function()
+    --       vim.lsp.buf.format { bufnr = bufnr }
+    --     end
+    --   })
+    -- end
   end
+
+  wk.register(map_dict, { prefix = "<leader>" })
 end
 return on_attach

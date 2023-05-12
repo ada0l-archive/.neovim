@@ -1,12 +1,6 @@
 local utils = require('superconfig.utils')
 local map = utils.map
 
--- open init.lua
-map('n', '<leader><leader>o', ':tabnew ~/.config/nvim/init.lua<CR>', {})
-
--- source init.lua
-map('n', '<leader><leader>s', ':source ~/.config/nvim/init.lua<CR>', {})
-
 -- scrolling with search
 map('n', 'n', 'nzzzv', {})
 map('n', 'N', 'Nzzzv', {})
@@ -15,8 +9,6 @@ map('n', 'N', 'Nzzzv', {})
 --map('t', '<ESC>', '<C-\\><C-n>', {})
 map('t', '<c-K>', '<up>', {})
 map('t', '<c-J>', '<down>', {})
-map('n', '<leader>t', ':terminal<CR>', {})
-map('n', '<leader>T', ':tabnew<CR>:terminal<CR>', {})
 
 -- disable highlight
 map('n', '<leader><cr>', ':noh<cr>', {})
@@ -26,10 +18,6 @@ map('n', '<tab>', '', {})
 
 -- cd
 map('n', '<leader>cd', ':cd %:p:h<cr>:pwd<cr>', {})
-
--- split
-map('n', '<bar>', ':vsplit<CR>', {}) -- that mean |
-map('n', '_', ':split<CR>', {})
 
 -- save, quit
 map('n', '<leader>q', ':q<CR>', {})
@@ -43,14 +31,7 @@ map('n', '<leader>4', '4gt', {})
 map('n', '<leader>5', '5gt', {})
 map('n', '<leader>6', '6gt', {})
 
--- navigation between buffers
-map('n', '<c-H>', ':bp<cr>', {})
-map('n', '<c-L>', ':bn<cr>', {})
-map('n', '<leader>bd', ':bd<cr>', {})
-map('n', '<leader>bad', ':bufdo bd<cr>', {})
-map('n', '<leader>bod', ':%bd|edit#|bd#<cr>', {})
-
-map('n', '<leader><tab>', ':e %:p:s,.h$,.X123X,:s,.cpp$,.h,:s,.X123X$,.cpp,<CR>')
+-- map('n', '<leader><tab>', ':e %:p:s,.h$,.X123X,:s,.cpp$,.h,:s,.X123X$,.cpp,<CR>')
 
 map('n', '<c-e>', '5<c-e>', {})
 map('n', '<c-y>', '5<c-y>', {})

@@ -1,4 +1,3 @@
-local cmd = vim.cmd
 local opt = vim.opt
 local g = vim.g
 
@@ -29,7 +28,7 @@ local ignore_files = {
   'node_modules'
 }
 
-g.mapleader = "\\"
+g.mapleader = " "
 
 -- default language
 -- cmd[[ language en_US ]]
@@ -55,7 +54,6 @@ set_options({
   -- Disable bell
   errorbells = false,
   visualbell = true,
-  timeoutlen = 500,
   -- Search
   hlsearch = true,
   incsearch = true,
@@ -70,6 +68,7 @@ set_options({
   -- autocomplete
   completeopt = { 'menu', 'menuone', 'noselect' },
   shortmess = opt.shortmess + { c = true },
+  pumheight=10,
   -- perfomance
   redrawtime = 1500,
   timeoutlen = 500,
@@ -94,25 +93,14 @@ set_options({
     precedes = '…',
     trail = '·',
   },
-  -- russian layout
-  keymap = 'russian-jcukenwin',
-  iminsert = 0,
+  exrc = true
 })
+
+-- colors
+vim.cmd [[
+set t_Co=256
+set termguicolors
+]]
 
 -- disable :intro startup screen,
 opt.shortmess:append 'I'
-
-cmd [[set iminsert=0 ]]
-
--- spell
-cmd [[ autocmd FileType markdown setlocal spell spelllang=en_us,ru ]]
-
--- 2 spaces for js, ts, etc.
-cmd([[autocmd FileType lua,json,typescript,javascript,vue setlocal shiftwidth=2 tabstop=2 softtabstop=2]])
-cmd([[autocmd BufEnter *.bnf setlocal ft=enbf]])
-
--- delete trailing whitespace
-cmd [[autocmd BufWritePre * :%s/\s\+$//e]]
-
--- visual
-cmd [[ syntax on ]]
