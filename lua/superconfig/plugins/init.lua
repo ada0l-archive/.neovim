@@ -261,6 +261,13 @@ require('packer').startup(function(use)
     end
   })
 
+  use({
+    'kylechui/nvim-surround',
+    config = function()
+      require("nvim-surround").setup({})
+    end
+  })
+
   -- python
   use({ 'Vimjas/vim-python-pep8-indent' })
   -- javascript
