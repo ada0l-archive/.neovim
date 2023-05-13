@@ -48,6 +48,16 @@ require('packer').startup(function(use)
   }
 
   use({
+    "epwalsh/obsidian.nvim",
+    after = {
+      'which-key.nvim'
+    },
+    config = function()
+      require("superconfig.plugins.obsidian")
+    end
+  })
+
+  use({
     'nvim-lualine/lualine.nvim',
     requires = {
       'kyazdani42/nvim-web-devicons',
