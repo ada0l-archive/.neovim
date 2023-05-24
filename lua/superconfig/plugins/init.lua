@@ -1,152 +1,17 @@
-local cmd = vim.cmd
-local install_path = vim.fn.stdpath 'data' .. '/site/pack/packer/start/packer.nvim'
-
-if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
-  vim.fn.execute('!git clone https://github.com/wbthomason/packer.nvim ' .. install_path)
+local ensure_packer = function()
+  local fn = vim.fn
+  local install_path = fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
+  if fn.empty(fn.glob(install_path)) > 0 then
+    fn.system({ 'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path })
+    vim.cmd [[packadd packer.nvim]]
+    return true
+  end
+  return false
 end
 
-cmd [[
-augroup Packer
-autocmd!
-autocmd BufWritePost init.lua PackerCompile
-augroup end
-]]
+local packer_bootstrap = ensure_packer()
 
-require('packer').startup(function(use)
-  use({
-    'wbthomason/packer.nvim',
-  })
-
-  -- nice look
-  -- use({
-  --   'ellisonleao/gruvbox.nvim',
-  --   config = function()
-  --     require('superconfig.plugins.gruvbox')
-  --   end,
-  -- })
-  use({
-    'svrana/neosolarized.nvim',
-    requires = {
-      "tjdevries/colorbuddy.nvim"
-    },
-    config = function()
-      require("superconfig.plugins.neosolarized")
-    end
-  })
-
-  -- vs code like, position indicator
-  use {
-    "utilyre/barbecue.nvim",
-    requires = {
-      "neovim/nvim-lspconfig",
-      "smiteshp/nvim-navic",
-      "kyazdani42/nvim-web-devicons", -- optional
-    },
-    config = function()
-      require("barbecue").setup()
-    end,
-  }
-
-  use({
-    "epwalsh/obsidian.nvim",
-    after = {
-      'which-key.nvim'
-    },
-    config = function()
-      require("superconfig.plugins.obsidian")
-    end
-  })
-
-  use({
-    'nvim-lualine/lualine.nvim',
-    requires = {
-      'kyazdani42/nvim-web-devicons',
-      opt = true
-    },
-    config = function()
-      require('superconfig.plugins.lualine')
-    end,
-  })
-
-  --git
-  use({
-    'tpope/vim-fugitive',
-    opt = true,
-    cmd = 'Git'
-  })
-
-  -- git column signs
-  use({
-    'lewis6991/gitsigns.nvim',
-    requires = {
-      'nvim-lua/plenary.nvim'
-    },
-    after = {
-      'which-key.nvim'
-    },
-    config = function()
-      require('superconfig.plugins.gitsigns')
-    end,
-  })
-
-  -- filemanager
-  use({
-    'nvim-neo-tree/neo-tree.nvim',
-    tag = "2.59",
-    requires = {
-      "nvim-lua/plenary.nvim",
-      "nvim-tree/nvim-web-devicons",
-      "MunifTanjim/nui.nvim",
-    },
-    after = {
-      'which-key.nvim'
-    },
-    config = function()
-      require('superconfig.plugins.neo-tree')
-    end
-  })
-
-  -- comments
-  use({
-    'numToStr/Comment.nvim',
-    config = function()
-      require('Comment').setup()
-    end,
-    event = 'BufWinEnter',
-  })
-
-  -- search
-  use({
-    'nvim-telescope/telescope.nvim',
-    requires = {
-      'nvim-lua/plenary.nvim',
-      {
-        'ahmedkhalf/project.nvim',
-        config = function()
-          require("superconfig.plugins.project")
-        end
-      }
-    },
-    tag = 'nvim-0.6',
-    after = {
-      'which-key.nvim'
-    },
-    config = function()
-      require('telescope').load_extension('projects')
-      require('superconfig.plugins.telescope')
-    end,
-  })
-
-  -- focus
-  use({
-    'beauwilliams/focus.nvim',
-    config = function()
-      require('superconfig.plugins.focus')
-    end,
-    event = 'BufWinEnter',
-  })
-
-  -- lsp
+local function lsp(use)
   use({
     'neovim/nvim-lspconfig',
     config = function()
@@ -186,7 +51,6 @@ require('packer').startup(function(use)
       event = 'BufWinEnter',
     }
   })
-
   use({
     'jose-elias-alvarez/null-ls.nvim',
     config = function()
@@ -194,8 +58,77 @@ require('packer').startup(function(use)
     end,
     after = 'nvim-lspconfig',
   })
+  -- use({
+  --   'mrded/nvim-lsp-notify',
+  --   config = function()
+  --     require('lsp-notify').setup({
+  --     })
+  --   end,
+  -- })
+  use({
+    'j-hui/fidget.nvim',
+    config = function()
+      require "fidget".setup {}
+    end
+  })
+end
 
-  -- lsp-cmp
+local function debug(use)
+  use {
+    "rcarriga/nvim-dap-ui",
+    requires = {
+      "mfussenegger/nvim-dap",
+    },
+    config = function()
+      require('superconfig.plugins.dap')
+    end,
+  }
+
+  use {
+    "theHamsta/nvim-dap-virtual-text",
+    requires = {
+      "mfussenegger/nvim-dap",
+    },
+    config = function()
+      require('superconfig.plugins.dap-virtual-text')
+    end,
+  }
+end
+
+local function ui(use)
+  -- nice look
+  -- use({
+  --   'ellisonleao/gruvbox.nvim',
+  --   config = function()
+  --     require('superconfig.plugins.gruvbox')
+  --   end,
+  -- })
+  use({
+    "catppuccin/nvim",
+    as = "catppuccin",
+    config = function()
+      require('superconfig.plugins.catppuccin')
+    end
+  })
+  use({
+    'nvim-lualine/lualine.nvim',
+    requires = {
+      'kyazdani42/nvim-web-devicons',
+      opt = true
+    },
+    config = function()
+      require('superconfig.plugins.lualine')
+    end,
+  })
+  use({
+    "folke/zen-mode.nvim",
+    config = function()
+      require('superconfig.plugins.zen')
+    end
+  })
+end
+
+local function autocomplete(use)
   use({
     'hrsh7th/nvim-cmp',
     config = function()
@@ -213,29 +146,89 @@ require('packer').startup(function(use)
       { 'onsails/lspkind.nvim' }
     },
   })
+end
 
-  -- dap
-  -- use {
-  --   "rcarriga/nvim-dap-ui",
-  --   requires = {
-  --     "mfussenegger/nvim-dap",
-  --   },
+local function navigation(use)
+  use({
+    'nvim-neo-tree/neo-tree.nvim',
+    tag = "2.59",
+    requires = {
+      "nvim-lua/plenary.nvim",
+      "nvim-tree/nvim-web-devicons",
+      "MunifTanjim/nui.nvim",
+    },
+    after = {
+      'which-key.nvim'
+    },
+    cmd = { 'NeoTreeFloatToggle', 'NeoTreeShow' },
+    config = function()
+      require('superconfig.plugins.neo-tree')
+    end
+  })
+  use({
+    'ahmedkhalf/project.nvim',
+    config = function()
+      require("superconfig.plugins.project")
+    end
+  })
+  use({
+    'nvim-telescope/telescope.nvim',
+    requires = {
+      'nvim-lua/plenary.nvim',
+    },
+    tag = 'nvim-0.6',
+    after = {
+      'which-key.nvim',
+      "project.nvim"
+    },
+    config = function()
+      require('telescope').load_extension('projects')
+      require('superconfig.plugins.telescope')
+    end,
+  })
+  -- use({
+  --   'liuchengxu/vista.vim',
   --   config = function()
-  --     require('superconfig.plugins.dap')
+  --     require('superconfig.plugins.vista')
   --   end,
-  -- }
+  --   after = 'nvim-lspconfig'
+  -- })
+  use({
+    'stevearc/aerial.nvim',
+    config = function()
+      require("superconfig.plugins.aerial")
+    end
+  })
+  use({
+    'phaazon/hop.nvim',
+    branch = 'v2',
+    config = function()
+      require('superconfig.plugins.hop')
+    end
+  })
+end
 
-  -- use {
-  --   "theHamsta/nvim-dap-virtual-text",
-  --   requires = {
-  --     "mfussenegger/nvim-dap",
-  --   },
-  --   config = function()
-  --     require('superconfig.plugins.dap-virtual-text')
-  --   end,
-  -- }
+local function git(use)
+  use({
+    'tpope/vim-fugitive',
+    opt = true,
+    cmd = 'Git'
+  })
+  use({
+    'lewis6991/gitsigns.nvim',
+    requires = {
+      'nvim-lua/plenary.nvim'
+    },
+    after = {
+      'which-key.nvim'
+    },
+    config = function()
+      require('superconfig.plugins.gitsigns')
+    end,
+  })
+end
 
-  -- lang/syntax stuff
+local function syntax(use)
   use({
     'nvim-treesitter/nvim-treesitter',
     run = ':TSUpdate',
@@ -244,44 +237,86 @@ require('packer').startup(function(use)
       require('superconfig.plugins.treesitter')
     end
   })
-
-  -- tags
-  use({
-    'liuchengxu/vista.vim',
-    config = function()
-      require('superconfig.plugins.vista')
-    end,
-    after = 'nvim-lspconfig'
-  })
-
-  -- fast motion
-  use({
-    'phaazon/hop.nvim',
-    branch = 'v2', -- optional but strongly recommended
-    config = function()
-      require('superconfig.plugins.hop')
-    end
-  })
-
-  -- mapping
-  use({
-    'folke/which-key.nvim',
-    config = function()
-      require("superconfig.plugins.which-key")
-    end
-  })
-
   use({
     'kylechui/nvim-surround',
     config = function()
       require("nvim-surround").setup({})
     end
   })
+end
 
-  -- python
+local function keybinding(use)
+  use({
+    'folke/which-key.nvim',
+    config = function()
+      require("superconfig.plugins.which-key")
+    end
+  })
+end
+
+local function split_and_window(use)
+  use({
+    'beauwilliams/focus.nvim',
+    config = function()
+      require('superconfig.plugins.focus')
+    end,
+    event = 'BufWinEnter',
+  })
+end
+
+local function note_taking(use)
+  use({
+    "epwalsh/obsidian.nvim",
+    after = {
+      'which-key.nvim'
+    },
+    config = function()
+      require("superconfig.plugins.obsidian")
+    end
+  })
+end
+
+local function editing_support(use)
+  use({
+    'numToStr/Comment.nvim',
+    config = function()
+      require('Comment').setup()
+    end,
+    event = 'BufWinEnter',
+  })
+  use({
+    "jiangmiao/auto-pairs"
+  })
+  use({
+    "gpanders/editorconfig.nvim"
+  })
+end
+
+local function indenting(use)
   use({ 'Vimjas/vim-python-pep8-indent' })
-  -- javascript
   use({ 'jason0x43/vim-js-indent', ft = 'javascript' })
-  -- html
   use({ 'bitfyre/vim-indent-html', ft = 'html' })
+end
+
+local function util(use)
+  use({ 'dstein64/vim-startuptime' })
+end
+
+require('packer').startup(function(use)
+  use({
+    'wbthomason/packer.nvim',
+  })
+
+  local components = {
+    lsp, ui, autocomplete, navigation, git, syntax, keybinding,
+    split_and_window, note_taking, editing_support, indenting, util
+  }
+
+  for _, component in ipairs(components) do
+    component(use)
+  end
+
+  if packer_bootstrap then
+    require('packer').sync()
+  end
 end)

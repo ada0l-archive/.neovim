@@ -17,6 +17,14 @@ local M = {
     }
   },
   {
+    name = "csharp_ls",
+    settings = {}
+  },
+  -- {
+  --   name = "omnisharp",
+  --   settings = {}
+  -- },
+  {
     name = 'lua_ls',
     settings = {
       Lua = {

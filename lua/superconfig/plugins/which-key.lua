@@ -1,15 +1,24 @@
 local wk = require("which-key")
 
+wk.register({
+  ["<leader>"] = {
+    name = "Tree",
+    n = { ":NeoTreeFloatToggle<CR>", "Tree float toggle" },
+    N = { ":NeoTreeShow<CR>", "Tree show toggle" },
+  }
+})
+
+
 wk.setup({
   layout = {
     height = { min = 10, max = 25 }, -- min and max height of the columns
     width = { min = 20, max = 50 },  -- min and max width of the columns
+    align = "left",
   },
   triggers_nowait = {
     "<leader>h",
   },
   spacing = 2,
-  align = "left",
 })
 
 wk.register({
@@ -55,11 +64,11 @@ wk.register({
   }
 })
 
-wk.register({
-  ["<leader>"] = {
-    name = "Packer",
-    ps = { ":PackerSync<CR>", "Packer sync" },
-    pS = { ":PackerStatus<CR>", "Packer status" },
-    pc = { ":PackerCompile<CR>", "Packer compile" },
-  }
-})
+-- wk.register({
+--   ["<leader>"] = {
+--     name = "Packer",
+--     ps = { ":PackerSync<CR>", "Packer sync" },
+--     pS = { ":PackerStatus<CR>", "Packer status" },
+--     pc = { ":PackerCompile<CR>", "Packer compile" },
+--   }
+-- })

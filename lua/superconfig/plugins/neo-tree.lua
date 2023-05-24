@@ -1,14 +1,7 @@
 local wk = require("which-key")
 
-wk.register({
-  ["<leader>"] = {
-    name = "Tree",
-    n = { ":NeoTreeFloatToggle<CR>", "Tree float toggle" },
-    N = { ":NeoTreeShow<CR>", "Tree show toggle" },
-  }
-})
-
 require("neo-tree").setup({
+  popup_border_style = 'single',
   filesystem = {
     filtered_items = {
       visible = false, -- when true, they will just be displayed differently than normal items

@@ -6,10 +6,10 @@ wk.register({
   ["<leader>"] = {
     name = "Telescope",
     tt = { ":Telescope<CR>", "Telescope" },
-    tf = { ":Telescope find_files<CR>", "Files" },
-    tb = { ":Telescope buffers<CR>", "Buffers" },
-    tg = { ":Telescope git_branches<CR>", "Branches" },
-    tp = { ":Telescope projects<CR>", "Projects" },
+    f = { ":Telescope find_files<CR>", "Files" },
+    ["/"] = { ":Telescope live_grep<CR>", "Live grep" },
+    b = { ":Telescope buffers<CR>", "Buffers" },
+    p = { ":Telescope projects<CR>", "Projects" },
   }
 })
 

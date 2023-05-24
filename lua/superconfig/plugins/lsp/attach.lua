@@ -57,7 +57,7 @@ local function on_attach(client, bufnr)
     }
   end
 
-  if client.name == "volar" then
+  if client.name == "volar" or client.name == "tsserver" then
     client.server_capabilities.documentFormattingProvider = false
     client.server_capabilities.documentRangeFormattingProvider = false
   end
