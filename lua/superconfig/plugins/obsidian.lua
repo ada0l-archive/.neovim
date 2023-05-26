@@ -1,6 +1,19 @@
 return {
   {
     "epwalsh/obsidian.nvim",
+    lazy = true,
+    cmd = {
+      "ObsidianBacklinks",
+      "ObsidianToday",
+      "ObsidianYesterday",
+      "ObsidianOpen",
+      "ObsidianNew",
+      "ObsidianSearch",
+      "ObsidianQuickSwitch",
+      "ObsidianLink",
+      "ObsidianFollowLink",
+      "ObsidianTemplate",
+    },
     opts = {
       dir = "~/Documents/SyncObsidian/",
       disable_frontmatter = true,
@@ -30,26 +43,10 @@ return {
           end
         end
         return tostring(suffix)
-      end
+      end,
     },
     config = function(_, opts)
       require("obsidian").setup(opts)
-      local wk = require("which-key")
-      wk.register({
-        ["o"] = {
-          ["b"] = { ":ObsidianBacklinks<CR>", "ObsidianBacklinks" },
-          ["t"] = { ":ObsidianToday<CR>", "ObsidianToday" },
-          ["y"] = { ":ObsidianYesterday<CR>", "ObsidianYesterday" },
-          ["o"] = { ":ObsidianOpen<CR>", "ObsidianOpen" },
-          ["n"] = { ":ObsidianNew<CR>", "ObsidianNew" },
-          ["s"] = { ":ObsidianSearch<CR>", "ObsidianSearch" },
-          ["q"] = { ":ObsidianQuickSwitch<CR>", "ObsidianQuickSwitch" },
-          ["l"] = { ":ObsidianLink<CR>", "ObsidianLink" },
-          ["f"] = { ":ObsidianFollowLink<CR>", "ObsidianFollowLink" },
-          ["i"] = { ":ObsidianTemplate<CR>", "ObsidianTemplate" },
-        }
-      }, { prefix = "<leader>" })
-    end
-  }
+    end,
+  },
 }
-

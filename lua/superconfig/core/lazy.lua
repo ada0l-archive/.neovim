@@ -18,10 +18,9 @@ if not ok then
   return
 end
 
-
 lazy.setup({
   spec = {
-    { import = 'superconfig.plugins' }
+    { import = "superconfig.plugins" },
   },
   install = { colorscheme = { "catppuccin" } },
   performance = {
@@ -40,3 +39,5 @@ lazy.setup({
     },
   },
 })
+
+require("superconfig.core.utils").map("n", "<leader>L", lazy.show)

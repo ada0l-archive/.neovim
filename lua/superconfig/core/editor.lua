@@ -1,31 +1,67 @@
 local opt = vim.opt
 local g = vim.g
 
-local utils = require('superconfig.core.utils')
+local utils = require("superconfig.core.utils")
 local set_options = utils.set_options
 
 local ignore_files = {
-  '*.aux', '*.toc', '*.o', '*.obj', '*.dll', '*.jar',
-  '*.pyc', '__pycache__', '*.rbc', '*.class',
+  "*.aux",
+  "*.toc",
+  "*.o",
+  "*.obj",
+  "*.dll",
+  "*.jar",
+  "*.pyc",
+  "__pycache__",
+  "*.rbc",
+  "*.class",
 
-  '*.ai', '*.bmp', '*.gif', '*.ico', '*.jpg', '*.jpeg', '*.png',
-  '*.psd', '*.webp', '*.avi', '*.m4a', '*.mp3', '*.oga', '*.ogg',
-  '*.wav', '*.webm', '*.eot', '*.otf', '*.ttf', '*.woff', '*.doc',
-  '*.pdf',
-  '.null-ls*',
+  "*.ai",
+  "*.bmp",
+  "*.gif",
+  "*.ico",
+  "*.jpg",
+  "*.jpeg",
+  "*.png",
+  "*.psd",
+  "*.webp",
+  "*.avi",
+  "*.m4a",
+  "*.mp3",
+  "*.oga",
+  "*.ogg",
+  "*.wav",
+  "*.webm",
+  "*.eot",
+  "*.otf",
+  "*.ttf",
+  "*.woff",
+  "*.doc",
+  "*.pdf",
+  ".null-ls*",
 
-  'obj', 'bin',
+  "obj",
+  "bin",
 
-  '*.zip', '*.tar.gz', '*.tar.bz2', '*.rar', '*.tar.xz',
-  '*.*~', '*~ ', '*.swp', '.lock', '.DS_Store', 'tags.lock',
+  "*.zip",
+  "*.tar.gz",
+  "*.tar.bz2",
+  "*.rar",
+  "*.tar.xz",
+  "*.*~",
+  "*~ ",
+  "*.swp",
+  ".lock",
+  ".DS_Store",
+  "tags.lock",
 
-  '.git',
-  '.idea',
-  'venv',
-  '.svn',
+  ".git",
+  ".idea",
+  "venv",
+  ".svn",
 
-  '*.exe',
-  'node_modules'
+  "*.exe",
+  "node_modules",
 }
 -- default language
 -- cmd[[ language en_US ]]
@@ -63,9 +99,9 @@ set_options({
   -- auto reloading file
   autoread = true,
   -- autocomplete
-  completeopt = { 'menu', 'menuone', 'noselect' },
+  completeopt = { "menu", "menuone", "noselect" },
   shortmess = opt.shortmess + { c = true },
-  pumheight=10,
+  pumheight = 10,
   -- perfomance
   redrawtime = 1500,
   timeoutlen = 500,
@@ -84,20 +120,20 @@ set_options({
   -- invisible characters,
   list = true,
   listchars = {
-    eol = ' ',
-    tab = '→ ',
-    extends = '…',
-    precedes = '…',
-    trail = '·',
+    eol = " ",
+    tab = "→ ",
+    extends = "…",
+    precedes = "…",
+    trail = "·",
   },
-  exrc = true
+  exrc = true,
 })
 
 -- colors
-vim.cmd [[
+vim.cmd([[
 set t_Co=256
 set termguicolors
-]]
+]])
 
 -- disable :intro startup screen,
-opt.shortmess:append 'I'
+opt.shortmess:append("I")

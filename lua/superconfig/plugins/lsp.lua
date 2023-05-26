@@ -1,26 +1,46 @@
 return {
   {
-    'neovim/nvim-lspconfig',
+    "neovim/nvim-lspconfig",
+    lazy = true,
+    event = { "BufRead", "BufWinEnter", "BufNewFile" },
     dependencies = {
-      { 'folke/neodev.nvim', opts = {} },
-      'williamboman/mason.nvim',
-      'williamboman/mason-lspconfig.nvim',
-      'ahmedkhalf/project.nvim',
-      'j-hui/fidget.nvim',
+      { "folke/neodev.nvim", opts = {} },
+      "williamboman/mason.nvim",
+      "williamboman/mason-lspconfig.nvim",
+      "ahmedkhalf/project.nvim",
+      "j-hui/fidget.nvim",
     },
     config = function(_, opts)
-      require('mason').setup()
-      require('mason-lspconfig').setup()
-      require('neodev').setup()
-      require("fidget").setup({ window = { blend = 0, }, })
+      require("mason").setup()
+      require("mason-lspconfig").setup()
+      require("neodev").setup()
+      require("fidget").setup({ window = { blend = 0 } })
 
-      local signs = { Error = ' ', Warn = ' ', Hint = ' ', Info = ' ' }
+      local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
       for type, icon in pairs(signs) do
-        local hl = 'DiagnosticSign' .. type
+        local hl = "DiagnosticSign" .. type
         vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
       end
+      -- show code of diagnostic
+      local function fmt(diagnostic)
+        if diagnostic.code then
+          return ("[%s] %s"):format(diagnostic.code, diagnostic.message)
+        end
+        return diagnostic.message
+      end
 
-      local on_attach = require('superconfig.core.lsp_on_attach')
+      vim.diagnostic.config({
+        virtual_text = {
+          source = "always",
+          format = fmt,
+        },
+        float = {
+          source = "always",
+          format = fmt,
+        },
+      })
+
+      local on_attach = require("superconfig.core.lsp_on_attach")
 
       local servers = opts.servers
 
@@ -41,10 +61,10 @@ return {
         clangd = {
           settings = {
             cmd = {
-              'clangd',
-              '--background-index',
-            }
-          }
+              "clangd",
+              "--background-index",
+            },
+          },
         },
         lua_ls = {
           settings = {
@@ -53,70 +73,62 @@ return {
               root_dir = vim.fn.getcwd(),
               settings = { Lua = {} },
               runtime = {
-                version = 'LuaJIT',
+                version = "LuaJIT",
               },
               diagnostics = {
-                globals = { 'vim' },
+                globals = { "vim" },
               },
               workspace = {
                 library = {
-                  ['/usr/share/nvim/runtime/lua'] = true,
-                  ['/usr/share/nvim/runtime/lua/vim'] = true,
-                  ['/usr/share/nvim/runtime/lua/vim/lsp'] = true,
+                  ["/usr/share/nvim/runtime/lua"] = true,
+                  ["/usr/share/nvim/runtime/lua/vim"] = true,
+                  ["/usr/share/nvim/runtime/lua/vim/lsp"] = true,
                 },
               },
               telemetry = {
                 enable = false,
               },
             },
-          }
+          },
         },
         pyright = {
           settings = {
-            settings = {
-              python = {
-                analysis = {
-                  typeCheckingMode = 'off',
-                  useLibraryCodeForTypes = true,
-                  completeFunctionParens = true,
-                },
+            python = {
+              analysis = {
+                typeCheckingMode = "off",
+                useLibraryCodeForTypes = true,
+                completeFunctionParens = true,
               },
             },
-            before_init = function(_, config)
-              config.settings.python.pythonPath = require('superconfig.core.utils').get_python_venv()
-            end,
-          }
+          },
+          before_init = function(_, config)
+            config.settings.python.pythonPath = require("superconfig.core.utils").get_python_venv()
+          end,
         },
         cssls = {},
         emmet_ls = {},
         volar = {
-          settings = {
-            vetur = {
-              format = {
-                enable = false
-              }
+          init_options = {
+            typescript = {
+              tsdk = "/usr/local/lib/node_modules/typescript/lib",
             },
-            init_options = {
-              typescript = {
-                tsdk = '/usr/local/lib/node_modules/typescript/lib'
-              },
-            },
-            filetypes = { 'vue', }
-          }
+          },
+          filetypes = { "vue" },
         },
         tsserver = {
           settings = {
+            diagnostics = { ignoredCodes = { 7044 } },
             filetypes = {
-              'javascript',
-              'javascriptreact',
-              'javascript.jsx',
-              'typescript',
-              'typescriptreact',
-              'typescript.tsx'
-            }
-          }
-        }
-      }
-    }
-  }
+              "javascript",
+              "javascriptreact",
+              "javascript.jsx",
+              "typescript",
+              "typescriptreact",
+              "typescript.tsx",
+            },
+          },
+        },
+      },
+    },
+  },
 }

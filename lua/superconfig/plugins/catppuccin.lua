@@ -3,7 +3,7 @@ return {
     "catppuccin/nvim",
     name = "catppuccin",
     opts = {
-      flavour = "mocha",          -- latte, frappe, macchiato, mocha
+      flavour = "mocha", -- latte, frappe, macchiato, mocha
       transparent_background = false,
       show_end_of_buffer = false, -- show the '~' characters after the end of buffers
       term_colors = true,
@@ -12,8 +12,8 @@ return {
         shade = "dark",
         percentage = 0.15,
       },
-      no_italic = false,    -- Force no italic
-      no_bold = false,      -- Force no bold
+      no_italic = false, -- Force no italic
+      no_bold = false, -- Force no bold
       no_underline = false, -- Force no underline
       styles = {
         comments = { "italic" },
@@ -61,7 +61,7 @@ return {
       },
     },
     config = function()
-      vim.cmd.colorscheme "catppuccin"
-    end
-  }
+      vim.cmd.colorscheme("catppuccin")
+    end,
+  },
 }
