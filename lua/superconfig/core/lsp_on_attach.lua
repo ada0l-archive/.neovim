@@ -1,15 +1,14 @@
-local map = require('superconfig.utils').map
-local function on_attach(client, bufnr)
 
+local on_attach = function(client, bufnr)
   local capabilities = client.server_capabilities
-  local opts = { noremap = true, silent = true }
+  local opts_ = { noremap = true, silent = true }
   local wk = require("which-key")
+  local map = require('superconfig.core.utils').map
 
   local map_dict = {}
 
-  map('n', '[d', vim.diagnostic.goto_prev, opts)
-  map('n', ']d', vim.diagnostic.goto_next, opts)
-
+  map('n', '[d', vim.diagnostic.goto_prev, opts_)
+  map('n', ']d', vim.diagnostic.goto_next, opts_)
 
   map_dict["e"] = {
     ":lua vim.diagnostic.setloclist()<CR>", "Diagnostic list"
@@ -66,16 +65,9 @@ local function on_attach(client, bufnr)
     map_dict["="] = {
       ":lua vim.lsp.buf.format { async = true }<CR>", "format"
     }
-    -- if vim.g.ada0l_format_autosave_disabled == nil then
-    --   vim.api.nvim_create_autocmd("BufWritePre", {
-    --     buffer = bufnr,
-    --     callback = function()
-    --       vim.lsp.buf.format { bufnr = bufnr }
-    --     end
-    --   })
-    -- end
   end
 
   wk.register(map_dict, { prefix = "<leader>" })
 end
+
 return on_attach

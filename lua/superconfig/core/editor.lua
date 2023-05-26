@@ -1,7 +1,7 @@
 local opt = vim.opt
 local g = vim.g
 
-local utils = require('superconfig.utils')
+local utils = require('superconfig.core.utils')
 local set_options = utils.set_options
 
 local ignore_files = {
@@ -27,9 +27,6 @@ local ignore_files = {
   '*.exe',
   'node_modules'
 }
-
-g.mapleader = " "
-
 -- default language
 -- cmd[[ language en_US ]]
 
@@ -83,7 +80,7 @@ set_options({
   wrap = false,
   signcolumn = "yes:1",
   termguicolors = true,
-  colorcolumn = "79",
+  --colorcolumn = "79",
   -- invisible characters,
   list = true,
   listchars = {

@@ -1,4 +1,4 @@
-local utils = require('superconfig.utils')
+local utils = require('superconfig.core.utils')
 local map = utils.map
 
 -- scrolling with search

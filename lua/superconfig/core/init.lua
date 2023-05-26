@@ -1,6 +1,5 @@
-require('superconfig.utils').load_mods({
-  'superconfig.core.editor',
-  'superconfig.core.mapping',
-  'superconfig.core.commands',
-  'superconfig.core.autocmd',
-})
+require('superconfig.core.lazy')
+require('superconfig.core.editor')
+require('superconfig.core.mapping')
+require('superconfig.core.commands')
+require('superconfig.core.autocmd')

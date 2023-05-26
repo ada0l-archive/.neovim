@@ -1,4 +1,9 @@
-require('aerial').setup({
-  layout = { min_width = 20 },
-  open_automatic = false
-})
+return {
+  {
+    'stevearc/aerial.nvim',
+    opts = {
+      layout = { min_width = 20 },
+      open_automatic = false
+    }
+  }
+}
