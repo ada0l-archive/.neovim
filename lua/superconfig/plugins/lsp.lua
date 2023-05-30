@@ -1,3 +1,12 @@
+local function diagnostic_format(diagnostic)
+  if diagnostic.code then
+    return ("[%s] %s"):format(diagnostic.code, diagnostic.message)
+  end
+  return diagnostic.message
+end
+
+local on_attach = require("superconfig.core.lsp_on_attach")
+
 return {
   {
     "neovim/nvim-lspconfig",
@@ -9,11 +18,32 @@ return {
       "williamboman/mason-lspconfig.nvim",
       "ahmedkhalf/project.nvim",
       "j-hui/fidget.nvim",
+      {
+        "glepnir/lspsaga.nvim",
+        dependencies = {
+          { "nvim-tree/nvim-web-devicons" },
+          -- Please make sure you install markdown and markdown_inline parser
+          { "nvim-treesitter/nvim-treesitter" }
+        }
+      },
     },
     config = function(_, opts)
-      require("mason").setup()
-      require("mason-lspconfig").setup()
       require("neodev").setup()
+      require("lspsaga").setup({
+        ui = { border = "single" },
+        lightbulb = {
+          virtual_text = false,
+        },
+        finder = {
+          scroll_down = "<C-f>",
+          scroll_up = "<C-b>", -- quit can be a table
+          quit = { "q", "<ESC>" },
+        },
+        symbol_in_winbar = {
+          enable = false,
+          show_file = false,
+        },
+      })
       require("fidget").setup({ window = { blend = 0 } })
 
       local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
@@ -21,36 +51,44 @@ return {
         local hl = "DiagnosticSign" .. type
         vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
       end
-      -- show code of diagnostic
-      local function fmt(diagnostic)
-        if diagnostic.code then
-          return ("[%s] %s"):format(diagnostic.code, diagnostic.message)
-        end
-        return diagnostic.message
-      end
 
       vim.diagnostic.config({
         virtual_text = {
           source = "always",
-          format = fmt,
+          format = diagnostic_format,
         },
         float = {
           source = "always",
-          format = fmt,
+          format = diagnostic_format,
         },
       })
 
-      local on_attach = require("superconfig.core.lsp_on_attach")
+      require("mason").setup()
 
       local servers = opts.servers
+      local have_mason, mlsp = pcall(require, "mason-lspconfig")
+      local all_mslp_servers = {}
+      if have_mason then
+        all_mslp_servers = vim.tbl_keys(require("mason-lspconfig.mappings.server").lspconfig_to_package)
+      end
+      local ensure_installed = {}
 
       local function setup_server(server)
         local server_opts = servers[server] or {}
         server_opts.on_attach = on_attach
         require("lspconfig")[server].setup(server_opts)
       end
-      for server, _ in pairs(servers) do
-        setup_server(server)
+
+      for server, server_opts in pairs(servers) do
+        if server_opts.mason == false or not vim.tbl_contains(all_mslp_servers, server) then
+          setup_server(server)
+        else
+          ensure_installed[#ensure_installed + 1] = server
+        end
+      end
+
+      if have_mason then
+        mlsp.setup({ ensure_installed = ensure_installed, handlers = { setup_server } })
       end
     end,
     opts = {
@@ -58,6 +96,8 @@ return {
         gopls = {},
         sqlls = {},
         csharp_ls = {},
+        docker_compose_language_service = {},
+        dockerls = {},
         clangd = {
           settings = {
             cmd = {
@@ -69,24 +109,9 @@ return {
         lua_ls = {
           settings = {
             Lua = {
-              --before_init = require('neodev.lsp').before_init,
-              root_dir = vim.fn.getcwd(),
               settings = { Lua = {} },
               runtime = {
                 version = "LuaJIT",
-              },
-              diagnostics = {
-                globals = { "vim" },
-              },
-              workspace = {
-                library = {
-                  ["/usr/share/nvim/runtime/lua"] = true,
-                  ["/usr/share/nvim/runtime/lua/vim"] = true,
-                  ["/usr/share/nvim/runtime/lua/vim/lsp"] = true,
-                },
-              },
-              telemetry = {
-                enable = false,
               },
             },
           },

@@ -6,17 +6,33 @@ local on_attach = function(client, bufnr)
 
   local map_dict = {}
 
-  map("n", "[d", vim.diagnostic.goto_prev, opts_)
-  map("n", "]d", vim.diagnostic.goto_next, opts_)
+  map("n", "[d", ":Lspsaga diagnostic_jump_prev<CR>", opts_)
+  map("n", "]d", ":Lspsaga diagnostic_jump_next<CR>", opts_)
+
+  map("n", "[e", function()
+    require("lspsaga.diagnostic"):goto_prev({
+      severity = vim.diagnostic.severity.ERROR
+    })
+  end, opts_)
+  map("n", "]e", function()
+    require("lspsaga.diagnostic"):goto_next({
+      severity = vim.diagnostic.severity.ERROR
+    })
+  end, opts_)
 
   map_dict["e"] = {
-    ":lua vim.diagnostic.setloclist()<CR>",
+    ":Lspsaga show_buf_diagnostics<CR>",
+    "Diagnostic list",
+  }
+
+  map_dict["E"] = {
+    ":Lspsaga show_workspace_diagnostics<CR>",
     "Diagnostic list",
   }
 
   if capabilities.codeActionProvider then
     map_dict["a"] = {
-      ":lua vim.lsp.buf.code_action()<CR>",
+      ":Lspsaga code_action<CR>",
       "Code action",
     }
   end
@@ -30,14 +46,14 @@ local on_attach = function(client, bufnr)
 
   if capabilities.definitionProvider then
     map_dict["gd"] = {
-      ":lua vim.lsp.buf.definition()<CR>",
+      ":Lspsaga goto_definition<CR>",
       "Definition",
     }
   end
 
   if capabilities.hoverProvider then
     map_dict["k"] = {
-      ":lua vim.lsp.buf.hover()<CR>",
+      ":Lspsaga hover_doc<CR>",
       "Hover",
     }
   end
@@ -51,15 +67,15 @@ local on_attach = function(client, bufnr)
 
   if capabilities.renameProvider then
     map_dict["r"] = {
-      ":lua vim.lsp.buf.rename()<CR>",
+      ":Lspsaga rename<CR>",
       "Rename",
     }
   end
 
   if capabilities.referencesProvider then
-    map_dict["gi"] = {
-      ":lua vim.lsp.buf.references()<CR>",
-      "References",
+    map_dict["gp"] = {
+      ":Lspsaga lsp_finder<CR>",
+      "Rename",
     }
   end
 

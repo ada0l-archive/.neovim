@@ -4,6 +4,23 @@ return {
     cmd = "Git",
   },
   {
+    "kdheepak/lazygit.nvim",
+    -- optional for floating window border decoration
+    cmd = { "LazyGit" },
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+    },
+    init = function()
+      local wk = require("which-key")
+      wk.register({
+        h = {
+          name = "Lazy Git",
+          h = { ":LazyGit<CR>", "Lazy git" },
+        },
+      }, { prefix = "<leader>" })
+    end
+  },
+  {
     "lewis6991/gitsigns.nvim",
     event = { "BufRead", "BufWinEnter", "BufNewFile" },
     dependencies = {
@@ -13,8 +30,8 @@ return {
       local wk = require("which-key")
       return {
         signcolumn = true, -- Toggle with `:Gitsigns toggle_signs`
-        numhl = false, -- Toggle with `:Gitsigns toggle_numhl`
-        linehl = false, -- Toggle with `:Gitsigns toggle_linehl`
+        numhl = false,     -- Toggle with `:Gitsigns toggle_numhl`
+        linehl = false,    -- Toggle with `:Gitsigns toggle_linehl`
         word_diff = false, -- Toggle with `:Gitsigns toggle_word_diff`
         watch_gitdir = {
           interval = 1000,

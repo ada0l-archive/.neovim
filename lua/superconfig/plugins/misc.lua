@@ -23,6 +23,6 @@ return {
     "gpanders/editorconfig.nvim",
   },
   { "Vimjas/vim-python-pep8-indent", ft = "python" },
-  { "jason0x43/vim-js-indent", ft = "javascript" },
-  { "bitfyre/vim-indent-html", ft = "html" },
+  { "jason0x43/vim-js-indent",       ft = "javascript" },
+  { "bitfyre/vim-indent-html",       ft = "html" },
 }

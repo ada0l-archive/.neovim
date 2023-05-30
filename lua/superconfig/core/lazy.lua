@@ -23,14 +23,18 @@ lazy.setup({
     { import = "superconfig.plugins" },
   },
   install = { colorscheme = { "catppuccin" } },
+  change_detection = {
+    enabled = false,
+    notify = false,
+  },
   performance = {
     rtp = {
       -- disable some rtp plugins
       disabled_plugins = {
         "gzip",
-        -- "matchit",
-        -- "matchparen",
-        -- "netrwPlugin",
+        "matchit",
+        "matchparen",
+        "netrwPlugin",
         "tarPlugin",
         "tohtml",
         "tutor",

@@ -4,7 +4,8 @@ return {
     lazy = true,
     cmd = "Telescope",
     dependencies = {
-      { "nvim-lua/plenary.nvim", lazy = true },
+      { "nvim-lua/plenary.nvim",                lazy = true },
+      { "nvim-telescope/telescope-symbols.nvim" }
     },
     tag = "0.1.1",
     config = function(_, opts)

@@ -13,13 +13,14 @@ return {
     "hrsh7th/nvim-cmp",
     event = { "InsertEnter", "CmdlineEnter" },
     dependencies = {
-      { "hrsh7th/cmp-nvim-lsp", lazy = true },
-      { "hrsh7th/cmp-path", lazy = true },
-      { "hrsh7th/cmp-cmdline", lazy = true },
-      { "hrsh7th/cmp-vsnip", lazy = true },
-      { "hrsh7th/vim-vsnip", lazy = true },
+      { "hrsh7th/cmp-nvim-lsp",                lazy = true },
+      { "hrsh7th/cmp-path",                    lazy = true },
+      { "hrsh7th/cmp-cmdline",                 lazy = true },
+      { "hrsh7th/cmp-vsnip",                   lazy = true },
+      { "hrsh7th/vim-vsnip",                   lazy = true },
+      { 'rafamadriz/friendly-snippets',        lazy = true },
       { "hrsh7th/cmp-nvim-lsp-signature-help", lazy = true },
-      { "onsails/lspkind.nvim", lazy = true },
+      { "onsails/lspkind.nvim",                lazy = true },
     },
     opts = function()
       local cmp = require("cmp")
@@ -55,10 +56,10 @@ return {
           -- ["<S-Tab>"] = cmp.mapping.select_prev_item(),
           -- ["<Tab>"] = cmp.mapping.select_next_item(),
           ["<Tab>"] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-              cmp.select_next_item()
-            elseif vim.fn["vsnip#available"](1) == 1 then
+            if vim.fn["vsnip#available"](1) == 1 then
               feedkey("<Plug>(vsnip-expand-or-jump)", "")
+            elseif cmp.visible() then
+              cmp.select_next_item()
             elseif has_words_before() then
               cmp.complete()
             else
@@ -66,10 +67,10 @@ return {
             end
           end, { "i", "s" }),
           ["<S-Tab>"] = cmp.mapping(function()
-            if cmp.visible() then
-              cmp.select_prev_item()
-            elseif vim.fn["vsnip#jumpable"](-1) == 1 then
+            if vim.fn["vsnip#jumpable"](-1) == 1 then
               feedkey("<Plug>(vsnip-jump-prev)", "")
+            elseif cmp.visible() then
+              cmp.select_prev_item()
             end
           end, { "i", "s" }),
           ["<C-k>"] = cmp.mapping(function()
@@ -91,25 +92,19 @@ return {
           comparators = {
             cmp.config.compare.offset,
             cmp.config.compare.exact,
-            -- M.cmp.config.compare.scopes,
             cmp.config.compare.score,
             cmp.config.compare.recently_used,
             cmp.config.compare.locality,
             cmp.config.compare.kind,
-            -- M.cmp.config.compare.sort_text,
             cmp.config.compare.length,
             cmp.config.compare.order,
-            -- aid_nvim_cmp.under_compare,
-            -- aid_nvim_cmp.source_compare,
-            -- aid_nvim_cmp.kind_compare,
           },
         },
         sources = cmp.config.sources({
-          { name = "nvim_lsp" },
           { name = "vsnip" },
+          { name = "nvim_lsp" },
           { name = "path" },
           { name = "nvim_lsp_signature_help" },
-          -- { name = 'buffer' },
         }),
         formatting = {
           fields = { "kind", "abbr", "menu" },
@@ -131,21 +126,6 @@ return {
     config = function(_, opts)
       local cmp = require("cmp")
       cmp.setup(opts)
-      cmp.setup.filetype("gitcommit", {
-        sources = cmp.config.sources({
-          { name = "cmp_git" }, -- You can specify the `cmp_git` source if you were installed it.
-        }, {
-          { name = "buffer" },
-        }),
-      })
-
-      -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
-      cmp.setup.cmdline("/", {
-        mapping = cmp.mapping.preset.cmdline(),
-        sources = {
-          { name = "buffer" },
-        },
-      })
 
       -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
       cmp.setup.cmdline(":", {
