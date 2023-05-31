@@ -3,29 +3,97 @@ return {
     "nvim-treesitter/nvim-treesitter",
     event = { "BufRead", "BufWinEnter", "BufNewFile" },
     build = ":TSUpdate",
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter-textobjects',
+    },
     --tag = 'v0.9.0',
     opts = {
+      textobjects = {
+        select = {
+          enable = true,
+          lookahead = true,
+          keymaps = {
+            ['af'] = '@function.outer',
+            ['if'] = '@function.inner',
+            ['ac'] = '@class.outer',
+            ['ic'] = '@class.inner',
+            ['a,'] = '@parameter.outer',
+            ['i,'] = '@parameter.inner',
+          },
+        },
+        move = {
+          enable = true,
+          set_jumps = true,
+          goto_next_start = {
+            ['],'] = '@parameter.inner',
+          },
+          goto_previous_start = {
+            ['[,'] = '@parameter.inner',
+          },
+        },
+        swap = {
+          enable = true,
+          swap_next = {
+            ['>,'] = '@parameter.inner',
+          },
+          swap_previous = {
+            ['<,'] = '@parameter.inner',
+          },
+        },
+      },
       ensure_installed = {
-        "c",
-        "lua",
-        "rust",
         "bash",
-        "cpp",
-        "css",
-        "dockerfile",
-        "go",
-        "html",
-        "javascript",
-        "json",
-        "latex",
-        "lua",
+
+        "c",
+        "c_sharp",
+        "cmake",
         "make",
-        "markdown",
-        "prisma",
-        "python",
+        "cpp",
+        "rust",
+
+        "dockerfile",
+
+        "git_config",
+        "git_rebase",
+        "gitattributes",
+        "gitcommit",
+        "gitignore",
+
+        "go",
+        "gomod",
+
+        "html",
+        "htmldjango",
+        "json",
+        "svelte",
+        "vue",
+        "css",
         "scss",
-        "vim",
+        "jsdoc",
+        "javascript",
+        "typescript",
+        "prisma",
+
+        "latex",
+
+        "lua",
+        "luadoc",
+        "luap",
+
+        "markdown",
+        "markdown_inline",
+
+        "php",
+        "phpdoc",
+
+        "python",
+
         "sql",
+
+        "toml",
+
+        "vim",
+        "vimdoc",
       },
       compilers = { "clang" },
       install = {

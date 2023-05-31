@@ -26,6 +26,7 @@ return {
           { "nvim-treesitter/nvim-treesitter" }
         }
       },
+      "simrat39/rust-tools.nvim"
     },
     config = function(_, opts)
       require("neodev").setup()
@@ -45,6 +46,20 @@ return {
         },
       })
       require("fidget").setup({ window = { blend = 0 } })
+
+      require("rust-tools").setup({
+        tools = {
+          runnables = {
+            use_telescope = true,
+          },
+          inlay_hints = {
+            auto = true,
+            show_parameter_hints = false,
+            parameter_hints_prefix = "",
+            other_hints_prefix = "",
+          },
+        }
+      })
 
       local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
       for type, icon in pairs(signs) do
@@ -98,6 +113,26 @@ return {
         csharp_ls = {},
         docker_compose_language_service = {},
         dockerls = {},
+        jsonls = {},
+        rust_analyzer = {
+          assist = {
+            importEnforceGranularity = true,
+            importPrefix = 'crate',
+          },
+          cargo = {
+            allFeatures = true,
+          },
+          checkOnSave = {
+            command = 'clippy',
+          },
+          inlayHints = { locationLinks = false },
+          diagnostics = {
+            enable = true,
+            experimental = {
+              enable = true,
+            },
+          },
+        },
         clangd = {
           settings = {
             cmd = {

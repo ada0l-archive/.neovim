@@ -15,6 +15,21 @@ return {
       local actions = require("telescope.actions")
       return {
         defaults = {
+          vimgrep_arguments = {
+            'rg',
+            '--no-config',
+            '--no-ignore',
+            '--color=never',
+            '--with-filename',
+            '--line-number',
+            '--column',
+            '--smart-case',
+            '--hidden',
+            '-g=!.git',
+            '-g=!.ccls-cache',
+            '-g=!node_modules',
+            '-g=!dist',
+          },
           layout_config = {
             vertical = { width = 1 },
           },

@@ -14,6 +14,12 @@ return {
       "ObsidianFollowLink",
       "ObsidianTemplate",
     },
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "hrsh7th/nvim-cmp",
+      "nvim-telescope/telescope.nvim",
+      "preservim/vim-markdown",
+    },
     opts = {
       dir = "~/Documents/SyncObsidian/",
       disable_frontmatter = true,
