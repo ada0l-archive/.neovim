@@ -3,7 +3,7 @@ return {
     "catppuccin/nvim",
     name = "catppuccin",
     opts = {
-      flavour = "mocha",
+      flavour = "frappe",
       transparent_background = false,
       show_end_of_buffer = false,
       term_colors = true,
@@ -61,7 +61,7 @@ return {
       },
     },
     config = function()
-      vim.cmd.colorscheme("catppuccin")
+      vim.cmd.colorscheme("catppuccin-frappe")
     end,
   },
 }

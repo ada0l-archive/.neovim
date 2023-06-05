@@ -43,9 +43,25 @@ return {
     event = "InsertEnter",
   },
   {
+    "hkupty/nvimux",
+    config = function()
+      local nvimux = require('nvimux')
+      nvimux.setup {
+        config = {
+          prefix = '<C-a>',
+        },
+        bindings = {
+          { { 'n', 'v', 'i', 't' }, 's', nvimux.commands.horizontal_split },
+          { { 'n', 'v', 'i', 't' }, 'v', nvimux.commands.vertical_split },
+        }
+      }
+    end
+  },
+  {
     "gpanders/editorconfig.nvim",
   },
-  { "Vimjas/vim-python-pep8-indent", ft = "python" },
-  { "jason0x43/vim-js-indent",       ft = "javascript" },
-  { "bitfyre/vim-indent-html",       ft = "html" },
+  { "Vimjas/vim-python-pep8-indent",                        ft = "python" },
+  { "jason0x43/vim-js-indent",                              ft = "javascript" },
+  { "bitfyre/vim-indent-html",                              ft = "html" },
+  { "captbaritone/better-indent-support-for-php-with-html", ft = "php" }
 }

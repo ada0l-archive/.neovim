@@ -14,9 +14,14 @@ return {
       })
       local mason_null_ls = require("mason-null-ls")
       mason_null_ls.setup({
-        ensure_installed = { 'isort', 'black', 'stylua', 'mypy', 'prettier' },
+        ensure_installed = { 'isort', 'black', 'stylua', 'mypy', 'prettier', 'pint' },
         automatic_installation = true,
         handlers = {
+          pint = function(source_name, methods)
+            null_ls.register(null_ls.builtins.formatting.pint.with({
+              command = "pint"
+            }))
+          end,
           black = function(source_name, methods)
             null_ls.register(null_ls.builtins.formatting.black.with({
               extra_args = {

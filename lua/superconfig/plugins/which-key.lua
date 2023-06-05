@@ -43,18 +43,18 @@ return {
       wk.register({
         ["<leader>"] = {
           name = "Terminal",
-          T = { ":!alacritty .<CR><CR>", "Terminal" },
+          ["<leader>"] = { ":terminal<CR>", "Terminal" },
         },
       })
 
-      wk.register({
-        ["<leader>"] = {
-          name = "config",
-          ["<leader>o"] = { ":tabnew ~/.config/nvim/init.lua<CR>", "Open config" },
-          ["<leader>s"] = { ":ReloadConfig<CR>", "Reload config" },
-        },
-      })
-
+      -- wk.register({
+      --   ["<leader>"] = {
+      --     name = "config",
+      --     ["<leader>o"] = { ":tabnew ~/.config/nvim/init.lua<CR>", "Open config" },
+      --     ["<leader>s"] = { ":ReloadConfig<CR>", "Reload config" },
+      --   },
+      -- })
+      --
       wk.register({
         ["<leader>"] = {
           name = "Tab navigation",
