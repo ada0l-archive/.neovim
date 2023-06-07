@@ -8,7 +8,9 @@ return {
       log_level           = nil,
       debounce_timeout    = 10,
       enable_line_number  = false,
-      blacklist           = {},
+      blacklist           = {
+        "/home/ada0l/Documents/SyncObsidian/*"
+      },
       buttons             = true,
       file_assets         = {},
       show_time           = true,
