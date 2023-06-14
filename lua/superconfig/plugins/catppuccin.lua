@@ -32,6 +32,13 @@ return {
       custom_highlights = function(colors)
         return {
           Pmenu = { bg = colors.surface0 },
+          -- TelescopeBorder = { bg = "none" },
+          -- TelescopeNormal = { bg = "none" },
+          -- --TelescopePromptNormal = { bg = "base" },
+          -- TelescopeResultsNormal = { bg = "none" },
+          -- TelescopeSelection = { bg = "base" },
+          -- TelescopeSelectionCaret = { bg = "rose" },
+          NeoTreeFloatBorder = { bg = "none" }
         }
       end,
       integrations = {
