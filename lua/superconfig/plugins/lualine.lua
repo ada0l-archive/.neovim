@@ -12,17 +12,30 @@ return {
         component_separators = { left = " ", right = " " },
         section_separators = { left = " ", right = " " },
       },
+      -- sections = {
+      --   lualine_a = { { "mode", color = nil } },
+      --   lualine_b = { "branch", "diff" },
+      --   lualine_c = {
+      --     { "filetype", icon_only = true },
+      --     "filename",
+      --     "diagnostics",
+      --   },
+      --   lualine_x = { "encoding", "fileformat" },
+      --   lualine_y = { "progress" },
+      --   lualine_z = { "location" },
+      -- },
       sections = {
-        lualine_a = { "mode" },
-        lualine_b = { "branch", "diff" },
+        lualine_a = {},
+        lualine_b = {},
         lualine_c = {
+          "mode",
           { "filetype", icon_only = true },
           "filename",
-          "diagnostics",
+          "diff"
         },
-        lualine_x = { "encoding", "fileformat" },
-        lualine_y = { "progress" },
-        lualine_z = { "location" },
+        lualine_x = { "diagnostics", "filetype", "location" },
+        lualine_y = {},
+        lualine_z = {},
       },
       inactive_sections = {
         lualine_a = {},
