@@ -129,11 +129,4 @@ set_options({
   exrc = true,
 })
 
--- -- colors
--- vim.cmd([[
--- set t_Co=256
--- set termguicolors
--- ]])
-
--- disable :intro startup screen,
 opt.shortmess:append("I")
