@@ -14,7 +14,7 @@ return {
       })
       local mason_null_ls = require("mason-null-ls")
       mason_null_ls.setup({
-        ensure_installed = { 'isort', 'black', 'stylua', 'mypy', 'prettier', 'pint' },
+        ensure_installed = { 'isort', 'black', 'stylua', 'mypy', 'prettier', 'pint', "jq" },
         automatic_installation = true,
         handlers = {
           pint = function(source_name, methods)
