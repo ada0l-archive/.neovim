@@ -16,6 +16,13 @@ return {
 
       wk.register({
         ["<leader>"] = {
+          name = "Rest",
+          rr = { "<Plug>RestNvim", "Rest" }
+        }
+      })
+
+      wk.register({
+        ["<leader>"] = {
           name = "Telescope",
           tt = { ":Telescope<CR>", "Telescope" },
           f = { ":Telescope find_files<CR>", "Files" },

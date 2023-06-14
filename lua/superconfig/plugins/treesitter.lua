@@ -94,6 +94,8 @@ return {
 
         "vim",
         "vimdoc",
+
+        "http"
       },
       compilers = { "clang" },
       install = {
