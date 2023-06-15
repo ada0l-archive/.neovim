@@ -2,7 +2,7 @@ return {
   {
     "jose-elias-alvarez/null-ls.nvim",
     lazy = true,
-    event = { "BufRead", "BufWinEnter", "BufNewFile" },
+    event = { "BufReadPre", "BufNewFile" },
     dependencies = {
       { "nvim-lua/plenary.nvim",       lazy = true },
       { "jay-babu/mason-null-ls.nvim", }

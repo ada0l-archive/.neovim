@@ -22,7 +22,7 @@ return {
   },
   {
     "lewis6991/gitsigns.nvim",
-    event = { "BufRead", "BufWinEnter", "BufNewFile" },
+  event = { "BufReadPre", "BufWritePre" },
     dependencies = {
       { "nvim-lua/plenary.nvim", lazy = true },
     },

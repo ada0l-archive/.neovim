@@ -2,6 +2,7 @@ local DEBUGGER_PATH = vim.fn.stdpath "data" .. "/lazy/vscode-js-debug"
 
 return {
   "rcarriga/nvim-dap-ui",
+  event = { "BufReadPre", "BufNewFile" },
   dependencies = {
     { "mfussenegger/nvim-dap" },
     { "mxsdev/nvim-dap-vscode-js" },

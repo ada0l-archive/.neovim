@@ -11,7 +11,7 @@ return {
   {
     "neovim/nvim-lspconfig",
     lazy = true,
-    event = { "BufRead", "BufWinEnter", "BufNewFile" },
+    event = { "BufReadPre", "BufNewFile" },
     dependencies = {
       { "folke/neodev.nvim", opts = {} },
       "williamboman/mason.nvim",

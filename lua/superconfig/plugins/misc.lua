@@ -1,6 +1,7 @@
 return {
   {
     "andweeb/presence.nvim",
+    event = { "BufReadPre", "BufNewFile" },
     opts = {
       auto_update         = true,
       neovim_image_text   = "The One True Text Editor",
@@ -42,7 +43,8 @@ return {
     opts = {
       disable_filetype = { "TelescopePrompt", "vim" },
     },
-    event = "InsertEnter",
+    event = "VeryLazy",
+    priority = 10000,
   },
   {
     "hkupty/nvimux",
@@ -62,6 +64,7 @@ return {
   {
     "rest-nvim/rest.nvim",
     dependencies = { "nvim-lua/plenary.nvim" },
+    cmd = { "TestNvim" },
     config = function()
       require("rest-nvim").setup({
         -- Open request results in a horizontal split
