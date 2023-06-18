@@ -10,24 +10,17 @@ return {
     dependencies = {
       "nvim-lua/plenary.nvim",
     },
-    init = function()
-      local wk = require("which-key")
-      wk.register({
-        h = {
-          name = "Lazy Git",
-          h = { ":LazyGit<CR>", "Lazy git" },
-        },
-      }, { prefix = "<leader>" })
-    end
+    keys = {
+      { "<leader>hh", ":LazyGit<CR>", desc = "LazyGit" },
+    },
   },
   {
     "lewis6991/gitsigns.nvim",
-  event = { "BufReadPre", "BufWritePre" },
+    event = { "BufReadPre", "BufNewFile" },
     dependencies = {
       { "nvim-lua/plenary.nvim", lazy = true },
     },
     opts = function()
-      local wk = require("which-key")
       return {
         signcolumn = true, -- Toggle with `:Gitsigns toggle_signs`
         numhl = false,     -- Toggle with `:Gitsigns toggle_numhl`
@@ -40,10 +33,8 @@ return {
         on_attach = function(bufnr)
           local gs = package.loaded.gitsigns
 
-          local function map(mode, l, r, opts)
-            opts = opts or {}
-            opts.buffer = bufnr
-            vim.keymap.set(mode, l, r, opts)
+          local function map(mode, l, r, desc)
+            vim.keymap.set(mode, l, r, { buffer = bufnr, desc = desc })
           end
 
           -- Navigation
@@ -55,7 +46,7 @@ return {
               gs.next_hunk()
             end)
             return "<Ignore>"
-          end, { expr = true })
+          end, "Next Hunk")
 
           map("n", "[c", function()
             if vim.wo.diff then
@@ -65,35 +56,17 @@ return {
               gs.prev_hunk()
             end)
             return "<Ignore>"
-          end, { expr = true })
+          end, "Prev Hunk")
 
-          wk.register({
-            h = {
-              name = "Git hunk",
-              s = { ":Gitsigns stage_hunk<CR>", "Stage hunk" },
-              r = { ":Gitsigns reset_hunk<CR>", "Reset hunk" },
-              p = { ":Gitsigns preview_hunk<CR>", "Preview hunk" },
-              u = { ":Gitsigns undo_stage_hunk<CR>", "Undo stage hunk" },
-            },
-          }, { prefix = "<leader>" })
-
-          wk.register({
-            h = {
-              name = "Git buffer",
-              S = { ":Gitsigns state_buffer<CR>", "Stage buffer" },
-              R = { ":Gitsigns reset_buffer<CR>", "Reset buffer" },
-            },
-          }, { prefix = "<leader>" })
-
-          wk.register({
-            h = {
-              name = "Git blame",
-              b = { ":Gitsigns blame_line<CR>", "Blame line" },
-            },
-          }, { prefix = "<leader>" })
-
-          -- Text object
-          map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>")
+          -- stylua: ignore start
+          map({ "n", "v" }, "<leader>hs", ":Gitsigns stage_hunk<CR>", "Stage Hunk")
+          map({ "n", "v" }, "<leader>hr", ":Gitsigns reset_hunk<CR>", "Reset Hunk")
+          map("n", "<leader>hp", gs.preview_hunk, "Preview Hunk")
+          map("n", "<leader>hu", gs.undo_stage_hunk, "Undo Stage Hunk")
+          map("n", "<leader>hS", gs.stage_buffer, "Stage Buffer")
+          map("n", "<leader>hR", gs.reset_buffer, "Reset Buffer")
+          map("n", "<leader>hb", function() gs.blame_line({ full = true }) end, "Blame Line")
+          map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", "GitSigns Select Hunk")
         end,
         attach_to_untracked = true,
         current_line_blame = true, -- Toggle with `:Gitsigns toggle_current_line_blame`
