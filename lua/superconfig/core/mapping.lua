@@ -5,13 +5,14 @@ local map = utils.map
 map("n", "n", "nzzzv", {})
 map("n", "N", "Nzzzv", {})
 
--- esc in terminal mode
---map('t', '<ESC>', '<C-\\><C-n>', {})
 map("t", "<c-K>", "<up>", {})
 map("t", "<c-J>", "<down>", {})
 
 -- disable highlight
-map("n", "<leader><cr>", ":noh<cr>", {})
+map("n", "<leader><cr>", ":noh<cr>", {desc="Clear search"})
+map({"i", "n"}, "<esc>", "<cmd>noh<cr><esc>", {desc="Clear search"})
+
+map({ "n", "x" }, "gw", "*N", { desc = "Search word under cursor" })
 
 -- disable annoying error woth auto complete
 map("n", "<tab>", "", {})
@@ -51,7 +52,8 @@ vnoremap <A-k> :m '<-2<CR>gv=gv
 ]])
 
 vim.cmd([[
-cno $h e ~/
+cno $h ~/
+cno $p ~/Documents/projects/
 
 cnoremap <c-P> <up>
 cnoremap <c-N> <down>

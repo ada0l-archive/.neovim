@@ -1,3 +1,5 @@
+--local lsp_on_attach = require "superconfig.core.lsp_on_attach"
+
 local function diagnostic_format(diagnostic)
   if diagnostic.code then
     return ("[%s] %s"):format(diagnostic.code, diagnostic.message)
@@ -128,6 +130,7 @@ return {
       local nls = require("null-ls")
       return {
         root_dir = require("null-ls.utils").root_pattern(".null-ls-root", ".neoconf.json", "Makefile", ".git"),
+        --on_attach=lsp_on_attach,
         sources = {
           nls.builtins.formatting.fish_indent,
           nls.builtins.diagnostics.fish,
