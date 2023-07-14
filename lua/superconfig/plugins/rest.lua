@@ -3,7 +3,7 @@ return {
     "rest-nvim/rest.nvim",
     dependencies = { "nvim-lua/plenary.nvim" },
     keys = {
-      { "<leader>rr", "<Plug>RestNvim",    desc = "Rest" },
+      { "<leader>rr", "<Plug>RestNvim", desc = "Rest" },
       { "<leader>rp", "<Plug>RestPreview", desc = "Rest Preview" },
     },
     config = function()
@@ -45,5 +45,5 @@ return {
         yank_dry_run = true,
       })
     end,
-  }
+  },
 }

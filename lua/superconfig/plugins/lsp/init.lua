@@ -12,7 +12,7 @@ return {
     "neovim/nvim-lspconfig",
     event = { "BufReadPre", "BufNewFile" },
     dependencies = {
-      { "folke/neodev.nvim",                opts = {} },
+      { "folke/neodev.nvim", opts = {} },
       { "williamboman/mason.nvim" },
       { "williamboman/mason-lspconfig.nvim" },
       { "hrsh7th/cmp-nvim-lsp" },
@@ -86,10 +86,10 @@ return {
       if have_mason then
         mlsp.setup({
           ensure_installed = ensure_installed,
-          handlers = { setup_server }
+          handlers = { setup_server },
         })
       end
-    end
+    end,
   },
   {
     "williamboman/mason.nvim",
@@ -124,7 +124,7 @@ return {
     lazy = true,
     event = { "BufReadPre", "BufNewFile" },
     dependencies = {
-      { "williamboman/mason.nvim", }
+      { "williamboman/mason.nvim" },
     },
     opts = function()
       local nls = require("null-ls")
@@ -138,6 +138,6 @@ return {
           nls.builtins.formatting.shfmt,
         },
       }
-    end
-  }
+    end,
+  },
 }

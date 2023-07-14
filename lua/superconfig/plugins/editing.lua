@@ -5,6 +5,9 @@ return {
     lazy = true,
     event = { "InsertEnter" },
     opts = {},
+    init = function()
+      vim.cmd([[autocmd Filetype TelescopePrompt lua vim.b.minipairs_disable = true]])
+    end,
   },
   {
     "echasnovski/mini.surround",
@@ -49,21 +52,20 @@ return {
     "hrsh7th/nvim-cmp",
     event = { "InsertEnter", "CmdlineEnter" },
     dependencies = {
-      { "hrsh7th/cmp-nvim-lsp",                lazy = true },
-      { "hrsh7th/cmp-path",                    lazy = true },
-      { "hrsh7th/cmp-cmdline",                 lazy = true },
-      { "hrsh7th/cmp-vsnip",                   lazy = true },
-      { "hrsh7th/vim-vsnip",                   lazy = true },
-      { "rafamadriz/friendly-snippets",        lazy = true },
+      { "hrsh7th/cmp-nvim-lsp", lazy = true },
+      { "hrsh7th/cmp-path", lazy = true },
+      { "hrsh7th/cmp-cmdline", lazy = true },
+      { "hrsh7th/cmp-vsnip", lazy = true },
+      { "hrsh7th/vim-vsnip", lazy = true },
+      { "rafamadriz/friendly-snippets", lazy = true },
       { "hrsh7th/cmp-nvim-lsp-signature-help", lazy = true },
-      { "onsails/lspkind.nvim",                lazy = true },
+      { "onsails/lspkind.nvim", lazy = true },
     },
     opts = function()
       local has_words_before = function()
         unpack = unpack or table.unpack
         local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-        return col ~= 0
-            and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+        return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
       end
       local feedkey = function(key, mode)
         vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(key, true, true, true), mode, true)
@@ -177,12 +179,45 @@ return {
   },
   {
     "gpanders/editorconfig.nvim",
+    event = { "BufReadPre", "BufNewFile" },
   },
   {
     "nvim-pack/nvim-spectre",
     keys = {
-      { "<leader>s", function() require("spectre").open() end, desc = "Spectre" }
+      {
+        "<leader>?",
+        function()
+          require("spectre").open()
+        end,
+        desc = "Spectre",
+      },
     },
-    opts = {}
-  }
+    opts = {},
+  },
+  {
+    "m4xshen/hardtime.nvim",
+    enabled = false,
+    opts = {
+      restricted_keys = {
+        ["h"] = { "n", "x" },
+        ["j"] = { "n", "x" },
+        ["k"] = { "n", "x" },
+        ["l"] = { "n", "x" },
+        ["-"] = { "n", "x" },
+        ["+"] = { "n", "x" },
+        ["gj"] = { "n", "x" },
+        ["gk"] = { "n", "x" },
+        ["<C-M>"] = { "n", "x" },
+        ["<C-N>"] = { "n", "x" },
+        ["<C-P>"] = { "n", "x" },
+      },
+    },
+    disabled_keys = {
+      ["<UP>"] = { "", "i" },
+      ["<DOWN>"] = { "", "i" },
+      ["<LEFT>"] = { "", "i" },
+      ["<RIGHT>"] = { "", "i" },
+    },
+    disabled_filetypes = { "qf", "netrw", "NvimTree", "lazy", "mason" },
+  },
 }

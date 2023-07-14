@@ -27,7 +27,7 @@ lazy.setup({
   },
   install = { colorscheme = { "catppuccin" } },
   change_detection = {
-    enabled = false,
+    enabled = true,
     notify = false,
   },
   performance = {
@@ -35,12 +35,12 @@ lazy.setup({
       -- disable some rtp plugins
       disabled_plugins = {
         -- "gzip",
-        "matchit",
+        -- "matchit",
         "matchparen",
         "netrwPlugin",
         -- "tarPlugin",
-        "tohtml",
-        "tutor",
+        -- "tohtml",
+        -- "tutor",
         -- "zipPlugin",
       },
     },

@@ -9,8 +9,8 @@ map("t", "<c-K>", "<up>", {})
 map("t", "<c-J>", "<down>", {})
 
 -- disable highlight
-map("n", "<leader><cr>", ":noh<cr>", {desc="Clear search"})
-map({"i", "n"}, "<esc>", "<cmd>noh<cr><esc>", {desc="Clear search"})
+map("n", "<leader><cr>", ":noh<cr>", { desc = "Clear search" })
+map({ "i", "n" }, "<esc>", "<cmd>noh<cr><esc>", { desc = "Clear search" })
 
 map({ "n", "x" }, "gw", "*N", { desc = "Search word under cursor" })
 
