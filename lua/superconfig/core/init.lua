@@ -1,5 +1,0 @@
-require("superconfig.core.lazy")
-require("superconfig.core.editor")
-require("superconfig.core.mapping")
-require("superconfig.core.commands")
-require("superconfig.core.autocmd")
