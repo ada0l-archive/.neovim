@@ -142,4 +142,52 @@ return {
       },
     },
   },
+  {
+    'ada0l/obsidian',
+    keys = {
+      {
+        '<leader>oi',
+        function()
+          Obsidian.cd_vault()
+        end,
+        desc = 'Open Obsidian directory',
+      },
+      {
+        '<leader>ot',
+        function()
+          Obsidian.open_today()
+        end,
+        desc = 'Open today',
+      },
+      {
+        '<leader>on',
+        function()
+          vim.ui.input({ prompt = 'Write name of new note: ' }, function(name)
+            Obsidian.new_note(name)
+          end)
+        end,
+        desc = 'New note',
+      },
+      {
+        '<leader>oi',
+        function()
+          Obsidian.select_template(function(template_path)
+            Obsidian.insert_template(template_path)
+          end, 'native')
+        end,
+        desc = 'Insert template',
+      },
+
+      {
+        '<leader>os',
+        function()
+          Obsidian.search_note()
+        end,
+        desc = 'New note',
+      },
+    },
+    opts = {
+      dir = '~/Documents/SyncObsidian/',
+    },
+  },
 }
