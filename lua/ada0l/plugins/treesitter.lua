@@ -13,6 +13,10 @@ return {
           vim.keymap.set({ 'n', 'x', 'o' }, ',', ts_repeat_move.repeat_last_move_previous)
         end,
       },
+      {
+        'nvim-treesitter/playground',
+        cmd = { 'TSPlaygroundToggle' },
+      },
     },
     --tag = 'v0.9.0',
     opts = {
@@ -31,13 +35,26 @@ return {
           keymaps = {
             ['af'] = '@function.outer',
             ['if'] = '@function.inner',
-            ['ac'] = '@class.outer',
-            ['ic'] = '@class.inner',
+
+            ['ak'] = '@class.outer',
+            ['ik'] = '@class.inner',
+
+            ['ac'] = '@call.outer',
+            ['ic'] = '@call.inner',
+
             ['a,'] = '@parameter.outer',
             ['i,'] = '@parameter.inner',
+
             ['al'] = '@assignment.lhs',
             ['ar'] = '@assignment.rhs',
-            ['as'] = '@statement.outer',
+
+            ['ai'] = '@return.outer',
+            ['ii'] = '@return.inner',
+
+            ['ab'] = '@block.outer',
+            ['ib'] = '@block.inner',
+
+            ['as'] = { query = '@scope', query_group = 'locals', desc = 'Select language scope' },
           },
         },
         move = {

@@ -27,19 +27,19 @@ function M.on_attach(client, buffer)
       opts = { desc = 'Prev Diagnostic' },
     },
     {
-      lhs = 'e',
+      lhs = '<leader>e',
       rhs = vim.diagnostic.setloclist,
       opts = { desc = 'Diagnostic list' },
     },
     {
-      lhs = 'E',
+      lhs = '<leader>E',
       rhs = function()
         vim.diagnostic.setloclist({ severity = vim.diagnostic.severity.ERROR })
       end,
       opts = { desc = 'Diagnostic list' },
     },
     {
-      lhs = '<leader>k',
+      lhs = 'K',
       rhs = vim.lsp.buf.hover,
       opts = { desc = 'Signature Help' },
       has = 'signatureHelp',
@@ -57,23 +57,23 @@ function M.on_attach(client, buffer)
       has = 'rename',
     },
     {
-      lhs = '<leader>gi',
+      lhs = 'gi',
       rhs = vim.lsp.buf.implementation,
       opts = { desc = 'Implementation' },
     },
     {
-      lhs = '<leader>gd',
+      lhs = 'gd',
       rhs = vim.lsp.buf.definition,
       opts = { desc = 'Goto Definition' },
       has = 'definition',
     },
     {
-      lhs = '<leader>gD',
+      lhs = 'gD',
       rhs = vim.lsp.buf.declaration,
       opts = { desc = 'Goto Declaration' },
     },
     {
-      lhs = '<leader>=',
+      lhs = '=',
       rhs = function()
         print('formatting with ' .. client.name)
         vim.lsp.buf.format({ async = true })
@@ -90,7 +90,7 @@ function M.on_attach(client, buffer)
       local opts = {}
       opts.buffer = buffer
       opts = vim.tbl_deep_extend('force', opts, keys.opts)
-      vim.keymap.set(keys.mode or 'n', keys.lhs, keys.rhs, opts)
+      vim.keymap.set('n', keys.lhs, keys.rhs, opts)
     end
     ::continue::
   end

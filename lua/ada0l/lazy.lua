@@ -30,17 +30,24 @@ lazy.setup({
     notify = false,
   },
   performance = {
+    cache = {
+      enabled = true,
+    },
+    reset_packpath = true, -- reset the package path to improve startup time
     rtp = {
       disabled_plugins = {
-        'gzip',
-        'matchit',
-        'matchparen',
-        --'netrwPlugin',
-        'tarPlugin',
-        'tohtml',
-        'tutor',
-        'zipPlugin',
+          "gzip",
+          "netrwPlugin",
+          "rplugin",
+          "tarPlugin",
+          "tohtml",
+          "tutor",
+          "zipPlugin",
       },
     },
   },
 })
+
+local map = require('ada0l.utils').map
+
+map('n', '<leader>L', '<cmd>Lazy<cr>', { desc = "Lazy" })

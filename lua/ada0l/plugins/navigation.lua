@@ -11,49 +11,59 @@ return {
       },
       {
         '<leader>N',
-        function ()
+        function()
           require('mini.files').open(vim.api.nvim_buf_get_name(0))
         end,
         desc = 'Files Toggle',
-      }
-    },
-    opts = {
-      mappings = {
-        close = 'q',
-        go_in = '<nop>',
-        go_in_plus = '<cr>',
-        go_out = '<nop>',
-        go_out_plus = '<bs>',
-        reset = '<c-BS>',
-        reveal_cwd = '@',
-        show_help = 'g?',
-        synchronize = '=',
-        trim_left = '<',
-        trim_right = '>',
       },
     },
-  },
-  {
-    'echasnovski/mini.jump',
-    opts = {},
+    opts = {
+      windows = {
+        preview = true,
+        width_focus = 30,
+        width_preview = 70,
+      }
+    },
   },
   {
     'echasnovski/mini.jump2d',
     version = '*',
-    lazy = true,
-    keys = { '<CR>' },
+    keys = {
+      '<CR>'
+    },
     opts = {
       mappings = {
         start_jumping = '<CR>',
       },
+      labels = 'asdfghjkl;',
       silent = false,
       view = {
-        dim = true,
+        dim = false,
+      },
+      allowed_windows = {
+        current = true,
+        not_current = false,
       },
     },
-    init = function()
-      vim.cmd([[autocmd Filetype qf lua vim.b.minijump2d_disable = true]])
-      vim.cmd([[autocmd Filetype minifiles lua vim.b.minijump2d_disable = true]])
+    config = function(_, opts)
+      vim.cmd([[au FileType * if index(['qf', 'minifiles'], &ft) < 0 | let b:minicursorword_disable=v:true | endif]])
+      require('mini.jump2d').setup(opts)
+    end,
+  },
+  {
+    'ahmedkhalf/project.nvim',
+    cmd = 'Telescope projects',
+    event = 'VeryLazy',
+    keys = {
+      { '<leader>\\', ':Telescope projects<CR>', desc = 'Search project' },
+    },
+    opts = {
+      detection_methods = { 'pattern' },
+      patterns = { '.git', 'Makefile', 'package.json', 'pyproject.toml' },
+      silent_chdir = false,
+    },
+    config = function(_, opts)
+      require('project_nvim').setup(opts)
     end,
   },
   {
@@ -61,34 +71,22 @@ return {
     lazy = true,
     cmd = 'Telescope',
     dependencies = {
-      { 'nvim-lua/plenary.nvim', lazy = true },
-      { 'nvim-telescope/telescope-symbols.nvim' },
-      {
-        'ahmedkhalf/project.nvim',
-        event = 'VeryLazy',
-        cmd = 'Telescope projects',
-        keys = {
-          { '<leader>sp', ':Telescope projects<CR>', desc = 'Search project' },
-        },
-        opts = {},
-        config = function(_, opts)
-          require('project_nvim').setup(opts)
-          require('telescope').load_extension('projects')
-        end,
-      },
+      { 'nvim-lua/plenary.nvim',                 lazy = true },
+      { 'nvim-telescope/telescope-symbols.nvim', lazy = true },
     },
     keys = {
-      { '<leader>S', ':Telescope<CR>', desc = 'Search by Telescope' },
-      { '<leader>sf', ':Telescope find_files<CR>', desc = 'Search files' },
-      { '<leader>sg', ':Telescope live_grep<CR>', desc = 'Search by live grep' },
-      { '<leader>sb', ':Telescope buffers<CR>', desc = 'Search buffer' },
-      { "<leader>'", ':Telescope resume<CR>', desc = 'Resume Picker' },
-      { '<leader>ss', ':Telescope lsp_dynamic_workspace_symbols<CR>', desc = 'Search symbol' },
-      { '<leader>sS', ':Telescope lsp_document_symbols<CR>', desc = 'Search symbol in workspace' },
+      { '<leader>f', ':Telescope find_files<CR>',                    desc = '[Telescope] Search files' },
+      { '<leader>/', ':Telescope live_grep<CR>',                     desc = '[Telescope] Search by live grep' },
+      { '<leader>b', ':Telescope buffers<CR>',                       desc = '[Telescope] Search buffer' },
+      { '<leader>d', ':Telescope diagnostic<CR>',                    desc = '[Telescope] Search diagnostics' },
+      { "<leader>'", ':Telescope resume<CR>',                        desc = '[Telescope] Resume Picker' },
+      { '<leader>S', ':Telescope lsp_dynamic_workspace_symbols<CR>', desc = '[Telescope] Search symbol' },
+      { '<leader>s', ':Telescope lsp_document_symbols<CR>',          desc = '[Telescope] Search symbol in workspace' },
     },
     tag = '0.1.1',
     config = function(_, opts)
       require('telescope').setup(opts)
+      require('telescope').load_extension('projects')
     end,
     opts = function()
       local actions = require('telescope.actions')
@@ -108,6 +106,8 @@ return {
             '-g=!.ccls-cache',
             '-g=!node_modules',
             '-g=!lazy-lock.json',
+            '-g=!venv',
+            '-g=!__pycache__',
             '-g=!dist',
           },
           layout_config = {
@@ -138,8 +138,28 @@ return {
     end,
   },
   {
-    'folke/which-key.nvim',
-    keys = { '<leader>', '[', ']', 's' },
-    opts = {},
-  },
+    "folke/trouble.nvim",
+    cmd = { "TroubleToggle", "Trouble" },
+    opts = { use_diagnostic_signs = true, icons = false },
+    keys = {
+      { "<leader>xx", "<cmd>TroubleToggle document_diagnostics<cr>",  desc = "Document Diagnostics (Trouble)" },
+      { "<leader>xX", "<cmd>TroubleToggle workspace_diagnostics<cr>", desc = "Workspace Diagnostics (Trouble)" },
+      { "<leader>xL", "<cmd>TroubleToggle loclist<cr>",               desc = "Location List (Trouble)" },
+      { "<leader>xQ", "<cmd>TroubleToggle quickfix<cr>",              desc = "Quickfix List (Trouble)" },
+      {
+        "[q",
+        function()
+          require("trouble").previous({ skip_groups = true, jump = true })
+        end,
+        desc = "Previous trouble/quickfix item",
+      },
+      {
+        "]q",
+        function()
+          require("trouble").next({ skip_groups = true, jump = true })
+        end,
+        desc = "Next trouble/quickfix item",
+      },
+    },
+  }
 }

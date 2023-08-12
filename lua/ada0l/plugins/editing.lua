@@ -1,11 +1,5 @@
 return {
   {
-    'vim-pandoc/vim-pandoc',
-  },
-  {
-    'vim-pandoc/vim-pandoc-syntax',
-  },
-  {
     'echasnovski/mini.pairs',
     version = '*',
     lazy = true,
@@ -20,14 +14,14 @@ return {
     version = '*',
     opts = {
       mappings = {
-        add = 'sa',
-        delete = 'sd',
-        find = 'sf',
-        find_left = 'sF',
-        highlight = 'sh',
-        replace = 'sr',
-        update_n_lines = 'sn',
+        add = 'ms',
+        delete = 'md',
+        replace = 'mr',
+        find = 'mf',
+        find_left = 'mF',
+        highlight = 'mh',
       },
+      search_method = 'cover_or_next',
     },
   },
   {
@@ -48,8 +42,8 @@ return {
     version = '*',
     opts = {
       mappings = {
-        comment = 'gc',
-        comment_line = 'gcc',
+        comment = '<c-c>',
+        comment_line = '<c-c>',
         textobject = 'gc',
       },
     },
@@ -143,51 +137,15 @@ return {
     },
   },
   {
-    'ada0l/obsidian',
+    'echasnovski/mini.doc',
+    version = '*',
+    opts = {},
     keys = {
       {
-        '<leader>oi',
-        function()
-          Obsidian.cd_vault()
-        end,
-        desc = 'Open Obsidian directory',
-      },
-      {
-        '<leader>ot',
-        function()
-          Obsidian.open_today()
-        end,
-        desc = 'Open today',
-      },
-      {
-        '<leader>on',
-        function()
-          vim.ui.input({ prompt = 'Write name of new note: ' }, function(name)
-            Obsidian.new_note(name)
-          end)
-        end,
-        desc = 'New note',
-      },
-      {
-        '<leader>oi',
-        function()
-          Obsidian.select_template(function(template_path)
-            Obsidian.insert_template(template_path)
-          end, 'native')
-        end,
-        desc = 'Insert template',
-      },
-
-      {
-        '<leader>os',
-        function()
-          Obsidian.search_note()
-        end,
-        desc = 'New note',
-      },
-    },
-    opts = {
-      dir = '~/Documents/SyncObsidian/',
-    },
+        "<leader>D",
+        "<cmd>lua require('mini.doc').generate()<cr>",
+        desc = "Generate vim doc"
+      }
+    }
   },
 }

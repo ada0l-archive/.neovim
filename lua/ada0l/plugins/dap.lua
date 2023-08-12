@@ -5,7 +5,7 @@ return {
       {
         'rcarriga/nvim-dap-ui',
         keys = {
-          { '<leader>dx', ":lua require('dapui').toggle()<CR>", desc = 'Close DAP' },
+          { '<leader>gx', ":lua require('dapui').toggle()<CR>", desc = 'Close DAP' },
         },
         opts = {
           layouts = {
@@ -17,7 +17,7 @@ return {
                 'watches',
               },
               size = 40, -- 40 columns
-              position = 'left',
+              position = 'right',
             },
             {
               elements = {
@@ -32,8 +32,8 @@ return {
       },
     },
     keys = {
-      { '<leader>db', ':DapToggleBreakpoint<CR>', desc = 'Toggle Breakpoint' },
-      { '<leader>dc', ':DapContinue<CR>', desc = 'Continue DAP' },
+      { '<leader>gb', ':DapToggleBreakpoint<CR>', desc = 'Toggle Breakpoint' },
+      { '<leader>gc', ':DapContinue<CR>',         desc = 'Continue DAP' },
     },
     opts = {},
     config = function() end,

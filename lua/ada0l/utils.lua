@@ -3,7 +3,7 @@ local M = {}
 --- Call on_attach function when lsp attached
 ---
 ---@param on_attach function
----@return nil
+-- -@return nil
 function M.on_attach(on_attach)
   vim.api.nvim_create_autocmd('LspAttach', {
     callback = function(args)
@@ -95,6 +95,28 @@ function M.get_python_venv(params)
   vim.g.cached_python_venv = M._get_python_venv()
   print('Found ' .. vim.g.cached_python_venv)
   return vim.g.cached_python_venv
+end
+
+function M.goto_window(direction)
+  local win = vim.fn.getwininfo(vim.fn.win_getid())[1]
+  local topline, height = win.topline, win.height
+  local scrolloff = vim.api.nvim_get_option('scrolloff')
+  direction = direction or "center"
+  local get_line_funcs = {
+    top = function()
+      return topline + scrolloff
+    end,
+    center = function()
+      return math.min(
+        math.floor(topline / 2 + topline / 2 + height / 2),
+        vim.fn.line("$")
+      )
+    end,
+    bottom = function()
+      return topline + (height - 1) - scrolloff
+    end
+  }
+  vim.api.nvim_command(string.format("%s", get_line_funcs[direction]()))
 end
 
 return M

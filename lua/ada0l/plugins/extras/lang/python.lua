@@ -8,11 +8,11 @@ return {
         pyright = {
           settings = {
             python = {
-              analysis = {
-                typeCheckingMode = 'off',
-                useLibraryCodeForTypes = true,
-                completeFunctionParens = true,
-              },
+              -- analysis = {
+              --   typeCheckingMode = 'off',
+              --   useLibraryCodeForTypes = true,
+              --   completeFunctionParens = true,
+              -- },
             },
           },
           before_init = function(_, config)

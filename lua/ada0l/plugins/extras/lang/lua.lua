@@ -18,7 +18,6 @@ return {
         lua_ls = {
           settings = {
             Lua = {
-              settings = { Lua = {} },
               runtime = {
                 version = 'LuaJIT',
               },
