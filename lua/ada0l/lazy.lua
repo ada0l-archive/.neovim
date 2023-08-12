@@ -50,4 +50,4 @@ lazy.setup({
 
 local map = require('ada0l.utils').map
 
-map('n', '<leader>L', '<cmd>Lazy<cr>', { desc = "Lazy" })
+map('n', '<leader>L', '<cmd>Lazy<cr>', { desc = "[Lazy] Open" })

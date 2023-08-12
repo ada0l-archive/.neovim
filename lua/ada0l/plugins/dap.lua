@@ -5,7 +5,7 @@ return {
       {
         'rcarriga/nvim-dap-ui',
         keys = {
-          { '<leader>gx', ":lua require('dapui').toggle()<CR>", desc = 'Close DAP' },
+          { '<leader>gx', ":lua require('dapui').toggle()<CR>", desc = '[DAP] Close UI' },
         },
         opts = {
           layouts = {
@@ -32,8 +32,8 @@ return {
       },
     },
     keys = {
-      { '<leader>gb', ':DapToggleBreakpoint<CR>', desc = 'Toggle Breakpoint' },
-      { '<leader>gc', ':DapContinue<CR>',         desc = 'Continue DAP' },
+      { '<leader>gb', ':DapToggleBreakpoint<CR>', desc = '[DAP] Toggle Breakpoint' },
+      { '<leader>gc', ':DapContinue<CR>',         desc = '[DAP] Continue DAP' },
     },
     opts = {},
     config = function() end,

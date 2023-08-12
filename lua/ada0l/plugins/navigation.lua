@@ -7,14 +7,14 @@ return {
         function()
           require('mini.files').open()
         end,
-        desc = 'Files Toggle',
+        desc = '[Files] Toggle',
       },
       {
         '<leader>N',
         function()
           require('mini.files').open(vim.api.nvim_buf_get_name(0))
         end,
-        desc = 'Files Toggle',
+        desc = '[Files] Toggle current file',
       },
     },
     opts = {
@@ -55,7 +55,7 @@ return {
     cmd = 'Telescope projects',
     event = 'VeryLazy',
     keys = {
-      { '<leader>\\', ':Telescope projects<CR>', desc = 'Search project' },
+      { '<leader>\\', ':Telescope projects<CR>', desc = '[Telescope] Search project' },
     },
     opts = {
       detection_methods = { 'pattern' },
@@ -142,10 +142,10 @@ return {
     cmd = { "TroubleToggle", "Trouble" },
     opts = { use_diagnostic_signs = true, icons = false },
     keys = {
-      { "<leader>xx", "<cmd>TroubleToggle document_diagnostics<cr>",  desc = "Document Diagnostics (Trouble)" },
-      { "<leader>xX", "<cmd>TroubleToggle workspace_diagnostics<cr>", desc = "Workspace Diagnostics (Trouble)" },
-      { "<leader>xL", "<cmd>TroubleToggle loclist<cr>",               desc = "Location List (Trouble)" },
-      { "<leader>xQ", "<cmd>TroubleToggle quickfix<cr>",              desc = "Quickfix List (Trouble)" },
+      { "<leader>xx", "<cmd>TroubleToggle document_diagnostics<cr>",  desc = "[Trouble] Document Diagnostics (Trouble)" },
+      { "<leader>xX", "<cmd>TroubleToggle workspace_diagnostics<cr>", desc = "[Trouble] Workspace Diagnostics (Trouble)" },
+      { "<leader>xL", "<cmd>TroubleToggle loclist<cr>",               desc = "[Trouble] Location List (Trouble)" },
+      { "<leader>xQ", "<cmd>TroubleToggle quickfix<cr>",              desc = "[Trouble] Quickfix List (Trouble)" },
       {
         "[q",
         function()

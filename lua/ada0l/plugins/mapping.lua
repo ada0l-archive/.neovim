@@ -13,7 +13,7 @@ return {
   {
     'folke/which-key.nvim',
     enabled = true,
-    keys = { '<leader>', '[', ']', 's', 'g' },
+    keys = { '<leader>', '[', ']', 's', 'g', 'm', '<c>' },
     opts = {},
   },
 }

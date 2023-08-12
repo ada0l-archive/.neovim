@@ -9,7 +9,7 @@ return {
         function()
           Obsidian.select_vault()
         end,
-        desc = "Select Obsidian vault",
+        desc = "[Obsidian] Select vault",
       },
       {
         '<leader>oo',
@@ -18,7 +18,7 @@ return {
             Obsidian.cd_vault()
           end)
         end,
-        desc = 'Open Obsidian directory',
+        desc = '[Obsidian] Open Obsidian directory',
       },
       {
         '<leader>ot',
@@ -27,7 +27,7 @@ return {
             Obsidian.open_today()
           end)
         end,
-        desc = 'Open today',
+        desc = '[Obsidian] Open today',
       },
       {
         '<leader>od',
@@ -39,7 +39,7 @@ return {
             end)
           end)
         end,
-        desc = 'Open daily node with shift',
+        desc = '[Obsidian] Open daily node with shift',
       },
       {
         '<leader>on',
@@ -50,7 +50,7 @@ return {
             end)
           end)
         end,
-        desc = 'New note',
+        desc = '[Obsidian] New note',
       },
       {
         '<leader>oi',
@@ -59,7 +59,7 @@ return {
             Obsidian.select_template('telescope')
           end)
         end,
-        desc = 'Insert template',
+        desc = '[Obsidian] Insert template',
       },
       {
         '<leader>os',
@@ -68,7 +68,7 @@ return {
             Obsidian.search_note('telescope')
           end)
         end,
-        desc = 'Search note',
+        desc = '[Obsidian] Search note',
       },
       {
         '<leader>ob',
@@ -77,16 +77,7 @@ return {
             Obsidian.select_backlinks('telescope')
           end)
         end,
-        desc = 'Select backlink',
-      },
-      {
-        '<leader>og',
-        function()
-          Obsidian.get_current_vault(function()
-            Obsidian.go_to()
-          end)
-        end,
-        desc = 'Go to file under cursor',
+        desc = '[Obsidian] Select backlink',
       },
       {
         '<leader>or',
@@ -97,7 +88,7 @@ return {
             end)
           end)
         end,
-        desc = 'Rename file with updating links',
+        desc = '[Obsidian] Rename file with updating links',
       },
       {
         "gf",

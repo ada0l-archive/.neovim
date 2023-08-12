@@ -12,14 +12,18 @@ return {
   {
     'echasnovski/mini.surround',
     version = '*',
+    keys = {
+      { "ms", mode = { 'x', 'v', 'n' }, desc = "[Match] Surround add" },
+      { "md", mode = { 'n', 'x', 'v' }, desc = "[Match] Surround delete" },
+      { "mr", mode = { 'n' },           desc = "[Match] Surround replace" },
+      { "mf", mode = { 'n' },           desc = "[Match] Surround find" },
+    },
     opts = {
       mappings = {
         add = 'ms',
         delete = 'md',
         replace = 'mr',
         find = 'mf',
-        find_left = 'mF',
-        highlight = 'mh',
       },
       search_method = 'cover_or_next',
     },
@@ -28,7 +32,7 @@ return {
     'echasnovski/mini.splitjoin',
     version = '*',
     lazy = true,
-    keys = { 'gS' },
+    keys = { { 'gS', desc = "[Splitjoin] toggle" } },
     opts = {
       mappings = {
         toggle = 'gS',
@@ -40,6 +44,9 @@ return {
   {
     'echasnovski/mini.comment',
     version = '*',
+    keys = {
+      { '<c-c>', desc = "[Comment] toggle" }
+    },
     opts = {
       mappings = {
         comment = '<c-c>',
@@ -56,7 +63,7 @@ return {
         function()
           require('spectre').open()
         end,
-        desc = 'Spectre',
+        desc = '[Spectre] Open',
       },
     },
     opts = {},
@@ -92,47 +99,47 @@ return {
         function()
           require('telescope').extensions.yank_history.yank_history({})
         end,
-        desc = 'Open Yank History',
+        desc = '[Yanky] Open Yank History',
       },
       {
         'y',
         '<Plug>(YankyYank)',
         mode = { 'n', 'x' },
-        desc = 'Yank text',
+        desc = '[Yanky] Yank text',
       },
       {
         'p',
         '<Plug>(YankyPutAfter)',
         mode = { 'n', 'x' },
-        desc = 'Put yanked text after cursor',
+        desc = '[Yanky] Put yanked text after cursor',
       },
       {
         'P',
         '<Plug>(YankyPutBefore)',
         mode = { 'n', 'x' },
-        desc = 'Put yanked text before cursor',
+        desc = '[Yanky] Put yanked text before cursor',
       },
       {
         'gp',
         '<Plug>(YankyGPutAfter)',
         mode = { 'n', 'x' },
-        desc = 'Put yanked text after selection',
+        desc = '[Yanky] Put yanked text after selection',
       },
       {
         'gP',
         '<Plug>(YankyGPutBefore)',
         mode = { 'n', 'x' },
-        desc = 'Put yanked text before selection',
+        desc = '[Yanky] Put yanked text before selection',
       },
       {
         '[y',
         '<Plug>(YankyCycleForward)',
-        desc = 'Cycle forward through yank history',
+        desc = '[Yanky] Cycle forward through yank history',
       },
       {
         ']y',
         '<Plug>(YankyCycleBackward)',
-        desc = 'Cycle backward through yank history',
+        desc = '[Yanky] Cycle backward through yank history',
       },
     },
   },
@@ -144,7 +151,7 @@ return {
       {
         "<leader>D",
         "<cmd>lua require('mini.doc').generate()<cr>",
-        desc = "Generate vim doc"
+        desc = "[Mini.Doc] Generate vim doc"
       }
     }
   },
